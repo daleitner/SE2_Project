@@ -3,7 +3,21 @@ Welche Android-Version?
 
 *Device
 Tablet, Smartphone?
-Welche Displaygr��en?
+Welche Displaygrößen?
 
 *Game
 Wieviel Spieler?
+Lokal/Online?
+Welche Sprachen?
+
+*Design
+Bereits vorhandene Vorstellungen?
+Querformat/Hochformat?
+
+*Aus den Files die uns zur Verfügung gestellt wurden
+Wie definieren sie Erfolg in diesem Projekt? Oder wie würde Erfolg für sie aussehen?
+Wer ist die Zielgruppe?
+Gibt es etwas, dass in diesem Gespräch noch nicht gesagt wurde, aber wichtig ist?
+Welches Ziel verfolgen wir?
+Was wäre, wenn wir das Projekt nicht fertigstellen können?
+Was soll bei Fehlern passieren? (Programmintern)
