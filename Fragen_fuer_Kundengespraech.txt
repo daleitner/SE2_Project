@@ -1,4 +1,4 @@
-*OS
+﻿*OS
 Welche Android-Version?
 
 *Device
@@ -13,6 +13,7 @@ Welche Sprachen?
 *Design
 Bereits vorhandene Vorstellungen?
 Querformat/Hochformat?
+Modern?
 
 *Aus den Files die uns zur Verfügung gestellt wurden
 Wie definieren sie Erfolg in diesem Projekt? Oder wie würde Erfolg für sie aussehen?
@@ -21,3 +22,4 @@ Gibt es etwas, dass in diesem Gespräch noch nicht gesagt wurde, aber wichtig is
 Welches Ziel verfolgen wir?
 Was wäre, wenn wir das Projekt nicht fertigstellen können?
 Was soll bei Fehlern passieren? (Programmintern)
+
