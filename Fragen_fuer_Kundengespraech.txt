@@ -1,0 +1,9 @@
+*OS
+Welche Android-Version?
+
+*Device
+Tablet, Smartphone?
+Welche Displaygrößen?
+
+*Game
+Wieviel Spieler?
