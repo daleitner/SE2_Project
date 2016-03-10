@@ -1,4 +1,7 @@
 Android-Programmierung 
+Sie haben erfahren, dass Ihr Team beauftragt wurde ein Android App zu entwickeln.
+Jetzt ist es wichtig, dass alle Teammitglieder ihre Kenntnisse uber die
+Programmierung von Android - Apps auf den gleichen Stand bringen. 
 
 
 *Grundlagen
