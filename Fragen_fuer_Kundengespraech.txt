@@ -1,5 +1,5 @@
 *OS
-Welche Android-Version?
+Welche Android-API-Version?
 
 *Device
 Tablet, Smartphone?
@@ -9,6 +9,7 @@ Welche Displaygrößen?
 Wieviel Spieler?
 Lokal/Online?
 Welche Sprachen?
+Werbung integrieren?
 
 *Design
 Bereits vorhandene Vorstellungen?
@@ -21,3 +22,7 @@ Gibt es etwas, dass in diesem Gespräch noch nicht gesagt wurde, aber wichtig is
 Welches Ziel verfolgen wir?
 Was wäre, wenn wir das Projekt nicht fertigstellen können?
 Was soll bei Fehlern passieren? (Programmintern)
+
+*Programmierung
+Welche Tests?
+Inhalt der Dokumentation? Software-Metriken?
