@@ -1,20 +1,22 @@
-*OS
-Welche Android-API-Version?
+﻿*OS
+Welche Android-API-Version?	-> API-Level >= 19
 
 *Device
-Tablet, Smartphone?
-Welche Displaygrößen?
+Tablet, Smartphone?		-> sowohl als auch
+Welche Displaygrößen?		-> für alle Größe
 
 *Game
-Wieviel Spieler?
-Lokal/Online?
-Welche Sprachen?
-Werbung integrieren?
+Wieviel Spieler?		-> >= 2 HI-Player, AI optional
+Lokal/Online?			-> Multiplayer via Wifi
+Welche Sprachen?		-> Deutsch ODER Englisch
+Werbung integrieren?	        -> NTH
+Spielverlauf speichern		-> NTH
+				-> min. eine Gesten- bzw. Sprachsteuerung
 
 *Design
-Bereits vorhandene Vorstellungen?
-Querformat/Hochformat?
-
+Bereits vorhandene Vorstellungen?	-> offen für alles
+Querformat/Hochformat?			-> keine klare Vorgabe
+	
 *Aus den Files die uns zur Verfügung gestellt wurden
 Wie definieren sie Erfolg in diesem Projekt? Oder wie würde Erfolg für sie aussehen?
 Wer ist die Zielgruppe?
@@ -24,5 +26,9 @@ Was wäre, wenn wir das Projekt nicht fertigstellen können?
 Was soll bei Fehlern passieren? (Programmintern)
 
 *Programmierung
-Welche Tests?
-Inhalt der Dokumentation? Software-Metriken?
+Welche Tests?					-> automatisierte Android-Unit-Tests mit Jenkins
+Inhalt der Dokumentation? Software-Metriken?	-> regelmäßig Sourcecodemetriken messen + Beschreibung dieser
+
+Zeitplan   -> Präsentation + Test im Juni, Mitte Mai Zwischenkontrolle
+
+NTH .. Nice to have
