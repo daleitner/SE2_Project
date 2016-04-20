@@ -1,0 +1,37 @@
+Android-Programmierung 
+Sie haben erfahren, dass Ihr Team beauftragt wurde ein Android App zu entwickeln.
+Jetzt ist es wichtig, dass alle Teammitglieder ihre Kenntnisse uber die
+Programmierung von Android - Apps auf den gleichen Stand bringen. 
+
+
+*Grundlagen
+•	Android-Versionen
+		Da es verschiedene Versionen von Android gibt, ist es wichtig die App auf diese hinreichend zu entwickeln. 			Hierbei wird bei der Erstellung die minimale SDK Version definiert und die Target SDK Version. Die minimale 			Version beschreibt welches Betriebssystem die Endgeräte mindestens haben müssen, wohingegen die Target 				Version aussagt für welches System es programmiert wurde und somit optimiert ist.
+•	Emulator
+		Es wäre viel zu aufwendig für jeden Test die Applikation neu auf ein Endgerät zu exportieren, insofern werden 			von den meisten Programmierumgebung Emulatoren angeboten, welche die Testung am PC möglich machen.
+•	Sandbox
+		Jede App läuft in ihrer eigenen Welt. Will sie auf Ressourcen zugreifen, welche außerhalb dieser Sandbox sind, 		so muss sie um Erlaubnis fragen(Permission). Eine solche Permission könnte ein SMS-Dienst sein.	
+•	Background Service
+		Prinzipiell ist es möglich eine Applikation im Hintergrund des Endgerätes laufen zu lassen. Im Hintergrund 			bedeutet, dass der Benutzer nicht aktiv darauf zugreifen muss, damit der Prozess weiterläuft. Dies kann für 			verschiedenste Zwecke eingesetzt werden.
+	
+	
+	
+*Begriffe
+	
+•	Activity
+		Activities beinhalten das User Interface und sind für die Kommunikation zwischen App und Endnutzer 				verantwortlich (=Fenster).
+•	Layouts
+		Ein definiertes Aussehen für eine bestimmte Gruppe von Geräten.
+•	Permission
+		Erlaubnis um auf Bereiche außerhalb der Applikation zuzugreifen.
+
+	
+*Konzepte
+•	Layouts
+		Um die App auf möglichst vielen Geräten mit unterschiedlichen Dimensionen bestmöglich darzustellen, müssen 			Layouts angelegt werden. Ein Layout ist nichts anderes als eine Ansicht auf das Programm. Somit kann für 			Tablets die Ansicht z.B. etwas weiträumiger ausfallen, wohingegen die Ansicht am Handy Seiten besitzt um die 		Inhalte aufzuteilen.
+•	Bilder
+		In Android sollten Bilder prinzipiell in mindestens vier Größenordnungen gespeichert werden: xhdpi, hdpi, mdpi 		und ldpi. Dies ist notwendig um die bestmögliche Darstellung auf allen Endgeräten zu gewähren. Dafür gibt es für jede 		Größe vorgesehene Ordner, in welche die Bilder gespeichert werden sollten. Zudem sollten diese Bilder Vektorgrafiken 		sein um eine schnellstmögliche Anpassung durchzuführen.
+•	Sprachen
+		Eine Erleichterung die Android bietet ist es, dass Texte prinzipiell nie 1:1 in Layouts gespeichert werden. 			Durch diese Tatsache ist es möglich durch das einfache setzen einer Variable die Sprache zu ändern. Textteile 		werden nun aus eigens dafür vorgesehenen XML-Files gelesen und eingesetzt.
+
+
