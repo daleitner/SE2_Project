@@ -45,6 +45,14 @@
                 android:text="@string/dummy_button" />
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spiel Starten"
+            android:id="@+id/btnstart"
+            android:layout_gravity="center"
+            android:onClick="onBtnStartClick" />
     </FrameLayout>
 
 </FrameLayout>

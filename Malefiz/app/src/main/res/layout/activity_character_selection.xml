@@ -1,0 +1,120 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_orange_light"
+    tools:context="gruppe_a.malefiz.CharacterSelectionActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:textColor="#33b5e5"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/btnSelect"
+            android:layout_gravity="right|bottom"
+            android:onClick="onBtnSelectClick" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zurück"
+            android:id="@+id/btnBack"
+            android:layout_gravity="left|bottom"
+            android:onClick="onBtnBackClick" />
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:rowCount="2"
+            android:columnCount="2">
+
+            <ImageView
+                android:layout_width="133dp"
+                android:layout_height="156dp"
+                android:id="@+id/char_red"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_margin="10dp"
+                android:onClick="onCharacterClick"
+                android:src="@mipmap/avatar_rot" />
+
+            <ImageView
+                android:layout_width="133dp"
+                android:layout_height="156dp"
+                android:id="@+id/char_yellow"
+                android:baselineAlignBottom="false"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_margin="10dp"
+                android:onClick="onCharacterClick"
+                android:src="@mipmap/avatar_gelb" />
+
+            <ImageView
+                android:layout_width="133dp"
+                android:layout_height="156dp"
+                android:id="@+id/char_green"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_margin="10dp"
+                android:onClick="onCharacterClick"
+                android:src="@mipmap/avatar_gruen" />
+
+            <ImageView
+                android:layout_width="133dp"
+                android:layout_height="156dp"
+                android:id="@+id/char_blue"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_margin="10dp"
+                android:onClick="onCharacterClick"
+                android:src="@mipmap/avatar_blau" />
+
+        </GridLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Wähle einen Charakter:"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal|top"
+            android:linksClickable="false"
+            android:textSize="30dp"
+            android:textIsSelectable="true"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+</FrameLayout>
