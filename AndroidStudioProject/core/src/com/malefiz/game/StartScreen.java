@@ -30,14 +30,12 @@ public class StartScreen implements Screen {
 
     MyMalefiz g;
     public StartScreen(MyMalefiz g){
-        create();
+        show();
         this.g=g;
     }
 
-    public StartScreen(){
-        create();
-    }
-    public void create(){
+    @Override
+    public void show(){
         batch = new SpriteBatch();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -90,7 +88,7 @@ public class StartScreen implements Screen {
         });
 
     }
-
+    @Override
     public void render (float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -108,12 +106,6 @@ public class StartScreen implements Screen {
     public void dispose () {
         stage.dispose();
         skin.dispose();
-    }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
