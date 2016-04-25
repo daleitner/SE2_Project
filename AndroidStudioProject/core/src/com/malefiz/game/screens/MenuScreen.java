@@ -51,11 +51,11 @@ public class MenuScreen implements Screen {
         startBtn.setWidth(screenWidth/2);
         startBtn.setHeight(screenWidth/8);
         startBtn.setPosition(screenWidth/4, 8*screenHeight/24);
-
+        startBtn.getLabel().setFontScale(5.0f);
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setCharacterScreen();
+                mymalefiz.setCharacterSelectionScreen();
             }
         });
 
@@ -64,7 +64,7 @@ public class MenuScreen implements Screen {
         connectBtn.setWidth(screenWidth/2);
         connectBtn.setHeight(screenWidth/8);
         connectBtn.setPosition(screenWidth/4, 6*screenHeight/24);
-
+        connectBtn.getLabel().setFontScale(5.0f);
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -77,7 +77,7 @@ public class MenuScreen implements Screen {
         exitBtn.setWidth(screenWidth/2);
         exitBtn.setHeight(screenWidth/8);
         exitBtn.setPosition(screenWidth/4, 4*screenHeight/24);
-
+        exitBtn.getLabel().setFontScale(5.0f);
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

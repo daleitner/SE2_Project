@@ -1,8 +1,9 @@
-package com.malefiz.game;
+package com.malefiz.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.malefiz.game.MyMalefiz;
 
 /**
  * Created by MCLeite on 25.04.2016.

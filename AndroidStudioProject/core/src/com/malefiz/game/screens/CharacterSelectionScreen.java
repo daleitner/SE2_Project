@@ -1,4 +1,4 @@
-package com.malefiz.game;
+package com.malefiz.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.malefiz.game.MyMalefiz;
 
 /**
  * Created by MCLeite on 25.04.2016.
