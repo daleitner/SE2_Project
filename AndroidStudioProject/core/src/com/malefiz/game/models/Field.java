@@ -7,13 +7,37 @@ import java.util.ArrayList;
  */
 public class Field {
     int ID;
-    String color;
+    Color color;
     int coordX;
     int coordY;
     ArrayList<Integer> neighbouringFields;
 
-    public Field(int id, String color, int coordX, int coordY, ArrayList neighbouringFields)
+    public Field(int id, Color color, int coordX, int coordY, ArrayList neighbouringFields)
     {
+        this.ID = id;
+        this.color = color;
+        this.coordX = coordX;
+        this.coordY = coordY;
         this.neighbouringFields = neighbouringFields;
+    }
+
+    public int getID()
+    {
+        return ID;
+    }
+
+    public Color getColor()
+    {
+        return color;
+    }
+
+    public int getCoordX()
+    {
+        return coordX;
+    }
+
+    public int getCoordY()
+    {
+        return coordY;
     }
 }
