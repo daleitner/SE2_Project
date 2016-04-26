@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.malefiz.game.MyMalefiz;
+import com.malefiz.game.models.Avatar;
 
 /**
  * Created by MCLeite on 25.04.2016.
@@ -24,11 +25,12 @@ public class GameScreen implements Screen {
 
     int screenHeight;
     int screenWidth;
-
+    private Avatar selectedAvatar;
     private Image img_field_red = null;
     private Image img_field_black = null;
 
-    public GameScreen(MyMalefiz mainClass) {
+    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar) {
+        this.selectedAvatar = selectedAvatar;
         this.mainClass = mainClass;
     }
 

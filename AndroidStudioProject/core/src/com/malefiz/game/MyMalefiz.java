@@ -24,7 +24,7 @@ public class MyMalefiz extends Game {
 
 	public void setGameScreen()
 	{
-		this.gameScreen = new GameScreen(this);
+		this.gameScreen = new GameScreen(this, this.characterSelectionScreen.getSelectedAvatar());
 		setScreen(this.gameScreen);
 	}
 

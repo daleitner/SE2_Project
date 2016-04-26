@@ -2,8 +2,10 @@ package com.malefiz.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Avatar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,22 +27,28 @@ public class CharacterSelectionScreen implements Screen {
     Skin skin;
     Stage stage;
     SpriteBatch batch;
+    BitmapFont font;
 
     int screenHeight;
     int screenWidth;
-
-    private Image img_red = null;
-    private Image img_blue = null;
-    private Image img_green = null;
-    private Image img_yellow = null;
-
+    float img_width = 400.0f;
+    float img_height = 400.0f;
+    float selected_width = 450.0f;
+    float selected_height = 450.0f;
+    private List<Image> images = null;
     private MyMalefiz mainClass = null;
 
     private List<Avatar> characters;
+    private Avatar selectedCharacter = null;
 
     public CharacterSelectionScreen(MyMalefiz mainClass) {
         this.mainClass = mainClass;
-        show();
+        this.images = new ArrayList<Image>();
+        this.characters = new ArrayList<Avatar>();
+        this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 150, 960));
+        this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 600, 960));
+        this.characters.add(new Avatar("avatar_yellow", "avatar_gelb.png", "avatar_gelb_disabled.png", 150, 510));
+        this.characters.add(new Avatar("avatar_green", "avatar_gruen.png", "avatar_gruen_disabled.png", 600, 510));
     }
     @Override
     public void show() {
@@ -47,46 +56,58 @@ public class CharacterSelectionScreen implements Screen {
         stage = new Stage();
         screenHeight = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
+
         Gdx.input.setInputProcessor(stage);
 
         // A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
         // recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
-        skin.add("avatar_red", new Texture("avatar_rot.png"));
-        skin.add("avatar_blue", new Texture("avatar_blau.png"));
-        skin.add("avatar_green", new Texture("avatar_gruen.png"));
-        skin.add("avatar_yellow", new Texture("avatar_gelb.png"));
 
-        float img_width = 400.0f;
-        float img_height = 400.0f;
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(5.0f);
 
-        this.img_red = new Image(skin.getDrawable("avatar_red"));
-        this.img_red.setX(150);
-        this.img_red.setY(910);
-        this.img_red.setWidth(img_width);
-        this.img_red.setHeight(img_height);
-        stage.addActor(this.img_red);
+        for(int i= 0; i<this.characters.size(); i++) {
+            skin.add(this.characters.get(i).getId(), new Texture(this.characters.get(i).getImageName()));
+            Image img = new Image(skin.getDrawable(this.characters.get(i).getId()));
+            img.setX(this.characters.get(i).getxPos());
+            img.setY(this.characters.get(i).getyPos());
+            img.setWidth(img_width);
+            img.setHeight(img_height);
+            this.images.add(img);
+        }
 
-        this.img_blue = new Image(skin.getDrawable("avatar_blue"));
-        this.img_blue.setX(550);
-        this.img_blue.setY(910);
-        this.img_blue.setWidth(img_width);
-        this.img_blue.setHeight(img_height);
-        stage.addActor(this.img_blue);
+        this.images.get(0).addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedCharacter = characters.get(0);
+            }
+        });
 
-        this.img_green = new Image(skin.getDrawable("avatar_green"));
-        this.img_green.setX(150);
-        this.img_green.setY(510);
-        this.img_green.setWidth(img_width);
-        this.img_green.setHeight(img_height);
-        stage.addActor(this.img_green);
+        this.images.get(1).addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedCharacter = characters.get(1);
+            }
+        });
 
-        this.img_yellow = new Image(skin.getDrawable("avatar_yellow"));
-        this.img_yellow.setX(550);
-        this.img_yellow.setY(510);
-        this.img_yellow.setWidth(img_width);
-        this.img_yellow.setHeight(img_height);
-        stage.addActor(this.img_yellow);
+        this.images.get(2).addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedCharacter = characters.get(2);
+            }
+        });
+
+        this.images.get(3).addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedCharacter = characters.get(3);
+            }
+        });
+
+        for(int i =0; i<this.images.size(); i++) {
+            stage.addActor(this.images.get(i));
+        }
 
         TextButton backBtn = new TextButton("Abbrechen", skin, "default");
 
@@ -121,6 +142,20 @@ public class CharacterSelectionScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(255 / 255f, 187 / 255f, 1 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        font.draw(batch, "Wähle einen Charakter", 150, 1600);
+        batch.end();
+        if(this.selectedCharacter != null) {
+            for (int i = 0; i < this.characters.size(); i++) {
+                if (this.selectedCharacter == this.characters.get(i)) {
+                    this.images.get(i).setWidth(this.selected_width);
+                    this.images.get(i).setHeight(this.selected_height);
+                } else {
+                    this.images.get(i).setWidth(this.img_width);
+                    this.images.get(i).setHeight(this.img_height);
+                }
+            }
+        }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
         stage.setDebugAll(true);
@@ -148,6 +183,11 @@ public class CharacterSelectionScreen implements Screen {
 
     @Override
     public void dispose() {
+        font.dispose();
+        batch.dispose();
+    }
 
+    public Avatar getSelectedAvatar() {
+        return this.selectedCharacter;
     }
 }
