@@ -68,7 +68,7 @@ public class MenuScreen implements Screen {
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-
+                mymalefiz.setGameScreen();
             }
         });
 
@@ -102,7 +102,6 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         batch.begin();
         renderBackground();
-        //Malefiz-Logo zeichnen und positionieren
         batch.draw(logo, 100, 2*screenHeight/3, Gdx.graphics.getWidth()-200, screenHeight/3-screenHeight/9);
         batch.end();
         stage.draw();
