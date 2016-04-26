@@ -6,9 +6,13 @@ import java.util.ArrayList;
  * Created by Dan on 26.04.2016.
  */
 public class Field {
-    ArrayList<Field> neighbouringFields;
+    int ID;
+    String color;
+    int coordX;
+    int coordY;
+    ArrayList<Integer> neighbouringFields;
 
-    public Field(ArrayList neighbouringFields)
+    public Field(int id, String color, int coordX, int coordY, ArrayList neighbouringFields)
     {
         this.neighbouringFields = neighbouringFields;
     }
