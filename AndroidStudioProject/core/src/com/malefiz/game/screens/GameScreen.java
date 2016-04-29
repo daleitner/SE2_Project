@@ -16,6 +16,7 @@ import com.malefiz.game.models.Avatar;
 import com.malefiz.game.models.Board;
 import com.malefiz.game.models.Color;
 import com.malefiz.game.models.Field;
+import com.malefiz.game.models.Grid;
 import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.awt.BasicStroke;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
     int unitSize;
 
     Board b = new Board();
+    Grid g = new Grid();
 
     ArrayList<Field> fields;
     ArrayList<Integer[]> lines;
@@ -134,7 +136,7 @@ public class GameScreen implements Screen {
             }
 
             field_img.setX(unitSize*f.getCoordX()-fieldSize/2);
-            field_img.setY((int)(1.5*unitSize*f.getCoordY()-fieldSize/2));
+            field_img.setY((int)(g.getRatio()*unitSize*f.getCoordY()-4*unitSize-fieldSize/2));
             field_img.setHeight(fieldSize);
             field_img.setWidth(fieldSize);
             stage.addActor(field_img);
@@ -149,14 +151,14 @@ public class GameScreen implements Screen {
         {
             Image line = new Image(skin.getDrawable("pixel_black"));
             int coordX1 = unitSize*lineCoord[0]-2;
-            int coordY1 = (int)(1.5*unitSize*lineCoord[1]-2);
+            int coordY1 = (int)(g.getRatio()*unitSize*lineCoord[1]-2-4*unitSize);
 
             int height;
             int width;
 
             if (lineCoord[0] == lineCoord[2])
             {
-                height = (int)(1.5*(unitSize*(lineCoord[3]-lineCoord[1])));
+                height = (int)(g.getRatio()*(unitSize*(lineCoord[3]-lineCoord[1])));
                 width = 5;
             }
             else

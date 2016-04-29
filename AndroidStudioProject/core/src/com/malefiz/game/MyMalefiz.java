@@ -4,11 +4,13 @@ import com.badlogic.gdx.Game;
 import com.malefiz.game.screens.CharacterSelectionScreen;
 import com.malefiz.game.screens.GameScreen;
 import com.malefiz.game.screens.MenuScreen;
+import com.malefiz.game.screens.RuleScreen;
 
 public class MyMalefiz extends Game {
 	private MenuScreen menuScreen;
 	private GameScreen gameScreen;
 	private CharacterSelectionScreen characterSelectionScreen;
+	private RuleScreen ruleScreen;
 
 	@Override
 	public void create() {
@@ -32,5 +34,11 @@ public class MyMalefiz extends Game {
 	{
 		this.characterSelectionScreen = new CharacterSelectionScreen(this);
 		setScreen(this.characterSelectionScreen);
+	}
+
+	public void setRuleScreen()
+	{
+		this.ruleScreen = new RuleScreen(this);
+		setScreen(this.ruleScreen);
 	}
 }

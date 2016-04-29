@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.malefiz.game.MyMalefiz;
+import com.malefiz.game.models.Grid;
 
 /**
  * Created by Dan on 25.04.2016.
@@ -28,6 +29,8 @@ public class MenuScreen implements Screen {
     private MyMalefiz mymalefiz;
     Texture startBtn;
     Skin skin;
+
+    Grid g = new Grid();
 
     public MenuScreen(MyMalefiz mz)
     {
@@ -48,10 +51,10 @@ public class MenuScreen implements Screen {
 
         TextButton startBtn = new TextButton("Spiel starten", skin, "default");
 
-        startBtn.setWidth(screenWidth/2);
-        startBtn.setHeight(screenWidth/8);
-        startBtn.setPosition(screenWidth/4, 8*screenHeight/24);
-        startBtn.getLabel().setFontScale(5.0f);
+        startBtn.setWidth(18*g.getUnitSize());
+        startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
+        startBtn.setPosition(g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
+        startBtn.getLabel().setFontScale(3.0f);
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -61,10 +64,10 @@ public class MenuScreen implements Screen {
 
         TextButton connectBtn = new TextButton("Spiel beitreten", skin, "default");
 
-        connectBtn.setWidth(screenWidth/2);
-        connectBtn.setHeight(screenWidth/8);
-        connectBtn.setPosition(screenWidth/4, 6*screenHeight/24);
-        connectBtn.getLabel().setFontScale(5.0f);
+        connectBtn.setWidth(18*g.getUnitSize());
+        connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
+        connectBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
+        connectBtn.getLabel().setFontScale(3.0f);
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -72,12 +75,25 @@ public class MenuScreen implements Screen {
             }
         });
 
+        TextButton ruleBtn = new TextButton("Spielregeln", skin, "default");
+
+        ruleBtn.setWidth(18*g.getUnitSize());
+        ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
+        ruleBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
+        ruleBtn.getLabel().setFontScale(3.0f);
+        ruleBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                mymalefiz.setRuleScreen();
+            }
+        });
+
         TextButton exitBtn = new TextButton("Spiel verlassen", skin, "default");
 
-        exitBtn.setWidth(screenWidth/2);
-        exitBtn.setHeight(screenWidth/8);
-        exitBtn.setPosition(screenWidth/4, 4*screenHeight/24);
-        exitBtn.getLabel().setFontScale(5.0f);
+        exitBtn.setWidth(18*g.getUnitSize());
+        exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());
+        exitBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
+        exitBtn.getLabel().setFontScale(3.0f);
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -87,6 +103,7 @@ public class MenuScreen implements Screen {
 
         stage.addActor(connectBtn);
         stage.addActor(exitBtn);
+        stage.addActor(ruleBtn);
         stage.addActor(startBtn);
 
         Gdx.input.setInputProcessor(stage);
@@ -102,7 +119,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         batch.begin();
         renderBackground();
-        batch.draw(logo, 100, 2*screenHeight/3, Gdx.graphics.getWidth()-200, screenHeight/3-screenHeight/9);
+        batch.draw(logo, 2*g.getUnitSize(), 12*g.getUnitSize()*g.getRatio(), 16*g.getUnitSize(), 7*g.getUnitSize()*g.getRatio());
         batch.end();
         stage.draw();
     }
