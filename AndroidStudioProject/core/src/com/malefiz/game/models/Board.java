@@ -22,6 +22,11 @@ public class Board{
     BufferedReader CSVFile;
     String dataRow;
 
+    ArrayList<Unit> unit_fields = new ArrayList<Unit>();
+    ArrayList<Unit> units = new ArrayList<Unit>();
+
+
+
     public Board()
     {
         try {
@@ -75,9 +80,29 @@ public class Board{
         }
         catch (Exception ex){}
 
+        createUnits();
 
 
+    }
 
+    private void createUnits(){
+        // hier muessen noch die startpositionen eingebaut werden
+        for (int i = 1; i < 6; i++) {
+            units.add(new Unit (Team.RED, fields.get(i)));
+        }
+        for (int i = 7; i < 12; i++) {
+            units.add(new Unit (Team.YELLOW, fields.get(i)));
+        }
+        for (int i = 13; i < 18; i++) {
+            units.add(new Unit (Team.GREEN, fields.get(i)));
+        }
+        for (int i = 20; i < 25; i++) {
+            units.add(new Unit (Team.BLUE, fields.get(i)));
+        }
+    }
+
+    public ArrayList getUnits() {
+        return units;
     }
 
     public ArrayList getFields()

@@ -8,15 +8,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Avatar;
 import com.malefiz.game.models.Board;
 import com.malefiz.game.models.Color;
 import com.malefiz.game.models.Field;
 import com.malefiz.game.models.Grid;
+import com.malefiz.game.models.Team;
+import com.malefiz.game.models.Unit;
 import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.awt.BasicStroke;
@@ -50,6 +54,8 @@ public class GameScreen implements Screen {
 
     ArrayList<Field> fields;
     ArrayList<Integer[]> lines;
+    ArrayList<Unit> units;
+
 
     Texture pixelBlack;
 
@@ -78,9 +84,17 @@ public class GameScreen implements Screen {
         skin.add("field_black", new Texture("feld_schwarz.png"));
         skin.add("pixel_black", new Texture("pixel_black_1x1.png"));
 
+        // probably own skin for units
+        skin.add("unit_yellow", new Texture("unit_yellow.png"));
+        skin.add("unit_red", new Texture("unit_red.png"));
+        skin.add("unit_blue", new Texture("unit_blue.png"));
+        skin.add("unit_green", new Texture("unit_green.png"));
+
+
+
         drawLines();
         drawFields();
-
+        drawUnits();
 
 
     }
@@ -118,6 +132,33 @@ public class GameScreen implements Screen {
     public void dispose() {
 
     }
+
+    public void drawUnits() {
+
+        units = b.getUnits();
+
+        for (Unit u : units) {
+            Image unit_image;
+            if (u.getTeam() == Team.RED) {
+                unit_image = new Image(skin.getDrawable("unit_red"));
+            } else if (u.getTeam() == Team.YELLOW) {
+                unit_image = new Image(skin.getDrawable("unit_yellow"));
+            } else if (u.getTeam() == Team.BLUE) {
+                unit_image = new Image(skin.getDrawable("unit_blue"));
+            } else if (u.getTeam() == Team.GREEN){
+                unit_image = new Image(skin.getDrawable("unit_green"));
+            } else {
+                throw new RuntimeException("Error in game screen draw units");
+            }
+            // scaling muss noch ueberarbeitet werden momentan nur von field uebernommen
+            unit_image.setX(unitSize * u.getUnitCoordX() - fieldSize / 2);
+            unit_image.setY((int) (g.getRatio() * unitSize * u.getUnitCoordY() - 4 * unitSize - fieldSize / 2));
+            unit_image.setHeight(fieldSize*2);
+            unit_image.setWidth(fieldSize);
+            stage.addActor(unit_image);
+        }
+    }
+
 
     public void drawFields()
     {
