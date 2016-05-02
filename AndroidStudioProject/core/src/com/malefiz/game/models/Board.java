@@ -2,13 +2,9 @@ package com.malefiz.game.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.sun.webkit.dom.CSSValueImpl;
+
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 
@@ -17,6 +13,10 @@ import java.util.ArrayList;
  */
 public class Board{
     ArrayList<Field> fields = new ArrayList<Field>();
+    ArrayList<Field> redStartFields = new ArrayList<Field>();
+    ArrayList<Field> greenStartFields = new ArrayList<Field>();
+    ArrayList<Field> yellowStartFields = new ArrayList<Field>();
+    ArrayList<Field> blueStartFields = new ArrayList<Field>();
     ArrayList<Integer[]> lines = new ArrayList<Integer[]>();
     FileHandle file;
     BufferedReader CSVFile;
@@ -42,25 +42,59 @@ public class Board{
                 int id = Integer.parseInt(line[0]);
                 int coordX = Integer.parseInt(line[2]);
                 int coordY = Integer.parseInt(line[3]);
-                neighbouringFields.add(Integer.parseInt(line[4]));
-                neighbouringFields.add(Integer.parseInt(line[5]));
+
                 if(line[1].equals("bl"))
                 {
                     color = color.BLACK;
                 }
-                else
+                else if(line[1].equals("rd"))
                 {
                     color = color.RED;
                 }
+                else if(line[1].equals("yw"))
+                {
+                    color = color.YELLOW;
+                }
+                else if(line[1].equals("bu"))
+                {
+                    color = color.BLUE;
+                }
+                else if(line[1].equals("gr"))
+                {
+                    color = color.GREEN;
+                }
                 try {
+                    neighbouringFields.add(Integer.parseInt(line[4]));
+                    neighbouringFields.add(Integer.parseInt(line[5]));
                     neighbouringFields.add(Integer.parseInt(line[6]));
                 }catch (Exception ex)
                 {
 
                 }
-                fields.add(new Field(id, color, coordX, coordY, neighbouringFields));
+                Field f = new Field(id, color, coordX, coordY, neighbouringFields);
+                fields.add(f);
+                if(130 <= Integer.parseInt(line[0]))
+                {
+                    blueStartFields.add(f);
+                }
+                else if(125 <= Integer.parseInt(line[0]))
+                {
+                    yellowStartFields.add(f);
+                }
+                else if(120 <= Integer.parseInt(line[0]))
+                {
+                    greenStartFields.add(f);
+                }
+                else if(115 <= Integer.parseInt(line[0]))
+                {
+                    redStartFields.add(f);
+                }
                 dataRow = CSVFile.readLine();
             }
+            System.out.println(redStartFields.size());
+            System.out.println(greenStartFields.size());
+            System.out.println(yellowStartFields.size());
+            System.out.println(blueStartFields.size());
             CSVFile.close();
 
             //Linien aus CSV parsen und Liste generieren
@@ -69,7 +103,6 @@ public class Board{
             dataRow = CSVFile.readLine();
             while(dataRow != null)
             {
-                System.out.println("Line");
                 String[] line = dataRow.split(";");
                 Integer[] lineCoords = {Integer.parseInt(line[0]),Integer.parseInt(line[1]),Integer.parseInt(line[2]),Integer.parseInt(line[3])};
                 lines.add(lineCoords);
@@ -87,17 +120,17 @@ public class Board{
 
     private void createUnits(){
         // hier muessen noch die startpositionen eingebaut werden
-        for (int i = 1; i < 6; i++) {
-            units.add(new Unit (Team.RED, fields.get(i)));
+        for (int i = 115; i < 120; i++) {
+            units.add(new Unit (Team.RED, fields.get(i-3)));
         }
-        for (int i = 7; i < 12; i++) {
-            units.add(new Unit (Team.YELLOW, fields.get(i)));
+        for (int i = 120; i < 125; i++) {
+            units.add(new Unit (Team.GREEN, fields.get(i-3)));
         }
-        for (int i = 13; i < 18; i++) {
-            units.add(new Unit (Team.GREEN, fields.get(i)));
+        for (int i = 125; i < 130; i++) {
+            units.add(new Unit (Team.YELLOW, fields.get(i-3)));
         }
-        for (int i = 20; i < 25; i++) {
-            units.add(new Unit (Team.BLUE, fields.get(i)));
+        for (int i = 130; i < 135; i++) {
+            units.add(new Unit (Team.BLUE, fields.get(i-3)));
         }
     }
 
@@ -114,4 +147,12 @@ public class Board{
     {
         return lines;
     }
+
+    public ArrayList getRedStartFields() {return redStartFields;};
+
+    public ArrayList getGreenStartFields() {return greenStartFields;};
+
+    public ArrayList getYellowStartFields() {return yellowStartFields;};
+
+    public ArrayList getBlueStartFields() {return blueStartFields;};
 }

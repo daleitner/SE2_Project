@@ -81,6 +81,9 @@ public class GameScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
         skin.add("field_red", new Texture("feld_rot.png"));
+        skin.add("field_blue", new Texture("feld_blau.png"));
+        skin.add("field_green", new Texture("feld_gruen.png"));
+        skin.add("field_yellow", new Texture("feld_gelb.png"));
         skin.add("field_black", new Texture("feld_schwarz.png"));
         skin.add("pixel_black", new Texture("pixel_black_1x1.png"));
 
@@ -94,6 +97,7 @@ public class GameScreen implements Screen {
 
         drawLines();
         drawFields();
+        drawAvatar();
         drawUnits();
 
 
@@ -151,9 +155,27 @@ public class GameScreen implements Screen {
                 throw new RuntimeException("Error in game screen draw units");
             }
             // scaling muss noch ueberarbeitet werden momentan nur von field uebernommen
+
             unit_image.setX(unitSize * u.getUnitCoordX() - fieldSize / 2);
-            unit_image.setY((int) (g.getRatio() * unitSize * u.getUnitCoordY() - 4 * unitSize - fieldSize / 2));
-            unit_image.setHeight(fieldSize*2);
+
+            int y;
+            if(u.getUnitCoordY() == 6)
+            {
+                y = (int) (g.getRatio() * unitSize * u.getUnitCoordY() - 4 * unitSize - fieldSize / 2 + (g.getRatio()-1)*unitSize);
+                unit_image.setY(y);
+            }
+            else if(u.getUnitCoordY() == 5)
+            {
+                y = (int) (g.getRatio() * unitSize * u.getUnitCoordY() - 4 * unitSize - fieldSize / 2 + 2*(g.getRatio()-1)*unitSize);
+                unit_image.setY(y);
+            }
+            else
+            {
+                y = (int) (g.getRatio() * unitSize * u.getUnitCoordY() - 4 * unitSize - fieldSize / 2);
+                unit_image.setY(y);
+            }
+
+            unit_image.setHeight(fieldSize*g.getRatio());
             unit_image.setWidth(fieldSize);
             stage.addActor(unit_image);
         }
@@ -166,18 +188,49 @@ public class GameScreen implements Screen {
 
         for(Field f : fields)
         {
-            Image field_img;
+            Image field_img = null;
             if(f.getColor() == Color.BLACK)
             {
                 field_img = new Image(skin.getDrawable("field_black"));
             }
-            else
+            else if(f.getColor() == Color.RED)
             {
                 field_img = new Image(skin.getDrawable("field_red"));
             }
+            else if(f.getColor() == Color.YELLOW)
+            {
+                field_img = new Image(skin.getDrawable("field_yellow"));
+            }
+            else if(f.getColor() == Color.BLUE)
+            {
+                field_img = new Image(skin.getDrawable("field_blue"));
+            }
+            else if(f.getColor() == Color.GREEN)
+            {
+                field_img = new Image(skin.getDrawable("field_green"));
+            }
 
-            field_img.setX(unitSize*f.getCoordX()-fieldSize/2);
-            field_img.setY((int)(g.getRatio()*unitSize*f.getCoordY()-4*unitSize-fieldSize/2));
+            field_img.setX(unitSize * f.getCoordX() - fieldSize / 2);
+
+            int y;
+            if(f.getCoordY() == 6)
+            {
+                y = (int) (g.getRatio() * unitSize * f.getCoordY() - 4 * unitSize - fieldSize / 2 + (g.getRatio()-1)*unitSize);
+                field_img.setY(y);
+            }
+            else if(f.getCoordY() == 5)
+            {
+                y = (int) (g.getRatio() * unitSize * f.getCoordY() - 4 * unitSize - fieldSize / 2 + 2*(g.getRatio()-1)*unitSize);
+                field_img.setY(y);
+            }
+            else
+            {
+                y = (int) (g.getRatio() * unitSize * f.getCoordY() - 4 * unitSize - fieldSize / 2);
+                field_img.setY(y);
+            }
+
+            f.setRealCoordX(unitSize*f.getCoordX());
+            f.setRealCoordY(y);
             field_img.setHeight(fieldSize);
             field_img.setWidth(fieldSize);
             stage.addActor(field_img);
@@ -216,5 +269,18 @@ public class GameScreen implements Screen {
         }
         sr.end();
     }
+
+    public void drawAvatar()
+    {
+        skin.add(selectedAvatar.getId(), new Texture(selectedAvatar.getImageName()));
+        Image img = new Image(skin.getDrawable(selectedAvatar.getId()));
+        img.setX(unitSize/2);
+        img.setY(unitSize/2);
+        img.setWidth(4*unitSize);
+        img.setHeight(4*unitSize);
+        stage.addActor(img);
+    }
+
+
 
 }

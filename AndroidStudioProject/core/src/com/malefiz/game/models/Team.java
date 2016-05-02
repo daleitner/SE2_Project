@@ -1,5 +1,7 @@
 package com.malefiz.game.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by friedemannzindler on 30/04/16.
  */

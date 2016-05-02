@@ -10,6 +10,7 @@ public class Avatar {
     private String disabledImageName;
     private int xPos;
     private int yPos;
+
     public Avatar(String id, String imageName, String disabledImageName, int xPos, int yPos) {
         this.id = id;
         this.isEnabled = false;

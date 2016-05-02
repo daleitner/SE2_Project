@@ -10,6 +10,9 @@ public class Field {
     Color color;
     int coordX;
     int coordY;
+    int RealCoordX;
+    int RealCoordY;
+    public boolean isTaken = false;
     ArrayList<Integer> neighbouringFields;
 
     public Field(int id, Color color, int coordX, int coordY, ArrayList neighbouringFields)
@@ -40,4 +43,22 @@ public class Field {
     {
         return coordY;
     }
+
+    public void setRealCoordX(int RealCoordX)
+    {
+        this.RealCoordX = RealCoordX;
+    }
+
+    public void setRealCoordY(int RealCoordY)
+    {
+        this.RealCoordY = RealCoordY;
+    }
+
+    public int getRealCoordX(){return this.RealCoordX;}
+
+    public int getRealCoordY(){return this.RealCoordY;}
+
+    public boolean isTaken() {return isTaken;}
+
+    public void setTaken(boolean taken){this.isTaken = taken;}
 }

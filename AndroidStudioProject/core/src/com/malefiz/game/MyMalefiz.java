@@ -16,6 +16,7 @@ public class MyMalefiz extends Game {
 	public void create() {
 		//AssetLoader.load(); //load all assets!!
 		this.setMenuScreen();
+		this.characterSelectionScreen = new CharacterSelectionScreen(this);
 	}
 
 	public void setMenuScreen()
@@ -32,7 +33,7 @@ public class MyMalefiz extends Game {
 
 	public void setCharacterSelectionScreen()
 	{
-		this.characterSelectionScreen = new CharacterSelectionScreen(this);
+
 		setScreen(this.characterSelectionScreen);
 	}
 
