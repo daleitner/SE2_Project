@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,17 +17,15 @@ import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Avatar;
 import com.malefiz.game.models.Board;
 import com.malefiz.game.models.Color;
+import com.malefiz.game.models.Dice;
 import com.malefiz.game.models.Field;
 import com.malefiz.game.models.Grid;
 import com.malefiz.game.models.Team;
 import com.malefiz.game.models.Unit;
-import com.sun.org.apache.xpath.internal.SourceTree;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import javafx.scene.Camera;
+//import javafx.scene.Camera; //Wirft einen Error.
 
 /**
  * Created by MCLeite on 25.04.2016.
@@ -60,6 +58,12 @@ public class GameScreen implements Screen {
     Texture pixelBlack;
 
     ShapeRenderer sr;
+
+    //Würfel
+    Dice normalDice = new Dice(1,6);
+    Image normalDiceDisplay = null;
+    Image riggedDiceDisplay = null;
+    String[] riggedOptions = new String[]{"","dice_one.png","dice_two.png","dice_three.png", "dice_four.png", "dice_five.png", "dice_six.png"};
 
     public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar) {
         this.selectedAvatar = selectedAvatar;
@@ -98,6 +102,8 @@ public class GameScreen implements Screen {
         drawLines();
         drawFields();
         drawAvatar();
+        drawDice();
+        drawRiggedDice();
         drawUnits();
 
 
@@ -279,6 +285,42 @@ public class GameScreen implements Screen {
         img.setWidth(4*unitSize);
         img.setHeight(4*unitSize);
         stage.addActor(img);
+    }
+    public void drawDice() {
+
+        normalDiceDisplay = new Image(normalDice.rollDice());
+        normalDiceDisplay.setX(unitSize*5);
+        normalDiceDisplay.setY(unitSize/2);
+        normalDiceDisplay.setWidth(4*unitSize);
+        normalDiceDisplay.setHeight(4*unitSize);
+        stage.addActor(normalDiceDisplay);
+        normalDiceDisplay.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y){
+                    drawDice();
+
+            }
+        });
+    }
+    public void drawRiggedDice() {
+        boolean visible = false;
+        riggedDiceDisplay = new Image(new Sprite(new Texture(Gdx.files.internal("dice_idle.png"))));
+        riggedDiceDisplay.setX(unitSize*10);
+        riggedDiceDisplay.setY(unitSize/2);
+        riggedDiceDisplay.setWidth(4*unitSize);
+        riggedDiceDisplay.setHeight(4*unitSize);
+        stage.addActor(riggedDiceDisplay);
+        riggedDiceDisplay.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y){
+                    for (int i = 1; i < riggedOptions.length; i++) {
+                        Image temp = new Image(new Sprite(new Texture(Gdx.files.internal(riggedOptions[i]))));
+                        temp.setX(unitSize * 10);
+                        temp.setY(unitSize * 4 * i+50);
+                        temp.setWidth(4 * unitSize);
+                        temp.setHeight(4 * unitSize);
+                        stage.addActor(temp);
+                }
+            }
+        });
     }
 
 

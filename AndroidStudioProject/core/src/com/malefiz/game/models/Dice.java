@@ -15,13 +15,11 @@ public class Dice {
     private Sprite dice_picture;
     private int range;                  // Falls wir einen Würfel machen wollen mit dem man höhere Zahlen würfelt
     private Random rng = new Random();
-    boolean rolling;
     private int value;                  // Der gewürfelte Wert
     private Texture texture;            // Das Bild des Würfel selbst
     private Sprite dice_idle;
 
     public Dice(int id, int range) {
-        this.rolling = false;
         this.range = range;
         this.dice_idle = new Sprite(new Texture(Gdx.files.internal("dice_idle.png")));
 
