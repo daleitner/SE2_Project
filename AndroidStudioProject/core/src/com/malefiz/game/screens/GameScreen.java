@@ -77,7 +77,6 @@ public class GameScreen implements Screen {
         this.mainClass = mainClass;
         this.lp = lp;
         show();
-        moveUnitWithId116(); // just for testing can be removed anytime
     }
 
     @Override
@@ -370,20 +369,6 @@ public class GameScreen implements Screen {
         });
     }
 
-    /* unit movement test */
-    /* starting fields are not connected to the rest yet so to test movement one unit is moved inside the field */
-    public void moveUnitWithId116() {
-        for (Unit x : units) {
-            if (x.getId() == 116) {
-                for (Field f : fields) {
-                    if (f.getID() == 36) {
-                        x.setPosition(f);
-                        setUnitImagePosition(x);
-                    }
-                }
-            }
-        }
-    }
 
     /* set scaling and image position of unit */
     /* muss noch auf die units angepasst werden */
