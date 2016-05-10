@@ -1,5 +1,8 @@
 package com.malefiz.game.models;
 
+
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 /**
  * Created by friedemannzindler on 30/04/16.
  */
@@ -11,17 +14,24 @@ public class Unit {
     /** position current **/
     public int coordX;
     public int coordY;
-    public boolean isSelected;
+
+    public Image unitImage;
+    public Field currentFieldPosition;
+    public Field startPosition;
 
 
-    public Unit(Team team, Field startPos) {
-        setPosition(startPos);
+    public Unit(Team team, Field startPos, int id) {
+        this.startPosition = startPos;
+        this.currentFieldPosition = startPos;
+        setPosition(currentFieldPosition);
         this.team = team;
+        this.id = id;
     }
 
-    public void setPosition(Field position){
-        this.coordX = position.getCoordX();
-        this.coordY = position.getCoordY();
+    public void setPosition(Field newPosition){
+        this.coordX = newPosition.getCoordX();
+        this.coordY = newPosition.getCoordY();
+        this.currentFieldPosition = newPosition;
     }
 
 
@@ -36,14 +46,23 @@ public class Unit {
     public Team getTeam() {
         return team;
     }
-    /** TODO */
-    /** method for moving the unit */
 
-    /** TODO */
-    /** reset to start position */
+    public Image getUnitImage() {
+        return unitImage;
+    }
 
-    /** TODO */
-    /** selection set selected true */
+    public void setUnitImage(Image unitImage) {
+        this.unitImage = unitImage;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public Field getCurrentFieldPosition() {
+        return this.currentFieldPosition;
+    }
+
 
 
 }
