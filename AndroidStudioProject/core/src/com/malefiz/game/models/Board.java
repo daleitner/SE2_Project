@@ -121,16 +121,16 @@ public class Board{
     private void createUnits(){
         // hier muessen noch die startpositionen eingebaut werden
         for (int i = 115; i < 120; i++) {
-            units.add(new Unit (Team.RED, fields.get(i-3)));
+            units.add(new Unit (Team.RED, fields.get(i-3), i));
         }
         for (int i = 120; i < 125; i++) {
-            units.add(new Unit (Team.GREEN, fields.get(i-3)));
+            units.add(new Unit (Team.GREEN, fields.get(i-3), i));
         }
         for (int i = 125; i < 130; i++) {
-            units.add(new Unit (Team.YELLOW, fields.get(i-3)));
+            units.add(new Unit (Team.YELLOW, fields.get(i-3), i));
         }
         for (int i = 130; i < 135; i++) {
-            units.add(new Unit (Team.BLUE, fields.get(i-3)));
+            units.add(new Unit (Team.BLUE, fields.get(i-3), i));
         }
     }
 

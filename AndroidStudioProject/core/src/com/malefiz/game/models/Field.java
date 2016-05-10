@@ -61,4 +61,8 @@ public class Field {
     public boolean isTaken() {return isTaken;}
 
     public void setTaken(boolean taken){this.isTaken = taken;}
+
+    public ArrayList<Integer> getNeighbouringFields() {
+        return neighbouringFields;
+    }
 }
