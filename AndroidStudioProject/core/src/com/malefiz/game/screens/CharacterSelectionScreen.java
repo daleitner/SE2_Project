@@ -46,6 +46,7 @@ public class CharacterSelectionScreen implements Screen {
 
     private List<Avatar> characters;
     private Avatar selectedCharacter = null;
+    private Image selectedImage;
 
     private Label head;
 
@@ -68,7 +69,7 @@ public class CharacterSelectionScreen implements Screen {
         screenHeight = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
 
-        Gdx.input.setInputProcessor(stage);
+
 
 
         // A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
@@ -131,7 +132,7 @@ public class CharacterSelectionScreen implements Screen {
             stage.addActor(this.images.get(i));
         }
 
-        TextButton backBtn = new TextButton("Abbrechen", skin, "default");
+        TextButton backBtn = new TextButton(lp.getText("cancel"), skin, "default");
 
         backBtn.setWidth((int)(8.5f*g.getUnitSize()));
         backBtn.setHeight(2* g.getUnitSize()*g.getRatio());
@@ -145,7 +146,7 @@ public class CharacterSelectionScreen implements Screen {
         });
         stage.addActor(backBtn);
 
-       TextButton selectedBtn = new TextButton("Spielen", skin, "default");
+       TextButton selectedBtn = new TextButton(lp.getText("play"), skin, "default");
 
         selectedBtn.setWidth((int)(8.5*g.getUnitSize()));
         selectedBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -159,6 +160,7 @@ public class CharacterSelectionScreen implements Screen {
         });
         stage.addActor(selectedBtn);
 
+        Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -176,6 +178,7 @@ public class CharacterSelectionScreen implements Screen {
                     this.images.get(i).setY(this.characters.get(i).getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
                     this.images.get(i).setWidth(8*g.getUnitSize());
                     this.images.get(i).setHeight(8*g.getUnitSize());
+                    selectedImage = this.images.get(i);
                 } else {
                     this.images.get(i).setX(this.characters.get(i).getxPos()*g.getUnitSize());
                     this.images.get(i).setY(this.characters.get(i).getyPos()*g.getUnitSize()*g.getRatio());
@@ -186,7 +189,7 @@ public class CharacterSelectionScreen implements Screen {
         }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){mainClass.setMenuScreen();}
     }

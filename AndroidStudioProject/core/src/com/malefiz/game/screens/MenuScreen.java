@@ -52,7 +52,7 @@ public class MenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
 
-        TextButton startBtn = new TextButton("Spiel starten", skin, "default");
+        TextButton startBtn = new TextButton(lp.getText("startgame"), skin, "default");
 
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -65,7 +65,7 @@ public class MenuScreen implements Screen {
             }
         });
 
-        TextButton connectBtn = new TextButton("Spiel beitreten", skin, "default");
+        TextButton connectBtn = new TextButton(lp.getText("joingame"), skin, "default");
 
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -78,7 +78,7 @@ public class MenuScreen implements Screen {
             }
         });
 
-        TextButton ruleBtn = new TextButton("Spielregeln", skin, "default");
+        TextButton ruleBtn = new TextButton(lp.getText("rules"), skin, "default");
 
         ruleBtn.setWidth(18*g.getUnitSize());
         ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -91,7 +91,7 @@ public class MenuScreen implements Screen {
             }
         });
 
-        TextButton exitBtn = new TextButton("Spiel verlassen", skin, "default");
+        TextButton exitBtn = new TextButton(lp.getText("leavegame"), skin, "default");
 
         exitBtn.setWidth(18*g.getUnitSize());
         exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());

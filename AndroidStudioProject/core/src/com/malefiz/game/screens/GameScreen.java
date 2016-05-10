@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,6 +27,7 @@ import com.malefiz.game.models.Team;
 import com.malefiz.game.models.Unit;
 
 import java.util.ArrayList;
+import java.util.concurrent.Exchanger;
 
 //import javafx.scene.Camera; //Wirft einen Error.
 
@@ -55,10 +58,8 @@ public class GameScreen implements Screen {
     ArrayList<Field> fields;
     ArrayList<Integer[]> lines;
     ArrayList<Unit> units;
-
-
-    Texture pixelBlack;
-
+    ArrayList<Image> riggedDices = new ArrayList<Image>();
+    
     ShapeRenderer sr;
 
     //Würfel
@@ -108,8 +109,6 @@ public class GameScreen implements Screen {
         drawDice();
         drawRiggedDice();
         drawUnits();
-
-
     }
 
     @Override
@@ -118,7 +117,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
     }
 
     @Override
@@ -300,10 +299,19 @@ public class GameScreen implements Screen {
         normalDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                     drawDice();
-
             }
         });
     }
+
+    public void removeDices()
+    {
+        for(Image i : riggedDices)
+        {
+            i.remove();
+        }
+        riggedDices.clear();
+    }
+
     public void drawRiggedDice() {
         boolean visible = false;
         riggedDiceDisplay = new Image(new Sprite(new Texture(Gdx.files.internal("dice_idle.png"))));
@@ -314,17 +322,39 @@ public class GameScreen implements Screen {
         stage.addActor(riggedDiceDisplay);
         riggedDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
-                    for (int i = 1; i < riggedOptions.length; i++) {
+                if(riggedDices.size() == 0)
+                {
+                    for (int i = 1; i < riggedOptions.length; i++)
+                    {
+
                         Image temp = new Image(new Sprite(new Texture(Gdx.files.internal(riggedOptions[i]))));
                         temp.setX(unitSize * 10);
                         temp.setY(unitSize * 4 * i+50);
                         temp.setWidth(4 * unitSize);
                         temp.setHeight(4 * unitSize);
+                        riggedDices.add(temp);
+                        temp.addListener(new ClickListener(){
+                            public void clicked(InputEvent ev, float x, float y)
+                            {
+                                //Implementierung der Würfelzahlübergabe
+
+                                removeDices();
+                            }
+                        });
                         stage.addActor(temp);
+
+                    }
                 }
+                else
+                {
+                    removeDices();
+                }
+
             }
         });
     }
+
+
 
 
 
