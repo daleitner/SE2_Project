@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Avatar;
 import com.malefiz.game.models.Grid;
+import com.malefiz.game.models.LanguagePack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class CharacterSelectionScreen implements Screen {
     float selected_height = 450.0f;
     private List<Image> images = null;
     private MyMalefiz mainClass = null;
+    private LanguagePack lp;
 
     private List<Avatar> characters;
     private Avatar selectedCharacter = null;
@@ -49,8 +51,9 @@ public class CharacterSelectionScreen implements Screen {
 
     Grid g = new Grid();
 
-    public CharacterSelectionScreen(MyMalefiz mainClass) {
+    public CharacterSelectionScreen(MyMalefiz mainClass, LanguagePack lp) {
         this.mainClass = mainClass;
+        this.lp = lp;
         this.images = new ArrayList<Image>();
         this.characters = new ArrayList<Avatar>();
         this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 3, 5));

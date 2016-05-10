@@ -20,6 +20,7 @@ import com.malefiz.game.models.Color;
 import com.malefiz.game.models.Dice;
 import com.malefiz.game.models.Field;
 import com.malefiz.game.models.Grid;
+import com.malefiz.game.models.LanguagePack;
 import com.malefiz.game.models.Team;
 import com.malefiz.game.models.Unit;
 
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 public class GameScreen implements Screen {
 
     private MyMalefiz mainClass = null;
+    private LanguagePack lp;
 
     Skin skin;
     Stage stage;
@@ -65,9 +67,10 @@ public class GameScreen implements Screen {
     Image riggedDiceDisplay = null;
     String[] riggedOptions = new String[]{"","dice_one.png","dice_two.png","dice_three.png", "dice_four.png", "dice_five.png", "dice_six.png"};
 
-    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar) {
+    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp) {
         this.selectedAvatar = selectedAvatar;
         this.mainClass = mainClass;
+        this.lp = lp;
         show();
     }
 
