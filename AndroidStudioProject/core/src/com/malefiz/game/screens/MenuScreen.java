@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Grid;
+import com.malefiz.game.models.LanguagePack;
 
 /**
  * Created by Dan on 25.04.2016.
@@ -27,14 +28,16 @@ public class MenuScreen implements Screen {
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
+    private LanguagePack lp;
     Texture startBtn;
     Skin skin;
 
     Grid g = new Grid();
 
-    public MenuScreen(MyMalefiz mz)
+    public MenuScreen(MyMalefiz mz, LanguagePack lp)
     {
         mymalefiz = mz;
+        this.lp = lp;
         create();
     }
 

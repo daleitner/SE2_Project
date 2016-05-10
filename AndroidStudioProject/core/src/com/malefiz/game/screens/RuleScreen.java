@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Grid;
+import com.malefiz.game.models.LanguagePack;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +32,7 @@ public class RuleScreen implements Screen{
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
+    private LanguagePack lp;
     Texture startBtn;
     Skin skin;
 
@@ -38,9 +40,10 @@ public class RuleScreen implements Screen{
 
     Grid g = new Grid();
 
-    public RuleScreen(MyMalefiz mz)
+    public RuleScreen(MyMalefiz mz, LanguagePack lp)
     {
         mymalefiz = mz;
+        this.lp = lp;
         create();
     }
 
