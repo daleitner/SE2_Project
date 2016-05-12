@@ -71,6 +71,7 @@ public class GameScreen implements Screen {
     /* unit movement */
     boolean isUnitSelected = false;
     Unit selectedUnit = null;
+    ArrayList<Field> possibleMoves;
 
     public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp) {
         this.selectedAvatar = selectedAvatar;
@@ -178,6 +179,12 @@ public class GameScreen implements Screen {
                     if (diceRolled) {
                         selectedUnit = u;
                         isUnitSelected = true;
+                        checkPossibleMoves(rolledDiceValue, selectedUnit.getCurrentFieldPosition());
+                        for (Field f : possibleMoves) {
+                            f.getFieldImage().setHeight(fieldSize*2);
+                            f.getFieldImage().setWidth(fieldSize*2);
+                        }
+
                         System.out.println("Selected Unit is = " + selectedUnit.getId());
                     }
 
@@ -198,47 +205,33 @@ public class GameScreen implements Screen {
             if(f.getColor() == Color.BLACK)
             {
                 field_img = new Image(skin.getDrawable("field_black"));
+                f.setFieldImage(field_img);
             }
             else if(f.getColor() == Color.RED)
             {
                 field_img = new Image(skin.getDrawable("field_red"));
+                f.setFieldImage(field_img);
             }
             else if(f.getColor() == Color.YELLOW)
             {
                 field_img = new Image(skin.getDrawable("field_yellow"));
+                f.setFieldImage(field_img);
             }
             else if(f.getColor() == Color.BLUE)
             {
                 field_img = new Image(skin.getDrawable("field_blue"));
+                f.setFieldImage(field_img);
             }
             else if(f.getColor() == Color.GREEN)
             {
                 field_img = new Image(skin.getDrawable("field_green"));
+                f.setFieldImage(field_img);
             }
 
             field_img.setX(unitSize * f.getCoordX() - fieldSize / 2);
 
-            int y;
-            if(f.getCoordY() == 6)
-            {
-                y = (int) (g.getRatio() * unitSize * f.getCoordY() - 4 * unitSize - fieldSize / 2 + (g.getRatio()-1)*unitSize);
-                field_img.setY(y);
-            }
-            else if(f.getCoordY() == 5)
-            {
-                y = (int) (g.getRatio() * unitSize * f.getCoordY() - 4 * unitSize - fieldSize / 2 + 2*(g.getRatio()-1)*unitSize);
-                field_img.setY(y);
-            }
-            else
-            {
-                y = (int) (g.getRatio() * unitSize * f.getCoordY() - 4 * unitSize - fieldSize / 2);
-                field_img.setY(y);
-            }
+            setFieldPosScal(f, 0);
 
-            f.setRealCoordX(unitSize*f.getCoordX());
-            f.setRealCoordY(y);
-            field_img.setHeight(fieldSize);
-            field_img.setWidth(fieldSize);
             stage.addActor(field_img);
 
             //todo move all listeners to another location
@@ -248,8 +241,7 @@ public class GameScreen implements Screen {
                     System.out.print("FIELD: i am listening and my id is: " + f.getID());
                     System.out.print("\n - - - - - - - - - - - - - - - - - \n");
                     if (isUnitSelected && diceRolled) {
-                        moveUnit(rolledDiceValue, f, selectedUnit);
-
+                        moveUnit(f, selectedUnit);
                     }
                 }
             });
@@ -398,12 +390,17 @@ public class GameScreen implements Screen {
         unit.getUnitImage().setWidth(fieldSize*2);
     }
 
-    public void moveUnit (int rolledDiceNumber, Field nextPosition, Unit unit) {
+    public void moveUnit (Field nextPosition, Unit unit) {
         // todo check if next position is empty
-        if (checkPossibleMoves(rolledDiceNumber, unit.getCurrentFieldPosition(), nextPosition)) {
+        //if (checkPossibleMoves(rolledDiceNumber, unit.getCurrentFieldPosition(), nextPosition)) {
+        if (possibleMoves.contains(nextPosition)) {
             unit.setPosition(nextPosition);
             setUnitImagePosition(unit);
+
+            clearPossibleMoves();
+
         }
+
     }
 
     private ArrayList<Field> getNeighbourFieldsOfField (Field field) {
@@ -418,12 +415,15 @@ public class GameScreen implements Screen {
         return neighbours;
     }
 
-    public boolean checkPossibleMoves(int rolledDiceValue, Field unitPosition, Field nextPosition) {
+    public void checkPossibleMoves(int rolledDiceValue, Field unitPosition) {
         ArrayList<Field> visitedFields = new ArrayList<Field>();
         visitedFields.add(unitPosition);
         ArrayList<Field> possibleFields = new ArrayList<Field>();
-        int size;
 
+
+        clearPossibleMoves();
+
+        int size;
         for (int i = 0; i < rolledDiceValue - 1; i++) {
             size = visitedFields.size();
             for (int j = 0; j < size; j++) {
@@ -437,15 +437,61 @@ public class GameScreen implements Screen {
 
         possibleFields.removeAll(visitedFields);
 
-        if (possibleFields.contains(nextPosition)) {
+        /*if (possibleFields.contains(nextPosition)) {
             return true;
         } else {
             System.out.println("This move is not possible");
             return false;
+        }*/
+
+        this.possibleMoves = possibleFields;
+
+        for (Field f : possibleMoves) {
+            setFieldPosScal(f, 1);
+        }
+        //todo if unit current pos == start pos
+    }
+
+    public void clearPossibleMoves () {
+        if (this.possibleMoves != null) {
+            for (Field f : possibleMoves) {
+                setFieldPosScal(f, 0);
+            }
+        }
+        this.possibleMoves = null;
+    }
+    // 0 for standard field size; 1 for selected size
+    public void setFieldPosScal(Field field, int selected) {
+        int size;
+        if (selected == 1) {
+            size = this.fieldSize * 2;
+        } else {
+            size = this.fieldSize;
         }
 
-        //todo if unit current pos == start pos
+        field.getFieldImage().setX(unitSize * field.getCoordX() - size / 2);
 
+        int y;
+        if(field.getCoordY() == 6)
+        {
+            y = (int) (g.getRatio() * unitSize * field.getCoordY() - 4 * unitSize - size / 2 + (g.getRatio()-1)*unitSize);
+            field.getFieldImage().setY(y);
+        }
+        else if(field.getCoordY() == 5)
+        {
+            y = (int) (g.getRatio() * unitSize * field.getCoordY() - 4 * unitSize - size / 2 + 2*(g.getRatio()-1)*unitSize);
+            field.getFieldImage().setY(y);
+        }
+        else
+        {
+            y = (int) (g.getRatio() * unitSize * field.getCoordY() - 4 * unitSize - size / 2);
+            field.getFieldImage().setY(y);
+        }
+
+        field.setRealCoordX(unitSize*field.getCoordX());
+        field.setRealCoordY(y);
+        field.getFieldImage().setHeight(size);
+        field.getFieldImage().setWidth(size);
     }
 
 }

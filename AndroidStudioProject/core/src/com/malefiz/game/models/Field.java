@@ -1,5 +1,7 @@
 package com.malefiz.game.models;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
 import java.util.ArrayList;
 
 /**
@@ -14,6 +16,8 @@ public class Field {
     int RealCoordY;
     public boolean isTaken = false;
     ArrayList<Integer> neighbouringFields;
+    public Image fieldImage;
+
 
     public Field(int id, Color color, int coordX, int coordY, ArrayList neighbouringFields)
     {
@@ -64,5 +68,13 @@ public class Field {
 
     public ArrayList<Integer> getNeighbouringFields() {
         return neighbouringFields;
+    }
+
+    public Image getFieldImage() {
+        return fieldImage;
+    }
+
+    public void setFieldImage(Image fieldImage) {
+        this.fieldImage = fieldImage;
     }
 }
