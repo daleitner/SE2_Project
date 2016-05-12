@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.malefiz.game.MyMalefiz;
 import com.malefiz.game.models.Avatar;
 import com.malefiz.game.models.Board;
@@ -23,8 +24,10 @@ import com.malefiz.game.models.Dice;
 import com.malefiz.game.models.Field;
 import com.malefiz.game.models.Grid;
 import com.malefiz.game.models.LanguagePack;
+import com.malefiz.game.models.Rock;
 import com.malefiz.game.models.Team;
 import com.malefiz.game.models.Unit;
+
 
 import java.util.ArrayList;
 import java.util.concurrent.Exchanger;
@@ -57,7 +60,9 @@ public class GameScreen implements Screen {
     ArrayList<Integer[]> lines;
     ArrayList<Unit> units;
     ArrayList<Image> riggedDices = new ArrayList<Image>();
-    
+
+    ArrayList<Rock> rocks;
+
     ShapeRenderer sr;
 
     /* dice */
@@ -106,12 +111,15 @@ public class GameScreen implements Screen {
         skin.add("unit_blue", new Texture("unit_blue.png"));
         skin.add("unit_green", new Texture("unit_green.png"));
 
+        skin.add("rock", new Texture("rock.png"));
+
         drawLines();
         drawFields();
         drawAvatar();
         drawDice();
         drawRiggedDice();
         drawUnits();
+        drawRocks();
     }
 
     @Override
@@ -236,7 +244,7 @@ public class GameScreen implements Screen {
 
             //todo move all listeners to another location
             /* Field listener for unit movement */
-            field_img.addListener(new ClickListener(){
+            f.getFieldImage().addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.print("FIELD: i am listening and my id is: " + f.getID());
                     System.out.print("\n - - - - - - - - - - - - - - - - - \n");
@@ -246,6 +254,20 @@ public class GameScreen implements Screen {
                 }
             });
 
+        }
+    }
+
+    public void drawRocks() {
+        rocks = b.getRocks();
+
+        for (final Rock rock : rocks) {
+            Image rock_image = new Image(skin.getDrawable("rock"));
+
+
+            stage.addActor(rock_image);
+
+            rock.setRockImage(rock_image);
+            setRockImagePosition(rock);
         }
     }
 
@@ -416,33 +438,49 @@ public class GameScreen implements Screen {
     }
 
     public void checkPossibleMoves(int rolledDiceValue, Field unitPosition) {
+
+        ArrayList<Field> possibleFields = new ArrayList<Field>();
         ArrayList<Field> visitedFields = new ArrayList<Field>();
         visitedFields.add(unitPosition);
-        ArrayList<Field> possibleFields = new ArrayList<Field>();
-
+        ArrayList<Field> visitedTemp = new ArrayList<Field>();
+        visitedTemp.addAll(visitedFields);
 
         clearPossibleMoves();
 
+
         int size;
+
+        /* steps to go */
         for (int i = 0; i < rolledDiceValue - 1; i++) {
             size = visitedFields.size();
+            /* all reachable fields within the current step range
+             * visitedtemp all former reached; visitedfields all newly reachend in this step */
+
             for (int j = 0; j < size; j++) {
-                visitedFields.addAll( getNeighbourFieldsOfField( visitedFields.get(j) ) );
+
+                if (visitedFields.get(j).getRockId() == 0) {
+                    visitedFields.addAll(getNeighbourFieldsOfField(visitedFields.get(j)));
+                } else {
+                    visitedTemp.add(visitedFields.get(j));
+                }
             }
+
+            for (Field f : visitedFields) {
+                if (f.getRockId() != 0) {
+                    visitedTemp.add(f);
+                }
+            }
+
+            visitedFields.removeAll(visitedTemp);
+            visitedTemp.addAll(visitedFields);
         }
 
+        /* go one last step and include rock fields now */
         for (Field f : visitedFields) {
             possibleFields.addAll( getNeighbourFieldsOfField( f ));
         }
 
-        possibleFields.removeAll(visitedFields);
-
-        /*if (possibleFields.contains(nextPosition)) {
-            return true;
-        } else {
-            System.out.println("This move is not possible");
-            return false;
-        }*/
+        possibleFields.removeAll(visitedTemp);
 
         this.possibleMoves = possibleFields;
 
@@ -460,6 +498,7 @@ public class GameScreen implements Screen {
         }
         this.possibleMoves = null;
     }
+
     // 0 for standard field size; 1 for selected size
     public void setFieldPosScal(Field field, int selected) {
         int size;
@@ -492,6 +531,30 @@ public class GameScreen implements Screen {
         field.setRealCoordY(y);
         field.getFieldImage().setHeight(size);
         field.getFieldImage().setWidth(size);
+    }
+
+    public void setRockImagePosition (Rock rock) {
+        rock.getRockImage().setX(unitSize * rock.getCoordX() - fieldSize / 2);
+
+        int y;
+        if(rock.getCoordY() == 6)
+        {
+            y = (int) (g.getRatio() * unitSize * rock.getCoordY() - 4 * unitSize - fieldSize / 2 + (g.getRatio()-1)*unitSize);
+            rock.getRockImage().setY(y);
+        }
+        else if(rock.getCoordY() == 5)
+        {
+            y = (int) (g.getRatio() * unitSize * rock.getCoordY() - 4 * unitSize - fieldSize / 2 + 2*(g.getRatio()-1)*unitSize);
+            rock.getRockImage().setY(y);
+        }
+        else
+        {
+            y = (int) (g.getRatio() * unitSize * rock.getCoordY() - 4 * unitSize - fieldSize / 2);
+            rock.getRockImage().setY(y);
+        }
+
+        rock.getRockImage().setHeight(fieldSize*g.getRatio());
+        rock.getRockImage().setWidth(fieldSize);
     }
 
 }

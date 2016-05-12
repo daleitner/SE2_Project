@@ -22,8 +22,10 @@ public class Board{
     BufferedReader CSVFile;
     String dataRow;
 
-    ArrayList<Unit> unit_fields = new ArrayList<Unit>();
     ArrayList<Unit> units = new ArrayList<Unit>();
+
+    ArrayList<Rock> rocks = new ArrayList<Rock>();
+
 
 
 
@@ -115,11 +117,12 @@ public class Board{
 
         createUnits();
 
+        createRocks();
+
 
     }
 
     private void createUnits(){
-        // hier muessen noch die startpositionen eingebaut werden
         for (int i = 115; i < 120; i++) {
             units.add(new Unit (Team.RED, fields.get(i-3), i));
         }
@@ -134,6 +137,18 @@ public class Board{
         }
     }
 
+    private void createRocks(){
+        int counter = 1;
+        for (Field field : fields) {
+            if (field.getColor() == Color.RED && !redStartFields.contains(field)) {
+                rocks.add(new Rock (counter, field));
+                field.setRockId(counter);
+                field.setIsEmpty(false);
+                counter++;
+            }
+        }
+    }
+
     public ArrayList getUnits() {
         return units;
     }
@@ -141,6 +156,10 @@ public class Board{
     public ArrayList getFields()
     {
         return fields;
+    }
+
+    public ArrayList<Rock> getRocks() {
+        return rocks;
     }
 
     public ArrayList getLines()

@@ -18,6 +18,9 @@ public class Field {
     ArrayList<Integer> neighbouringFields;
     public Image fieldImage;
 
+    boolean empty = true;
+    int rockId; // 0 == no rock
+    int unitId = 0; // 0 == no unit
 
     public Field(int id, Color color, int coordX, int coordY, ArrayList neighbouringFields)
     {
@@ -26,6 +29,7 @@ public class Field {
         this.coordX = coordX;
         this.coordY = coordY;
         this.neighbouringFields = neighbouringFields;
+        this.rockId = 0;
     }
 
     public int getID()
@@ -76,5 +80,21 @@ public class Field {
 
     public void setFieldImage(Image fieldImage) {
         this.fieldImage = fieldImage;
+    }
+
+    public boolean isEmpty() {
+        return empty;
+    }
+
+    public void setIsEmpty(boolean empty) {
+        this.empty = empty;
+    }
+
+    public int getRockId() {
+        return rockId;
+    }
+
+    public void setRockId(int rockId) {
+        this.rockId = rockId;
     }
 }
