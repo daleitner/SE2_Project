@@ -21,7 +21,6 @@ public class MyMalefiz extends Game {
 		this.lp = new LanguagePack("ger");
 
 		this.setMenuScreen();
-		this.characterSelectionScreen = new CharacterSelectionScreen(this, lp);
 	}
 
 	public void setMenuScreen()
@@ -38,7 +37,7 @@ public class MyMalefiz extends Game {
 
 	public void setCharacterSelectionScreen()
 	{
-
+		this.characterSelectionScreen = new CharacterSelectionScreen(this, lp);
 		setScreen(this.characterSelectionScreen);
 	}
 
