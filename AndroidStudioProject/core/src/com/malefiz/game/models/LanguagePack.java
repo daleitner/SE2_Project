@@ -17,9 +17,11 @@ public class LanguagePack {
             languagePack.put("joingame", "Spiel beitreten");
             languagePack.put("rules","Spielregeln");
             languagePack.put("leavegame","Spiel verlassen");
-            languagePack.put("choosecharacter","Waehle deinen Charakter");
+            languagePack.put("choosecharacter","Waehle deinen\r\nCharakter!");
             languagePack.put("cancel","Abbrechen");
             languagePack.put("play","Spielen");
+            languagePack.put("tomenu","Zum Hauptmenü");
+            languagePack.put("winner","Gewinner!");
         }
         else if(lang.equals("eng"))
         {
@@ -27,9 +29,11 @@ public class LanguagePack {
             languagePack.put("joingame", "Join Game");
             languagePack.put("rules","Rules");
             languagePack.put("leavegame","Leave Game");
-            languagePack.put("choosecharacter","Choose your character");
+            languagePack.put("choosecharacter","Choose your\r\ncharacter!");
             languagePack.put("cancel","Cancel");
             languagePack.put("play","Play");
+            languagePack.put("tomenu","Back to menu");
+            languagePack.put("winner","Winner!");
         }
     }
 

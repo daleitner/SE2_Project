@@ -42,6 +42,7 @@ public class CharacterSelectionScreen implements Screen {
     float selected_width = 450.0f;
     float selected_height = 450.0f;
     private List<Image> images = null;
+    private LanguagePack lp;
 
     private CharacterSelectionController controller;
 
@@ -52,6 +53,7 @@ public class CharacterSelectionScreen implements Screen {
     public CharacterSelectionScreen(MyMalefiz mainClass, LanguagePack lp) {
         this.images = new ArrayList<Image>();
         this.controller = new CharacterSelectionController(mainClass, lp);
+        this.lp = lp;
     }
     @Override
     public void show() {
@@ -70,7 +72,7 @@ public class CharacterSelectionScreen implements Screen {
         font = new BitmapFont();
         font.setColor(Color.BLACK);
 
-        head = new Label("Waehle deinen\r\n Charakter!", skin);
+        head = new Label(lp.getText("choosecharacter"), skin);
         head.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         head.setWidth(18*g.getUnitSize());
         head.setHeight(4*g.getUnitSize()*g.getRatio());
@@ -135,7 +137,7 @@ public class CharacterSelectionScreen implements Screen {
                 controller.switchToMenuScreen();
             }
         });
-        stage.addActor(backBtn);
+
 
        TextButton selectedBtn = new TextButton(this.controller.getLanguagePack().getText("play"), skin, "default");
 
@@ -150,6 +152,9 @@ public class CharacterSelectionScreen implements Screen {
             }
         });
         stage.addActor(selectedBtn);
+        stage.addActor(backBtn);
+
+
 
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchBackKey(true);
@@ -160,7 +165,6 @@ public class CharacterSelectionScreen implements Screen {
         Gdx.gl.glClearColor(255 / 255f, 187 / 255f, 1 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        font.draw(batch, "Wähle einen Charakter", 150, 1600);
         batch.end();
         if(this.controller.getSelectedCharacter() != null) {
             for (int i = 0; i < this.controller.getCharacters().size(); i++) {

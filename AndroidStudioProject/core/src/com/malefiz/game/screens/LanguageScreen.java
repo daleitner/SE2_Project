@@ -1,29 +1,26 @@
 package com.malefiz.game.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.malefiz.game.MyMalefiz;
-import com.malefiz.game.models.Color;
+import com.malefiz.game.controllers.CharacterSelectionController;
 import com.malefiz.game.models.Grid;
 import com.malefiz.game.models.LanguagePack;
-import com.malefiz.game.models.Team;
 
 /**
- * Created by Dan on 25.04.2016.
+ * Created by Dan on 17.05.2016.
  */
-public class MenuScreen implements Screen {
+public class LanguageScreen implements Screen{
     SpriteBatch batch;
     Texture logo;
     Texture backgroundTexture;
@@ -32,12 +29,11 @@ public class MenuScreen implements Screen {
     Stage stage;
     private MyMalefiz mymalefiz;
     private LanguagePack lp;
-    Texture startBtn;
     Skin skin;
 
     Grid g = new Grid();
 
-    public MenuScreen(MyMalefiz mz, LanguagePack lp)
+    public LanguageScreen(MyMalefiz mz, LanguagePack lp)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -54,47 +50,53 @@ public class MenuScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
+        skin.add("german", new Texture("flag_germany.png"));
+        skin.add("english", new Texture("flag_uk.png"));
+        skin.add("italiano", new Texture("flag_italy.png"));
 
-        TextButton startBtn = new TextButton(lp.getText("startgame"), skin, "default");
+        TextButton startBtn = new TextButton("Deutsch", skin, "default");
 
-        startBtn.setWidth(18*g.getUnitSize());
+        startBtn.setWidth(12*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        startBtn.setPosition(g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
+        startBtn.setPosition(7*g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
         startBtn.getLabel().setFontScale(3.0f);
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setCharacterSelectionScreen();
+                mymalefiz.setLanguagePack(new LanguagePack("ger"));
+                mymalefiz.setMenuScreen();
             }
         });
 
-        TextButton connectBtn = new TextButton(lp.getText("joingame"), skin, "default");
+        TextButton connectBtn = new TextButton("English", skin, "default");
 
-        connectBtn.setWidth(18*g.getUnitSize());
+        connectBtn.setWidth(12*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        connectBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
+        connectBtn.setPosition(7*g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
         connectBtn.getLabel().setFontScale(3.0f);
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setWinnerScreen(Team.BLUE);
+                mymalefiz.setLanguagePack(new LanguagePack("eng"));
+                mymalefiz.setMenuScreen();
             }
         });
 
-        TextButton ruleBtn = new TextButton(lp.getText("rules"), skin, "default");
+        TextButton ruleBtn = new TextButton("Italiano", skin, "default");
 
-        ruleBtn.setWidth(18*g.getUnitSize());
+        ruleBtn.setWidth(12*g.getUnitSize());
         ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        ruleBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
+        ruleBtn.setPosition(7*g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
         ruleBtn.getLabel().setFontScale(3.0f);
         ruleBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setRuleScreen();
+                mymalefiz.setLanguagePack(new LanguagePack("ger"));
+                mymalefiz.setMenuScreen();
             }
         });
 
-        TextButton exitBtn = new TextButton(lp.getText("leavegame"), skin, "default");
+        TextButton exitBtn = new TextButton("Exit", skin, "default");
 
         exitBtn.setWidth(18*g.getUnitSize());
         exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -107,10 +109,32 @@ public class MenuScreen implements Screen {
             }
         });
 
+
+        /**
+         * Hinzufügen der Flaggen
+         */
+        Image gerFlag = new Image(skin.getDrawable("german"));
+        gerFlag.setWidth(5*g.getUnitSize());
+        gerFlag.setHeight(2*g.getUnitSize()*g.getRatio());
+        gerFlag.setPosition(g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
+
+        Image ukFlag = new Image(skin.getDrawable("english"));
+        ukFlag.setWidth(5*g.getUnitSize());
+        ukFlag.setHeight(2*g.getUnitSize()*g.getRatio());
+        ukFlag.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
+
+        Image italFlag = new Image(skin.getDrawable("italiano"));
+        italFlag.setWidth(5*g.getUnitSize());
+        italFlag.setHeight(2*g.getUnitSize()*g.getRatio());
+        italFlag.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
+
         stage.addActor(connectBtn);
         stage.addActor(exitBtn);
         stage.addActor(ruleBtn);
         stage.addActor(startBtn);
+        stage.addActor(gerFlag);
+        stage.addActor(ukFlag);
+        stage.addActor(italFlag);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -128,13 +152,13 @@ public class MenuScreen implements Screen {
         batch.draw(logo, 2*g.getUnitSize(), 12*g.getUnitSize()*g.getRatio(), 16*g.getUnitSize(), 7*g.getUnitSize()*g.getRatio());
         batch.end();
         stage.draw();
-        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){mymalefiz.setLanguageScreen();}
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){Gdx.app.exit();}
+
     }
 
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height,true);
-
     }
 
     @Override
