@@ -12,6 +12,8 @@ public class Rock {
     public int coordX;
     public int coordY;
 
+    public boolean isTaken = false;
+
     public Image rockImage;
 
     public Field startPosition;
@@ -48,6 +50,7 @@ public class Rock {
     public int getCoordX() {
         return coordX;
     }
+
     public int getId() {
         return id;
     }
@@ -55,5 +58,23 @@ public class Rock {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setCoordX(int coordX) {
+        this.coordX = coordX;
+    }
+
+    public void setCoordY(int coordY) {
+        this.coordY = coordY;
+    }
+
+    public boolean isTaken() {
+        return isTaken;
+    }
+
+    public void setTaken(boolean taken) {
+        isTaken = taken;
+    }
+
+
 
 }

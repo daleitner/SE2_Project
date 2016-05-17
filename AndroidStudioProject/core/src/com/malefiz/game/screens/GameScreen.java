@@ -185,21 +185,36 @@ public class GameScreen implements Screen {
             u.getUnitImage().addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
                     if (diceRolled) {
-                        selectedUnit = u;
-                        isUnitSelected = true;
-                        checkPossibleMoves(rolledDiceValue, selectedUnit.getCurrentFieldPosition());
-                        for (Field f : possibleMoves) {
-                            f.getFieldImage().setHeight(fieldSize*2);
-                            f.getFieldImage().setWidth(fieldSize*2);
+
+                        if(playerAbleToMove(u.getTeam())) {
+
+                            selectedUnit = u;
+                            isUnitSelected = true;
+
+                            checkPossibleMoves(rolledDiceValue, selectedUnit.getCurrentFieldPosition());
+                        } else {
+                            System.out.println("This team is not able to move a unit!");
                         }
 
-                        System.out.println("Selected Unit is = " + selectedUnit.getId());
                     }
-
                 }
             });
 
         }
+    }
+
+    public boolean playerAbleToMove (Team team) {
+        for (Unit unit : units) {
+            if (team == unit.getTeam()) {
+                if (!checkPossibleMoves(rolledDiceValue, unit.getCurrentFieldPosition())){
+                    clearPossibleMoves();
+                } else {
+                    clearPossibleMoves();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -418,8 +433,33 @@ public class GameScreen implements Screen {
         if (possibleMoves.contains(nextPosition)) {
             unit.setPosition(nextPosition);
             setUnitImagePosition(unit);
-
             clearPossibleMoves();
+
+            if (nextPosition.getRockId() > 0) {
+                for (Rock r : rocks) {
+                    if (r.getId() == nextPosition.getRockId()) {
+                        // draw taken rock
+                        int id = nextPosition.getRockId();
+                        nextPosition.setRockId(0);
+                        r.getRockImage().setX(unitSize*15);
+                        r.getRockImage().setY(unitSize/2);
+                        r.getRockImage().setWidth(4*unitSize);
+                        r.getRockImage().setHeight(4*unitSize);
+                        r.setTaken(true);
+                        stage.addActor(r.getRockImage());
+
+                        r.getRockImage().addListener(new ClickListener(){
+                            public void clicked(InputEvent ev, float x, float y)
+                            {
+                                System.out.println("I AM LISTING");
+
+                            }
+                        });
+
+                        System.out.println("ROck taken new image");
+                    }
+                }
+            }
 
         }
 
@@ -437,12 +477,24 @@ public class GameScreen implements Screen {
         return neighbours;
     }
 
-    public void checkPossibleMoves(int rolledDiceValue, Field unitPosition) {
+    public boolean checkPossibleMoves(int rolledDiceValue, Field unitPosition) {
 
         ArrayList<Field> possibleFields = new ArrayList<Field>();
         ArrayList<Field> visitedFields = new ArrayList<Field>();
         visitedFields.add(unitPosition);
+
         ArrayList<Field> visitedTemp = new ArrayList<Field>();
+        if (    b.getRedStartFields().contains(unitPosition) ||
+                b.getBlueStartFields().contains(unitPosition) ||
+                b.getYellowStartFields().contains(unitPosition) ||
+                b.getGreenStartFields().contains(unitPosition) ) {
+
+            if (rolledDiceValue != 6) {
+                return false;
+            }
+        }
+
+
         visitedTemp.addAll(visitedFields);
 
         clearPossibleMoves();
@@ -482,10 +534,21 @@ public class GameScreen implements Screen {
 
         possibleFields.removeAll(visitedTemp);
 
+
         this.possibleMoves = possibleFields;
 
         for (Field f : possibleMoves) {
             setFieldPosScal(f, 1);
+        }
+
+        if (possibleMoves.isEmpty()) {
+            return false;
+        } else {
+            for (Field f : possibleMoves) {
+                f.getFieldImage().setHeight(fieldSize*2);
+                f.getFieldImage().setWidth(fieldSize*2);
+            }
+            return true;
         }
         //todo if unit current pos == start pos
     }
