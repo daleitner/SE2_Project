@@ -1,10 +1,10 @@
-package junittests;
 
-import com.malefiz.game.MyMalefiz;
-import com.malefiz.game.controllers.CharacterSelectionController;
-import com.malefiz.game.models.LanguagePack;
+import controllers.MyMalefiz;
+import controllers.CharacterSelectionController;
+import models.LanguagePack;
 
 import junit.framework.Assert;
+
 
 import org.junit.Test;
 

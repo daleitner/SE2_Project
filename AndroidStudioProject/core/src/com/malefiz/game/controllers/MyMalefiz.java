@@ -1,14 +1,14 @@
-package com.malefiz.game;
+package controllers;
 
 import com.badlogic.gdx.Game;
-import com.malefiz.game.models.LanguagePack;
-import com.malefiz.game.models.Team;
-import com.malefiz.game.screens.CharacterSelectionScreen;
-import com.malefiz.game.screens.GameScreen;
-import com.malefiz.game.screens.LanguageScreen;
-import com.malefiz.game.screens.MenuScreen;
-import com.malefiz.game.screens.RuleScreen;
-import com.malefiz.game.screens.WinnerScreen;
+import models.LanguagePack;
+import models.Team;
+import screens.CharacterSelectionScreen;
+import screens.GameScreen;
+import screens.LanguageScreen;
+import screens.MenuScreen;
+import screens.RuleScreen;
+import screens.WinnerScreen;
 
 public class MyMalefiz extends Game {
 	private MenuScreen menuScreen;

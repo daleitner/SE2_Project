@@ -1,8 +1,7 @@
-package com.malefiz.game.controllers;
+package controllers;
 
-import com.malefiz.game.MyMalefiz;
-import com.malefiz.game.models.Avatar;
-import com.malefiz.game.models.LanguagePack;
+import models.Avatar;
+import models.LanguagePack;
 
 import java.util.ArrayList;
 import java.util.List;

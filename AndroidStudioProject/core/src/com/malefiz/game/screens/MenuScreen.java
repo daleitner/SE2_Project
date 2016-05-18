@@ -1,4 +1,4 @@
-package com.malefiz.game.screens;
+package screens;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -14,11 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.malefiz.game.MyMalefiz;
-import com.malefiz.game.models.Color;
-import com.malefiz.game.models.Grid;
-import com.malefiz.game.models.LanguagePack;
-import com.malefiz.game.models.Team;
+
+import controllers.MyMalefiz;
+import models.Color;
+import models.Grid;
+import models.LanguagePack;
+import models.Team;
 
 /**
  * Created by Dan on 25.04.2016.

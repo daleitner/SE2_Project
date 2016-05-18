@@ -1,4 +1,4 @@
-package com.malefiz.game.models;
+package models;
 
 /**
  * Created by MCLeite on 25.04.2016.

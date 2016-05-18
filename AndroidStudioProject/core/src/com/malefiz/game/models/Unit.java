@@ -1,4 +1,4 @@
-package com.malefiz.game.models;
+package models;
 
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;

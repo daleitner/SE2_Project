@@ -1,4 +1,4 @@
-package com.malefiz.game.models;
+package models;
 
 import java.util.ArrayList;
 

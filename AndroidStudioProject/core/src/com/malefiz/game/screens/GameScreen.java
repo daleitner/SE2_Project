@@ -1,4 +1,4 @@
-package com.malefiz.game.screens;
+package screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,17 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.malefiz.game.MyMalefiz;
-import com.malefiz.game.models.Avatar;
-import com.malefiz.game.models.Board;
-import com.malefiz.game.models.Color;
-import com.malefiz.game.models.Dice;
-import com.malefiz.game.models.Field;
-import com.malefiz.game.models.Grid;
-import com.malefiz.game.models.LanguagePack;
-import com.malefiz.game.models.Rock;
-import com.malefiz.game.models.Team;
-import com.malefiz.game.models.Unit;
+
+import controllers.MyMalefiz;
+import models.Avatar;
+import models.Board;
+import models.Color;
+import models.Dice;
+import models.Field;
+import models.Grid;
+import models.LanguagePack;
+import models.Rock;
+import models.Team;
+import models.Unit;
 
 
 import java.util.ArrayList;

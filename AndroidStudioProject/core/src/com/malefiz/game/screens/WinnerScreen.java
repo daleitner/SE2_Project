@@ -1,4 +1,4 @@
-package com.malefiz.game.screens;
+package screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,15 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.malefiz.game.MyMalefiz;
-import com.malefiz.game.models.Grid;
-import com.malefiz.game.models.LanguagePack;
-import com.malefiz.game.models.Team;
+
+import controllers.MyMalefiz;
+import models.Grid;
+import models.LanguagePack;
+import models.Team;
 
 import java.nio.charset.Charset;
 
-import sun.nio.cs.ISO_8859_2;
-import sun.nio.cs.ext.ISO_8859_11;
+//import sun.nio.cs.ISO_8859_2;
+//import sun.nio.cs.ext.ISO_8859_11;
 
 /**
  * Created by Dan on 18.05.2016.
