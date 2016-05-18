@@ -1,48 +1,10 @@
-apply plugin: "java"
+apply plugin: 'java'
 
-sourceCompatibility = 1.6
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.test.java.srcDirs = [ "junittests/" ]
-
+dependencies {
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+}
 eclipse.project {
     name = appName + "-core"
 }
-
-
-apply plugin: 'jacoco'
-jacoco {
-    toolVersion = '0.7.6.201602180812'
-}
-
-
-// Edit covered scope if needed
-// For my part I like having the coverage of both application and tests
-def coverageSourceDirs = [
-        '../core/src'
-]
-
-jacocoTestReport {
-    group = "Reporting"
-
-    description = "Generate Jacoco coverage reports"
-
-    classDirectories = fileTree(
-            dir: '../core/build/intermediates/classes',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*']
-    )
-
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/jacoco.exec')
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-}
-//end Jacoco config
