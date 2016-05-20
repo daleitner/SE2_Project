@@ -19,6 +19,7 @@ import controllers.MyMalefiz;
 import models.Color;
 import models.Grid;
 import models.LanguagePack;
+import models.Mode;
 import models.Team;
 
 /**
@@ -56,7 +57,7 @@ public class MenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
 
-        TextButton startBtn = new TextButton(lp.getText("startgame"), skin, "default");
+        TextButton startBtn = new TextButton("Mehrspieler (Lokal)"/*lp.getText("startgame")*/, skin, "default");
 
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -65,11 +66,11 @@ public class MenuScreen implements Screen {
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setCharacterSelectionScreen();
+                mymalefiz.setCharacterSelectionScreen(Mode.LOCAL);
             }
         });
 
-        TextButton connectBtn = new TextButton(lp.getText("joingame"), skin, "default");
+        TextButton connectBtn = new TextButton("Mehrspieler (Netzwerk)"/*lp.getText("joingame")*/, skin, "default");
 
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -78,7 +79,7 @@ public class MenuScreen implements Screen {
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setWinnerScreen(Team.BLUE);
+                mymalefiz.setCharacterSelectionScreen(Mode.NETWORK);
             }
         });
 

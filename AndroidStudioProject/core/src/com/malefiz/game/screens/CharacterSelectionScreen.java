@@ -22,6 +22,7 @@ import controllers.MyMalefiz;
 import models.Avatar;
 import models.Grid;
 import models.LanguagePack;
+import models.Mode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class CharacterSelectionScreen implements Screen {
     float selected_height = 450.0f;
     private List<Image> images = null;
     private LanguagePack lp;
+    private Mode mode;
 
     private CharacterSelectionController controller;
 
@@ -50,10 +52,11 @@ public class CharacterSelectionScreen implements Screen {
 
     Grid g = new Grid();
 
-    public CharacterSelectionScreen(MyMalefiz mainClass, LanguagePack lp) {
+    public CharacterSelectionScreen(MyMalefiz mainClass, LanguagePack lp, Mode m) {
         this.images = new ArrayList<Image>();
-        this.controller = new CharacterSelectionController(mainClass, lp);
+        this.controller = new CharacterSelectionController(mainClass, lp, m);
         this.lp = lp;
+        this.mode = m;
     }
     @Override
     public void show() {
@@ -96,28 +99,28 @@ public class CharacterSelectionScreen implements Screen {
         this.images.get(0).addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.selectCharacter(0);
+                controller.handleCharacter(0);
             }
         });
 
         this.images.get(1).addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.selectCharacter(1);
+                controller.handleCharacter(1);
             }
         });
 
         this.images.get(2).addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.selectCharacter(2);
+                controller.handleCharacter(2);
             }
         });
 
         this.images.get(3).addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.selectCharacter(3);
+                controller.handleCharacter(3);
             }
         });
 
@@ -148,7 +151,7 @@ public class CharacterSelectionScreen implements Screen {
         selectedBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                controller.switchToGameScreen();
+                controller.switchToGameScreen(mode);
             }
         });
         stage.addActor(selectedBtn);
@@ -166,22 +169,45 @@ public class CharacterSelectionScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.end();
-        if(this.controller.getSelectedCharacter() != null) {
-            for (int i = 0; i < this.controller.getCharacters().size(); i++) {
-                Avatar character = this.controller.getCharacters().get(i);
-                if (i == this.controller.getSelectedIndex()) {
-                    this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
-                    this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
-                    this.images.get(i).setWidth(8*g.getUnitSize());
-                    this.images.get(i).setHeight(8*g.getUnitSize());
-                } else {
-                    this.images.get(i).setX(character.getxPos()*g.getUnitSize());
-                    this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
-                    this.images.get(i).setWidth(6*g.getUnitSize());
-                    this.images.get(i).setHeight(6*g.getUnitSize());
+
+
+        //if(this.controller.getSelectedCharacter() != null || !this.controller.isCharacterMapEmpty()) {
+            if(mode == Mode.NETWORK)
+            {
+                for (int i = 0; i < this.controller.getCharacters().size(); i++) {
+                    Avatar character = this.controller.getCharacters().get(i);
+                    if (i == this.controller.getSelectedIndex()) {
+                        this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
+                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
+                        this.images.get(i).setWidth(8*g.getUnitSize());
+                        this.images.get(i).setHeight(8*g.getUnitSize());
+                    } else {
+                        this.images.get(i).setX(character.getxPos()*g.getUnitSize());
+                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
+                        this.images.get(i).setWidth(6*g.getUnitSize());
+                        this.images.get(i).setHeight(6*g.getUnitSize());
+                    }
                 }
             }
-        }
+            else
+            {
+                for (int i = 0; i < this.controller.getCharacters().size(); i++) {
+                    Avatar character = this.controller.getCharacters().get(i);
+                    if (controller.isCharacterSelected(i)) {
+                        this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
+                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
+                        this.images.get(i).setWidth(8*g.getUnitSize());
+                        this.images.get(i).setHeight(8*g.getUnitSize());
+                    } else {
+                        this.images.get(i).setX(character.getxPos()*g.getUnitSize());
+                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
+                        this.images.get(i).setWidth(6*g.getUnitSize());
+                        this.images.get(i).setHeight(6*g.getUnitSize());
+                    }
+                }
+            }
+
+       // }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
         //stage.setDebugAll(true);

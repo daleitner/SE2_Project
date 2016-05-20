@@ -16,7 +16,7 @@ android {
     }
     defaultConfig {
         applicationId "com.malefiz.game"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 23
     }
 

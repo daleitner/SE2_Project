@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
+import controllers.GameController;
 import controllers.MyMalefiz;
 import models.Avatar;
 import models.Board;
@@ -25,6 +26,7 @@ import models.Dice;
 import models.Field;
 import models.Grid;
 import models.LanguagePack;
+import models.Mode;
 import models.Rock;
 import models.Team;
 import models.Unit;
@@ -49,6 +51,7 @@ public class GameScreen implements Screen {
     int screenWidth;
 
     private Avatar selectedAvatar;
+    private Mode mode;
 
 
     int fieldSize;
@@ -56,6 +59,8 @@ public class GameScreen implements Screen {
 
     Board b = new Board();
     Grid g = new Grid();
+
+    GameController gc;
 
     ArrayList<Field> fields;
     ArrayList<Integer[]> lines;
@@ -79,10 +84,12 @@ public class GameScreen implements Screen {
     Unit selectedUnit = null;
     ArrayList<Field> possibleMoves;
 
-    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp) {
+    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp, Mode mode) {
         this.selectedAvatar = selectedAvatar;
         this.mainClass = mainClass;
         this.lp = lp;
+        this.gc = GameController.getInstance();
+        this.mode = mode;
         show();
     }
 
@@ -322,13 +329,15 @@ public class GameScreen implements Screen {
 
     public void drawAvatar()
     {
-        skin.add(selectedAvatar.getId(), new Texture(selectedAvatar.getImageName()));
-        Image img = new Image(skin.getDrawable(selectedAvatar.getId()));
-        img.setX(unitSize/2);
-        img.setY(unitSize/2);
-        img.setWidth(4*unitSize);
-        img.setHeight(4*unitSize);
-        stage.addActor(img);
+        if(mode == Mode.NETWORK) {
+            skin.add(selectedAvatar.getId(), new Texture(selectedAvatar.getImageName()));
+            Image img = new Image(skin.getDrawable(selectedAvatar.getId()));
+            img.setX(unitSize / 2);
+            img.setY(unitSize / 2);
+            img.setWidth(4 * unitSize);
+            img.setHeight(4 * unitSize);
+            stage.addActor(img);
+        }
     }
     public void drawDice() {
 

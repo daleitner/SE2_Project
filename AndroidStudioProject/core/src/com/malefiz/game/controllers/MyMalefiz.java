@@ -2,6 +2,7 @@ package controllers;
 
 import com.badlogic.gdx.Game;
 import models.LanguagePack;
+import models.Mode;
 import models.Team;
 import screens.CharacterSelectionScreen;
 import screens.GameScreen;
@@ -32,15 +33,15 @@ public class MyMalefiz extends Game {
 		setScreen(this.menuScreen);
 	}
 
-	public void setGameScreen()
+	public void setGameScreen(Mode m)
 	{
-		this.gameScreen = new GameScreen(this, this.characterSelectionScreen.getSelectedAvatar(), lp);
+		this.gameScreen = new GameScreen(this, this.characterSelectionScreen.getSelectedAvatar(), lp, m);
 		setScreen(this.gameScreen);
 	}
 
-	public void setCharacterSelectionScreen()
+	public void setCharacterSelectionScreen(Mode m)
 	{
-		this.characterSelectionScreen = new CharacterSelectionScreen(this, lp);
+		this.characterSelectionScreen = new CharacterSelectionScreen(this, lp, m);
 		setScreen(this.characterSelectionScreen);
 	}
 

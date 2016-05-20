@@ -4,14 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 
+
 import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 /**
  * Created by Dan on 26.04.2016.
  */
 public class Board{
+    Logger logger = Logger.getLogger(Board.class.getName());
+
     ArrayList<Field> fields = new ArrayList<Field>();
     ArrayList<Field> redStartFields = new ArrayList<Field>();
     ArrayList<Field> greenStartFields = new ArrayList<Field>();
@@ -27,9 +31,21 @@ public class Board{
     ArrayList<Rock> rocks = new ArrayList<Rock>();
 
 
-
-
+    /**
+     * Konstruktor
+     */
     public Board()
+    {
+        parseFields();
+        parseLines();
+        createUnits();
+        createRocks();
+    }
+
+    /**
+     * Liest die Maps aus den Dateien und generiert daraus Spielfeldobjekt-Instanzen
+     */
+    private void parseFields()
     {
         try {
             //Felder aus CSV parsen und Liste mit Feld-Instanzen generieren
@@ -93,12 +109,17 @@ public class Board{
                 }
                 dataRow = CSVFile.readLine();
             }
-            System.out.println(redStartFields.size());
-            System.out.println(greenStartFields.size());
-            System.out.println(yellowStartFields.size());
-            System.out.println(blueStartFields.size());
             CSVFile.close();
+        }
+        catch (Exception ex)
+        {
+            logger.severe("Fehler beim Parsen der Felder!");
+        }
+    }
 
+    private void parseLines()
+    {
+        try {
             //Linien aus CSV parsen und Liste generieren
             file = Gdx.files.internal("line-map.csv");
             CSVFile = new BufferedReader(file.reader());
@@ -111,15 +132,11 @@ public class Board{
                 dataRow = CSVFile.readLine();
             }
             CSVFile.close();
-
         }
-        catch (Exception ex){}
-
-        createUnits();
-
-        createRocks();
-
-
+        catch (Exception ex)
+        {
+            logger.severe("Fehler beim Parsen der Linien zwischen den Feldern");
+        }
     }
 
     private void createUnits(){
