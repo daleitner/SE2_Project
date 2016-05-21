@@ -34,7 +34,6 @@ public class MenuScreen implements Screen {
     Stage stage;
     private MyMalefiz mymalefiz;
     private LanguagePack lp;
-    Texture startBtn;
     Skin skin;
 
     Grid g = new Grid();

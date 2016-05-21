@@ -63,23 +63,23 @@ public class Board{
 
                 if(line[1].equals("bl"))
                 {
-                    color = color.BLACK;
+                    color = Color.BLACK;
                 }
                 else if(line[1].equals("rd"))
                 {
-                    color = color.RED;
+                    color = Color.RED;
                 }
                 else if(line[1].equals("yw"))
                 {
-                    color = color.YELLOW;
+                    color = Color.YELLOW;
                 }
                 else if(line[1].equals("bu"))
                 {
-                    color = color.BLUE;
+                    color = Color.BLUE;
                 }
                 else if(line[1].equals("gr"))
                 {
-                    color = color.GREEN;
+                    color = Color.GREEN;
                 }
                 try {
                     neighbouringFields.add(Integer.parseInt(line[4]));
@@ -113,7 +113,7 @@ public class Board{
         }
         catch (Exception ex)
         {
-            logger.severe("Fehler beim Parsen der Felder!");
+            logger.severe("Fehler beim Parsen der Felder!\n" + ex);
         }
     }
 
