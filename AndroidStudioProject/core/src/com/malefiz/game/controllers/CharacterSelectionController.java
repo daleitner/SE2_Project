@@ -16,16 +16,19 @@ public class CharacterSelectionController {
     private LanguagePack lp;
     private int selectedIndex = -1;
     private List<Avatar> characters;
-    private Avatar selectedCharacter;
-    private HashMap<Integer, Avatar> selectedCharacters;
+    private HashMap<Integer, Integer> selectedCharacterIndicess;
     private Mode mode;
+    private int numberOfPlayers;
+    private int actualPlayer;
 
-    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, Mode m) {
+    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, Mode m, int numberOfPlayers) {
         this.mainClass = mainClass;
         this.lp = lp;
         this.mode = m;
+        this.numberOfPlayers = numberOfPlayers;
+        this.actualPlayer = 1;
         this.characters = new ArrayList<Avatar>();
-        this.selectedCharacters = new HashMap<Integer, Avatar>();
+        this.selectedCharacterIndicess = new HashMap<Integer, Integer>();
         this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 3, 5));
         this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5));
         this.characters.add(new Avatar("avatar_yellow", "avatar_gelb.png", "avatar_gelb_disabled.png", 3, 10));
@@ -36,43 +39,36 @@ public class CharacterSelectionController {
         return this.characters;
     }
 
-    public void setCharacters(List<Avatar> characters) {
-        this.characters = characters;
-    }
-
-    public Avatar getSelectedCharacter() {
-        return this.selectedCharacter;
-    }
-
     public int getSelectedIndex() {
         return this.selectedIndex;
     }
 
-    /**
-     * Speichert den ausgewählten Charakter aus der Charakterauswahl
-     * @param index     Index des Charakters
-     */
-    public void selectSingleCharacter(int index) {
-        this.selectedCharacter = this.characters.get(index);
-        this.selectedIndex = index;
+    public HashMap<Integer, Avatar> getSelectedCharacters() {
+        HashMap<Integer, Avatar> ret = new HashMap<Integer, Avatar>();
+        for(int i = 0; i<this.selectedCharacterIndicess.size(); i++) {
+            ret.put(i, this.characters.get(this.selectedCharacterIndicess.get(i)));
+        }
+        return ret;
+    }
+
+    public Mode getMode() {
+        return mode;
     }
 
     /**
-     * Fügt einen Charakter zur Auswahl hinzu
+     * Fügt einen Charakter zur Auswahl hinzu. Existiert bereits ein Eintrag für den aktuellen Spieler,
+     * so wird der Eintrag entfernt und erneut eingefügt.
      * @param index     Index des Charakters
      */
-    public void selectCharacter(int index)
-    {
-        selectedCharacters.put(index, characters.get(index));
+    public void selectCharacter(int index) {
+        if(this.selectedCharacterIndicess.containsKey(this.actualPlayer-1))
+            this.selectedCharacterIndicess.remove(this.actualPlayer-1);
+        selectedCharacterIndicess.put(this.actualPlayer-1, index);
     }
 
-    /**
-     * Löscht einen Charakter aus der Auswahl
-     * @param index     Index des Charakters
-     */
-    public void deselectCharacter(int index)
-    {
-        selectedCharacters.remove(index);
+    public void deselectCharacter() {
+        if(this.selectedCharacterIndicess.containsKey(this.actualPlayer-1))
+            this.selectedCharacterIndicess.remove(this.actualPlayer-1);
     }
 
     /**
@@ -82,42 +78,61 @@ public class CharacterSelectionController {
      */
     public boolean isCharacterSelected(int index)
     {
-        return selectedCharacters.containsKey(index);
+        return selectedCharacterIndicess.containsKey(this.actualPlayer-1) && selectedCharacterIndicess.get(this.actualPlayer-1) == index;
     }
 
-    public void handleCharacter(int index)
-    {
-        if(mode == Mode.NETWORK)
-        {
-            selectSingleCharacter(index);
+    public void handleCharacter(int index) {
+        if(mode == Mode.NETWORK) {
         }
-        else
-        {
-            if(isCharacterSelected(index))
-            {
-                deselectCharacter(index);
-            }
-            else
-            {
-                selectCharacter(index);
+        else {
+            if(isCharacterEnabled(index)) {
+                if(!isCharacterSelected(index))
+                    selectCharacter(index);
+                //else
+                //    deselectCharacter();
             }
         }
     }
 
-    public boolean isCharacterMapEmpty()
-    {
-        return selectedCharacters.isEmpty();
+    public boolean isCharacterEnabled(int index) {
+        for(int i = 0; i<this.selectedCharacterIndicess.size(); i++){
+            if(i != this.actualPlayer-1 && this.selectedCharacterIndicess.get(i) == index)
+                return false;
+        }
+        return true;
+    }
+
+    public String getHeaderText() {
+        return lp.getText("player") + " " + this.actualPlayer + " " + lp.getText("choosecharacter");
+    }
+
+    public String getNextButtonText() {
+        if(this.actualPlayer < this.numberOfPlayers)
+            return lp.getText("next");
+        return lp.getText("play");
+    }
+
+    public boolean canExecutePlayButton() {
+        return this.actualPlayer < this.numberOfPlayers || this.selectedCharacterIndicess.size() == this.numberOfPlayers;
     }
 
     public LanguagePack getLanguagePack() {
         return this.lp;
     }
 
-    public void switchToMenuScreen() {
-        this.mainClass.setMenuScreen();
+    public void switchToPreviousScreen() {
+        if(this.actualPlayer > 1)
+            this.actualPlayer -= 1;
+        else
+            this.mainClass.setNumberOfPlayersSelectionScreen();
     }
 
-    public void switchToGameScreen(Mode m) {
-        this.mainClass.setGameScreen(m);
+    public void switchToNextScreen() {
+        if(this.actualPlayer < this.numberOfPlayers)
+            this.actualPlayer += 1;
+        else
+            this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
     }
+
+
 }

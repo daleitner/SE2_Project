@@ -65,7 +65,7 @@ public class MenuScreen implements Screen {
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setCharacterSelectionScreen(Mode.LOCAL);
+                mymalefiz.setNumberOfPlayersSelectionScreen();
             }
         });
 
@@ -78,7 +78,7 @@ public class MenuScreen implements Screen {
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setCharacterSelectionScreen(Mode.NETWORK);
+                mymalefiz.setCharacterSelectionScreen(Mode.NETWORK, 1);
             }
         });
 

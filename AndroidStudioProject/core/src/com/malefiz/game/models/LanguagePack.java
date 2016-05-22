@@ -22,6 +22,10 @@ public class LanguagePack {
             languagePack.put("play","Spielen");
             languagePack.put("tomenu","Zum Hauptmenü");
             languagePack.put("winner","Gewinner!");
+            languagePack.put("choosenumberofplayers", "Wie viele Spieler?");
+            languagePack.put("next", "Weiter");
+            languagePack.put("back", "Zurück");
+            languagePack.put("player", "Spieler");
         }
         else if(lang.equals("eng"))
         {
@@ -34,6 +38,10 @@ public class LanguagePack {
             languagePack.put("play","Play");
             languagePack.put("tomenu","Back to menu");
             languagePack.put("winner","Winner!");
+            languagePack.put("choosenumberofplayers", "Number of Players?");
+            languagePack.put("next", "Next");
+            languagePack.put("back", "Back");
+            languagePack.put("player", "Player");
         }
     }
 

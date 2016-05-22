@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -43,20 +44,17 @@ public class CharacterSelectionScreen implements Screen {
     float selected_width = 450.0f;
     float selected_height = 450.0f;
     private List<Image> images = null;
-    private LanguagePack lp;
-    private Mode mode;
 
     private CharacterSelectionController controller;
 
     private Label head;
+    private TextButton nextBtn;
 
     Grid g = new Grid();
 
-    public CharacterSelectionScreen(MyMalefiz mainClass, LanguagePack lp, Mode m) {
+    public CharacterSelectionScreen(CharacterSelectionController controller) {
         this.images = new ArrayList<Image>();
-        this.controller = new CharacterSelectionController(mainClass, lp, m);
-        this.lp = lp;
-        this.mode = m;
+        this.controller = controller;
     }
     @Override
     public void show() {
@@ -75,7 +73,7 @@ public class CharacterSelectionScreen implements Screen {
         font = new BitmapFont();
         font.setColor(Color.BLACK);
 
-        head = new Label(lp.getText("choosecharacter"), skin);
+        head = new Label(controller.getHeaderText(), skin);
         head.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         head.setWidth(18*g.getUnitSize());
         head.setHeight(4*g.getUnitSize()*g.getRatio());
@@ -88,6 +86,7 @@ public class CharacterSelectionScreen implements Screen {
         List<Avatar> characters = this.controller.getCharacters();
         for(int i= 0; i<characters.size(); i++) {
             skin.add(characters.get(i).getId(), new Texture(characters.get(i).getImageName()));
+            skin.add(characters.get(i).getId() + "_disabled", new Texture(characters.get(i).getDisabledImageName()));
             Image img = new Image(skin.getDrawable(characters.get(i).getId()));
             img.setX(characters.get(i).getxPos()*g.getUnitSize());
             img.setY(characters.get(i).getyPos()*g.getUnitSize()*g.getRatio());
@@ -128,7 +127,7 @@ public class CharacterSelectionScreen implements Screen {
             stage.addActor(this.images.get(i));
         }
 
-        TextButton backBtn = new TextButton(this.controller.getLanguagePack().getText("cancel"), skin, "default");
+        TextButton backBtn = new TextButton(this.controller.getLanguagePack().getText("back"), skin, "default");
 
         backBtn.setWidth((int)(8.5f*g.getUnitSize()));
         backBtn.setHeight(2* g.getUnitSize()*g.getRatio());
@@ -137,24 +136,24 @@ public class CharacterSelectionScreen implements Screen {
         backBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                controller.switchToMenuScreen();
+                controller.switchToPreviousScreen();
             }
         });
 
 
-       TextButton selectedBtn = new TextButton(this.controller.getLanguagePack().getText("play"), skin, "default");
+        nextBtn = new TextButton(this.controller.getNextButtonText(), skin, "default");
 
-        selectedBtn.setWidth((int)(8.5*g.getUnitSize()));
-        selectedBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        selectedBtn.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
-        selectedBtn.getLabel().setFontScale(3.0f);
-        selectedBtn.addListener(new ClickListener(){
+        nextBtn.setWidth((int)(8.5*g.getUnitSize()));
+        nextBtn.setHeight(2*g.getUnitSize()*g.getRatio());
+        nextBtn.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
+        nextBtn.getLabel().setFontScale(3.0f);
+        nextBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                controller.switchToGameScreen(mode);
+                controller.switchToNextScreen();
             }
         });
-        stage.addActor(selectedBtn);
+        stage.addActor(nextBtn);
         stage.addActor(backBtn);
 
 
@@ -170,9 +169,15 @@ public class CharacterSelectionScreen implements Screen {
         batch.begin();
         batch.end();
 
+        this.head.setText(this.controller.getHeaderText());
+        this.nextBtn.setText(this.controller.getNextButtonText());
+        if(this.controller.canExecutePlayButton())
+            this.nextBtn.setTouchable(Touchable.enabled);
+        else
+            this.nextBtn.setTouchable(Touchable.disabled);
 
         //if(this.controller.getSelectedCharacter() != null || !this.controller.isCharacterMapEmpty()) {
-            if(mode == Mode.NETWORK)
+            if(this.controller.getMode() == Mode.NETWORK)
             {
                 for (int i = 0; i < this.controller.getCharacters().size(); i++) {
                     Avatar character = this.controller.getCharacters().get(i);
@@ -193,17 +198,27 @@ public class CharacterSelectionScreen implements Screen {
             {
                 for (int i = 0; i < this.controller.getCharacters().size(); i++) {
                     Avatar character = this.controller.getCharacters().get(i);
-                    if (controller.isCharacterSelected(i)) {
-                        this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
-                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
-                        this.images.get(i).setWidth(8*g.getUnitSize());
-                        this.images.get(i).setHeight(8*g.getUnitSize());
+                    if(controller.isCharacterEnabled(i)) {
+                        this.images.get(i).setDrawable(skin.getDrawable(this.controller.getCharacters().get(i).getId()));
+                        if (controller.isCharacterSelected(i)) {
+                            this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
+                            this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
+                            this.images.get(i).setWidth(8*g.getUnitSize());
+                            this.images.get(i).setHeight(8*g.getUnitSize());
+                        } else {
+                            this.images.get(i).setX(character.getxPos()*g.getUnitSize());
+                            this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
+                            this.images.get(i).setWidth(6*g.getUnitSize());
+                            this.images.get(i).setHeight(6*g.getUnitSize());
+                        }
                     } else {
+                        this.images.get(i).setDrawable(skin.getDrawable(this.controller.getCharacters().get(i).getId() + "_disabled"));
                         this.images.get(i).setX(character.getxPos()*g.getUnitSize());
                         this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
                         this.images.get(i).setWidth(6*g.getUnitSize());
                         this.images.get(i).setHeight(6*g.getUnitSize());
                     }
+
                 }
             }
 
@@ -212,7 +227,7 @@ public class CharacterSelectionScreen implements Screen {
         stage.draw();
         //stage.setDebugAll(true);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){this.controller.switchToMenuScreen();}
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){this.controller.switchToPreviousScreen();}
     }
 
     @Override
@@ -239,9 +254,5 @@ public class CharacterSelectionScreen implements Screen {
     public void dispose() {
         font.dispose();
         batch.dispose();
-    }
-
-    public Avatar getSelectedAvatar() {
-        return this.controller.getSelectedCharacter();
     }
 }

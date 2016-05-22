@@ -1,6 +1,10 @@
 package controllers;
 
 import com.badlogic.gdx.Game;
+
+import java.util.HashMap;
+
+import models.Avatar;
 import models.LanguagePack;
 import models.Mode;
 import models.Team;
@@ -8,16 +12,18 @@ import screens.CharacterSelectionScreen;
 import screens.GameScreen;
 import screens.LanguageScreen;
 import screens.MenuScreen;
+import screens.NumberOfPlayersSelectionScreen;
 import screens.RuleScreen;
 import screens.WinnerScreen;
 
 public class MyMalefiz extends Game {
 	private MenuScreen menuScreen;
 	private GameScreen gameScreen;
-	private CharacterSelectionScreen characterSelectionScreen;
 	private RuleScreen ruleScreen;
 	private LanguageScreen languageScreen;
 	private WinnerScreen winnerScreen;
+	private CharacterSelectionController characterSelectionController;
+	private NumberOfPlayersSelectionController numberOfPlayersSelectionController;
 
 	private LanguagePack lp = new LanguagePack("ger");
 
@@ -33,16 +39,21 @@ public class MyMalefiz extends Game {
 		setScreen(this.menuScreen);
 	}
 
-	public void setGameScreen(Mode m)
+	public void setGameScreen(Mode m, HashMap<Integer, Avatar> selectedCharacters)
 	{
-		this.gameScreen = new GameScreen(this, this.characterSelectionScreen.getSelectedAvatar(), lp, m);
+		this.gameScreen = new GameScreen(this, selectedCharacters.get(0), lp, m);
 		setScreen(this.gameScreen);
 	}
 
-	public void setCharacterSelectionScreen(Mode m)
+	public void setNumberOfPlayersSelectionScreen() {
+		this.numberOfPlayersSelectionController = new NumberOfPlayersSelectionController(this, lp);
+		setScreen(new NumberOfPlayersSelectionScreen(this.numberOfPlayersSelectionController));
+	}
+
+	public void setCharacterSelectionScreen(Mode m, int numberOfCharacters)
 	{
-		this.characterSelectionScreen = new CharacterSelectionScreen(this, lp, m);
-		setScreen(this.characterSelectionScreen);
+		this.characterSelectionController = new CharacterSelectionController(this, lp, m, numberOfCharacters);
+		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
 	}
 
 	public void setRuleScreen()

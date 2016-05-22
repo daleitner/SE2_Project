@@ -5,7 +5,6 @@ package models;
  */
 public class Avatar {
     private String id;
-    private boolean isEnabled;
     private String imageName;
     private String disabledImageName;
     private int xPos;
@@ -13,7 +12,6 @@ public class Avatar {
 
     public Avatar(String id, String imageName, String disabledImageName, int xPos, int yPos) {
         this.id = id;
-        this.isEnabled = false;
         this.imageName = imageName;
         this.disabledImageName = disabledImageName;
         this.xPos = xPos;
@@ -28,26 +26,10 @@ public class Avatar {
         this.id = id;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
-
     public String getImageName() { return imageName; }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
 
     public String getDisabledImageName() {
         return disabledImageName;
-    }
-
-    public void setDisabledImageName(String disabledImageName) {
-        this.disabledImageName = disabledImageName;
     }
 
     public int getxPos() {
