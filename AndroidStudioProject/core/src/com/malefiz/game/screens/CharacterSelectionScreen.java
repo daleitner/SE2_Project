@@ -150,7 +150,7 @@ public class CharacterSelectionScreen implements Screen {
         nextBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                controller.switchToNextScreen();
+                    controller.switchToNextScreen();
             }
         });
         stage.addActor(nextBtn);
