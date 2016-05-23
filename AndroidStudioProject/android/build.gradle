@@ -14,6 +14,11 @@ android {
 
         instrumentTest.setRoot('tests')
     }
+    
+    adbOptions {
+        timeOutInMs 60000 // set timeout to 1 minute
+    }
+    
     defaultConfig {
         applicationId "com.malefiz.game"
         minSdkVersion 17
