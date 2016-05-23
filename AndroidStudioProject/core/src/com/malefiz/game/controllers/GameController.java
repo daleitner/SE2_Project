@@ -4,8 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import models.Avatar;
 import models.Field;
+import models.Player;
 import models.Rock;
 import models.Team;
 import models.Unit;
@@ -17,9 +20,19 @@ import screens.GameScreen;
 public class GameController {
     private static GameController instance;
     GameScreen gameScreen;
+    HashMap<Integer, Player> players;
+    Player actualPlayer;
+    private int diceTries;
+    private boolean diceRolled;
+    private boolean unitMoved;
+    private boolean rockTaken;
 
     private GameController(){}
 
+    /**
+     * Liefert die Instanz des GameControllers zurück
+     * @return GameController-Instanz
+     */
     public static GameController getInstance()
     {
         if(instance == null)
@@ -29,9 +42,49 @@ public class GameController {
         return instance;
     }
 
+    /**
+     * Initialisiert die erste Runde
+     */
     public void init()
     {
+        actualPlayer = players.get(0);
+        reset();
+    }
 
+    /**
+     * GameScreen pingt den Controller an, um Fortschritt zu überprüfen
+     */
+    public void check()
+    {
+        if((diceRolled && unitMoved && !isRockTaken()) || !playerAbleToMove(getActualTeam()) && diceTries == 3)
+        {
+            getNextPlayer();
+        }
+        if(diceRolled && playerAbleToMove(getActualTeam()))
+        {
+            //ToDo: deaktivieren des Würfels
+        }
+    }
+
+    /**
+     * Setzt die Zustände nach jeder Runde (bei Aufruf von getNextPlayer()) in den Ursprungszustand zurück
+     */
+    public void reset()
+    {
+        diceRolled = false;
+        diceTries = 0;
+        unitMoved = false;
+        rockTaken = false;
+    }
+
+    /**
+     * Beendet die Runde und aktiviert den nächsten Spieler
+     */
+    private void getNextPlayer()
+    {
+        int idx = actualPlayer.getIndex();
+        reset();
+        actualPlayer =  players.get(idx%players.size());
     }
 
     /* set scaling and image position of unit */
@@ -69,6 +122,7 @@ public class GameController {
             unit.setPosition(nextPosition);
             setUnitImagePosition(unit);
             clearPossibleMoves();
+            unitMoved = true;
 
             if (nextPosition.getRockId() > 0) {
                 for (Rock r : gameScreen.getRocks()) {
@@ -91,7 +145,7 @@ public class GameController {
                             }
                         });
 
-                        System.out.println("ROck taken new image");
+                        System.out.println("Rock taken new image");
                     }
                 }
             }
@@ -273,5 +327,45 @@ public class GameController {
         return false;
     }
 
+    public void setSelectedPlayers(HashMap<Integer, Avatar> players)
+    {
+        for(int i = 0; i < players.size(); i++)
+        {
+            this.players.put(i, new Player(Team.BLUE.getById(players.get(i).getIndex()), i));
+        }
+    }
 
+    public Team getActualTeam()
+    {
+        return actualPlayer.getTeam();
+    }
+
+    /**
+     * Überprüft, ob sich ein Stein in der Ablge befindet
+     * @return
+     */
+    public boolean isRockTaken()
+    {
+        for (Rock r : gameScreen.getRocks())
+        {
+            if(r.isTaken())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setDiceRolled()
+    {
+        diceRolled = true;
+        if(diceTries < 3)
+        {
+            diceTries++;
+        }
+        else
+        {
+            getNextPlayer();
+        }
+    }
 }

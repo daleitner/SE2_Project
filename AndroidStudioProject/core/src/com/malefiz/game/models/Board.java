@@ -139,6 +139,10 @@ public class Board{
         }
     }
 
+    /**
+     * Erstellt aus den Daten der Fieldmap die Spielfiguren
+     * (i-3), da Index nicht mit Zeilennummer übereinstimmt
+     */
     private void createUnits(){
         for (int i = 115; i < 120; i++) {
             units.add(new Unit (Team.RED, fields.get(i-3), i));
@@ -154,6 +158,9 @@ public class Board{
         }
     }
 
+    /**
+     * Fügt auf allen roten Felder, ausgenommen der roten Startfelder, einen Stein hinzu
+     */
     private void createRocks(){
         int counter = 1;
         for (Field field : fields) {

@@ -52,7 +52,8 @@ public class MyMalefiz extends Game {
 
 	public void setCharacterSelectionScreen(Mode m, int numberOfCharacters)
 	{
-		this.characterSelectionController = new CharacterSelectionController(this, lp, m, numberOfCharacters);
+		this. characterSelectionController = characterSelectionController.getInstance();
+		this.characterSelectionController.init(this, lp, m, numberOfCharacters);
 		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
 	}
 

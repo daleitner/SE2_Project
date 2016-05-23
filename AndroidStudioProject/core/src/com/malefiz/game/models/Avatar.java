@@ -9,13 +9,30 @@ public class Avatar {
     private String disabledImageName;
     private int xPos;
     private int yPos;
+    private int index;
 
-    public Avatar(String id, String imageName, String disabledImageName, int xPos, int yPos) {
+    /**
+     * Konstruktor
+     * @param id
+     *  Name des Avatars
+     * @param imageName
+     *  Dateiname des Standard-Avatarbildes
+     * @param disabledImageName
+     *  Dateiname des deaktivierten Avatarbildes
+     * @param xPos
+     *  x-Koordinate des Avatars im Grid
+     * @param yPos
+     *  y-Koordinate des Avatars im Grid
+     * @param idx
+     *  Index entsprechend des zugehörigen Teams
+     */
+    public Avatar(String id, String imageName, String disabledImageName, int xPos, int yPos, int idx) {
         this.id = id;
         this.imageName = imageName;
         this.disabledImageName = disabledImageName;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.index = idx;
     }
 
     public String getId() {
@@ -46,5 +63,10 @@ public class Avatar {
 
     public void setyPos(int yPos) {
         this.yPos = yPos;
+    }
+
+    public int getIndex()
+    {
+        return index;
     }
 }

@@ -20,8 +20,21 @@ public class CharacterSelectionController {
     private Mode mode;
     private int numberOfPlayers;
     private int actualPlayer;
+    private static CharacterSelectionController instance;
 
-    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, Mode m, int numberOfPlayers) {
+    private CharacterSelectionController() {}
+
+    public static CharacterSelectionController getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new CharacterSelectionController();
+        }
+        return instance;
+    }
+
+    public void init(MyMalefiz mainClass, LanguagePack lp, Mode m, int numberOfPlayers)
+    {
         this.mainClass = mainClass;
         this.lp = lp;
         this.mode = m;
@@ -29,10 +42,10 @@ public class CharacterSelectionController {
         this.actualPlayer = 1;
         this.characters = new ArrayList<Avatar>();
         this.selectedCharacterIndicess = new HashMap<Integer, Integer>();
-        this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 3, 5));
-        this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5));
-        this.characters.add(new Avatar("avatar_yellow", "avatar_gelb.png", "avatar_gelb_disabled.png", 3, 10));
-        this.characters.add(new Avatar("avatar_green", "avatar_gruen.png", "avatar_gruen_disabled.png", 11, 10));
+        this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 3, 5, 0));
+        this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5, 3));
+        this.characters.add(new Avatar("avatar_yellow", "avatar_gelb.png", "avatar_gelb_disabled.png", 3, 10, 1));
+        this.characters.add(new Avatar("avatar_green", "avatar_gruen.png", "avatar_gruen_disabled.png", 11, 10, 2));
     }
 
     public List<Avatar> getCharacters() {
@@ -133,6 +146,9 @@ public class CharacterSelectionController {
         else
             this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
     }
-
+    public HashMap<Integer, Integer> getSelectedCharacterIndicess()
+    {
+        return  selectedCharacterIndicess;
+    }
 
 }

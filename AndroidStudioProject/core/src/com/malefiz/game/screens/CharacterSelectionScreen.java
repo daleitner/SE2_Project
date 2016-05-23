@@ -63,9 +63,6 @@ public class CharacterSelectionScreen implements Screen {
         screenHeight = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
 
-
-
-
         // A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
         // recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
@@ -221,11 +218,8 @@ public class CharacterSelectionScreen implements Screen {
 
                 }
             }
-
-       // }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        //stage.setDebugAll(true);
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){this.controller.switchToPreviousScreen();}
     }

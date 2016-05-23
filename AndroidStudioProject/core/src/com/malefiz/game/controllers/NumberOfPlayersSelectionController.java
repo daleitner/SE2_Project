@@ -9,7 +9,7 @@ import models.Mode;
 public class NumberOfPlayersSelectionController {
     private MyMalefiz mainClass;
     private LanguagePack lp;
-    private int minPlayer = 1;
+    private int minPlayer = 2;
     private int maxPlayer = 4;
     private int selectedNumberOfPlayers = 4;
     public NumberOfPlayersSelectionController(MyMalefiz mainClass, LanguagePack lp) {

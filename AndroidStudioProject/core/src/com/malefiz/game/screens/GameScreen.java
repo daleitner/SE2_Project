@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
+import controllers.CharacterSelectionController;
 import controllers.GameController;
 import controllers.MyMalefiz;
 import models.Avatar;
@@ -27,6 +28,7 @@ import models.Field;
 import models.Grid;
 import models.LanguagePack;
 import models.Mode;
+import models.Player;
 import models.Rock;
 import models.Team;
 import models.Unit;
@@ -42,6 +44,7 @@ public class GameScreen implements Screen {
 
     private MyMalefiz mainClass = null;
     private LanguagePack lp;
+    private Player player;
 
     Skin skin;
     Stage stage;
@@ -165,6 +168,8 @@ public class GameScreen implements Screen {
         this.lp = lp;
         this.gc = GameController.getInstance();
         gc.setGameScreenInstance(this);
+        gc.setSelectedPlayers(CharacterSelectionController.getInstance().getSelectedCharacters());
+        gc.init();
         this.mode = mode;
         show();
     }
@@ -209,7 +214,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        //stage.setDebugAll(true);
+        gc.check();
     }
 
     @Override
@@ -267,7 +272,7 @@ public class GameScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     if (diceRolled) {
 
-                        if(gc.playerAbleToMove(u.getTeam())) {
+                        if(gc.playerAbleToMove(gc.getActualTeam())) {
 
                             selectedUnit = u;
                             isUnitSelected = true;
@@ -337,7 +342,7 @@ public class GameScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.print("FIELD: i am listening and my id is: " + f.getID());
                     System.out.print("\n - - - - - - - - - - - - - - - - - \n");
-                    if (isUnitSelected && diceRolled) {
+                    if (isUnitSelected && diceRolled && selectedUnit.getTeam() == player.getTeam()) {
                         gc.moveUnit(f, selectedUnit);
                     }
                 }
@@ -416,6 +421,7 @@ public class GameScreen implements Screen {
         normalDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                     drawDice();
+                    gc.setDiceRolled();
                     rolledDiceValue = normalDice.getValue();
                     System.out.println("rolled dice value is = " +  rolledDiceValue);
 
@@ -474,7 +480,8 @@ public class GameScreen implements Screen {
         });
     }
 
-
-
-
+    public void setPlayer(Player p)
+    {
+        this.player = p;
+    }
 }
