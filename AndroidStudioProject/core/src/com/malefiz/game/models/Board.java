@@ -81,6 +81,10 @@ public class Board{
                 {
                     color = Color.GREEN;
                 }
+                else if(line[1].equals("wt"))
+                {
+                    color = Color.WHITE;
+                }
                 try {
                     neighbouringFields.add(Integer.parseInt(line[4]));
                     neighbouringFields.add(Integer.parseInt(line[5]));

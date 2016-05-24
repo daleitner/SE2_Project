@@ -53,10 +53,6 @@ public class GameController {
         reset();
     }
 
-    public void gameloop() {
-
-    }
-
     /**
      * GameScreen pingt den Controller an, um Fortschritt zu überprüfen
      */
@@ -65,6 +61,7 @@ public class GameController {
         if(((diceRolled && unitMoved) || (!playerAbleToMove && diceTries <= 0)) && !rockTaken)
         {
             System.out.println("DiceRolled: " + diceRolled + " unitMoved: " + unitMoved + " PlayerAbleToMove: " + playerAbleToMove + " diceTries: " + diceTries + " Dicevalue: " + gameScreen.getRolledDiceValue());
+            gameScreen.deleteDiceDisplay();
             getNextPlayer();
         }
 
@@ -117,7 +114,7 @@ public class GameController {
     // scaling muss noch ueberarbeitet werden momentan nur von field uebernommen
     public void setUnitImagePosition (Unit unit) {
 
-        unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getUnitCoordX() - gameScreen.getFieldSize() / 2);
+        unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getUnitCoordX() - unit.getUnitImage().getImageWidth()/2);
 
         int y;
         if(unit.getUnitCoordY() == 6)
@@ -136,7 +133,7 @@ public class GameController {
             unit.getUnitImage().setY(y);
         }
 
-        unit.getUnitImage().setHeight(gameScreen.getFieldSize()*gameScreen.getG().getRatio()*2);
+        unit.getUnitImage().setHeight(gameScreen.getFieldSize()*gameScreen.getG().getRatio()*1.5f);
         unit.getUnitImage().setWidth(gameScreen.getFieldSize()*2);
     }
 
@@ -154,8 +151,6 @@ public class GameController {
                 gameScreen.setSelectedRock(null);
             }
 
-
-
             if(u != null)
             {
                 u.setPosition(u.getStartPosition());
@@ -170,8 +165,6 @@ public class GameController {
             unitMoved = true;
 
             gameScreen.setSelectedUnit(null);
-
-
         }
 
     }

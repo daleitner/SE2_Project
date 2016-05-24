@@ -77,7 +77,11 @@ public class Dice {
     public Sprite rollDice() {
         int result = random();
         return setImage(result);
+    }
 
+    public Sprite rollDice(int dice)
+    {
+        return setImage(dice);
     }
 
     public int random() {

@@ -32,13 +32,7 @@ import models.Player;
 import models.Rock;
 import models.Team;
 import models.Unit;
-
-
 import java.util.ArrayList;
-import java.util.concurrent.Exchanger;
-
-//import javafx.scene.Camera; //Wirft einen Error.
-
 
 public class GameScreen implements Screen {
 
@@ -78,6 +72,7 @@ public class GameScreen implements Screen {
     Dice normalDice = new Dice(1,6);
     Image normalDiceDisplay = null;
     Image riggedDiceDisplay = null;
+    Image diceDisplay = null;
     String[] riggedOptions = new String[]{"","dice_one.png","dice_two.png","dice_three.png", "dice_four.png", "dice_five.png", "dice_six.png"};
     boolean diceRolled = true; // for testing true; has to be reseted after each turn
     int rolledDiceValue = 0;   // for testing fixed value; not sure if this var is necessary
@@ -193,6 +188,7 @@ public class GameScreen implements Screen {
         skin.add("field_yellow", new Texture("feld_gelb.png"));
         skin.add("field_black", new Texture("feld_schwarz.png"));
         skin.add("pixel_black", new Texture("pixel_black_1x1.png"));
+        skin.add("field_white", new Texture("ziel.png"));
 
         // probably own skin for units
         skin.add("unit_yellow", new Texture("unit_yellow.png"));
@@ -207,10 +203,10 @@ public class GameScreen implements Screen {
         drawAvatar();
         drawDice();
         drawRiggedDice();
-        drawUnits();
         drawRocks();
-        startTime = 0;
+        drawUnits();
 
+        startTime = 0;
     }
 
     @Override
@@ -268,8 +264,11 @@ public class GameScreen implements Screen {
             } else {
                 throw new RuntimeException("Error in game screen draw units");
             }
-            stage.addActor(unit_image);
+
+            u.currentFieldPosition.setUnit(u);
+            u.setPosition(u.currentFieldPosition);
             gc.setUnitImagePosition(u);
+            stage.addActor(unit_image);
 
             //todo move all listeners to another location
             /* Listener for unit movement and selection */
@@ -334,6 +333,11 @@ public class GameScreen implements Screen {
             else if(f.getColor() == Color.GREEN)
             {
                 field_img = new Image(skin.getDrawable("field_green"));
+                f.setFieldImage(field_img);
+            }
+            else if(f.getColor() == Color.WHITE)
+            {
+                field_img = new Image(skin.getDrawable("field_white"));
                 f.setFieldImage(field_img);
             }
 
@@ -479,7 +483,7 @@ public class GameScreen implements Screen {
                     for (int i = 1; i < riggedOptions.length; i++)
                     {
 
-                        Image temp = new Image(new Sprite(new Texture(Gdx.files.internal(riggedOptions[i]))));
+                        final Image temp = new Image(new Sprite(new Texture(Gdx.files.internal(riggedOptions[i]))));
                         temp.setX(unitSize * 10);
                         temp.setY(unitSize * 4 * i+50);
                         temp.setWidth(4 * unitSize);
@@ -489,7 +493,12 @@ public class GameScreen implements Screen {
                             public void clicked(InputEvent ev, float x, float y)
                             {
                                 //Implementierung der Würfelzahlübergabe
-
+                                if(!gc.getPlayerAbleToMove()) {
+                                    gc.setDiceRolled();
+                                    rolledDiceValue = (int) ((temp.getY() - 50) / (4 * unitSize));
+                                    setDiceDisplay(rolledDiceValue);
+                                    gc.isPlayerAbleToMove();
+                                }
                                 removeDices();
                             }
                         });
@@ -504,6 +513,21 @@ public class GameScreen implements Screen {
 
             }
         });
+    }
+
+    public void setDiceDisplay(int i)
+    {
+        diceDisplay = new Image(normalDice.rollDice(i));
+        diceDisplay.setX(unitSize*5);
+        diceDisplay.setY(unitSize/2);
+        diceDisplay.setWidth(4*unitSize);
+        diceDisplay.setHeight(4*unitSize);
+        stage.addActor(diceDisplay);
+    }
+
+    public void deleteDiceDisplay()
+    {
+        if(diceDisplay != null) diceDisplay.remove();
     }
 
     public void setSelectedUnit(Unit selectedUnit) {
