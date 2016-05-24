@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     private MyMalefiz mainClass = null;
     private LanguagePack lp;
     private Player player;
+    long startTime;
 
     Skin skin;
     Stage stage;
@@ -84,7 +85,9 @@ public class GameScreen implements Screen {
     /* unit movement */
     boolean isUnitSelected = false;
     Unit selectedUnit = null;
-    ArrayList<Field> possibleMoves;
+    ArrayList<Field> possibleMoves = new ArrayList<Field>();
+
+    Rock selectedRock = null;
 
     public ArrayList<Field> getFields() {
         return fields;
@@ -206,6 +209,8 @@ public class GameScreen implements Screen {
         drawRiggedDice();
         drawUnits();
         drawRocks();
+        startTime = 0;
+
     }
 
     @Override
@@ -270,13 +275,15 @@ public class GameScreen implements Screen {
             /* Listener for unit movement and selection */
             u.getUnitImage().addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
-                    if (diceRolled) {
+                    if (gc.isDiceRolled() && gc.getActualTeam() == u.getTeam() && !gc.isUnitMoved()) {
+                        System.out.println("can i reach the statement?");
 
                         if(gc.playerAbleToMove(gc.getActualTeam())) {
 
+                            System.out.println("selected unit works");
                             selectedUnit = u;
                             isUnitSelected = true;
-
+                            System.out.println("selected unit get team = " + selectedUnit.getTeam() + "player gc controller get team = " + gc.getActualTeam() );
                             gc.checkPossibleMoves(rolledDiceValue, selectedUnit.getCurrentFieldPosition());
                         } else {
                             System.out.println("This team is not able to move a unit!");
@@ -342,9 +349,19 @@ public class GameScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.print("FIELD: i am listening and my id is: " + f.getID());
                     System.out.print("\n - - - - - - - - - - - - - - - - - \n");
-                    if (isUnitSelected && diceRolled && selectedUnit.getTeam() == player.getTeam()) {
+
+                    if (selectedRock != null && f.getUnit() == null && f.getRock() == null && (f.getID() < 95 || f.getID() > 111) && (f.getID()<114)) {
+                        gc.setRockPosition(selectedRock, f);
+                        f.setRock(selectedRock);
+                        selectedRock = null;
+                    }
+
+                    //System.out.println("selected unit get team = " + selectedUnit.getTeam() + "player gc controller get team = " + gc.getActualTeam() );
+                    if (selectedUnit != null && !(gc.isUnitMoved()) && diceRolled && selectedUnit.getTeam() == gc.getActualTeam()) {
                         gc.moveUnit(f, selectedUnit);
                     }
+
+
                 }
             });
 
@@ -357,11 +374,19 @@ public class GameScreen implements Screen {
         for (final Rock rock : rocks) {
             Image rock_image = new Image(skin.getDrawable("rock"));
 
-
             stage.addActor(rock_image);
 
             rock.setRockImage(rock_image);
             gc.setRockImagePosition(rock);
+
+            rock.getRockImage().addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    if (rock.isTaken) {
+                        selectedRock = rock;
+                        System.out.println("i was taken i am listing");
+                    }
+                }
+            });
         }
     }
 
@@ -400,15 +425,14 @@ public class GameScreen implements Screen {
 
     public void drawAvatar()
     {
-        if(mode == Mode.NETWORK) {
-            skin.add(selectedAvatar.getId(), new Texture(selectedAvatar.getImageName()));
-            Image img = new Image(skin.getDrawable(selectedAvatar.getId()));
-            img.setX(unitSize / 2);
-            img.setY(unitSize / 2);
-            img.setWidth(4 * unitSize);
-            img.setHeight(4 * unitSize);
-            stage.addActor(img);
-        }
+        selectedAvatar = gc.getActualPlayer().getAvatar();
+        skin.add(selectedAvatar.getId(), new Texture(selectedAvatar.getImageName()));
+        Image img = new Image(skin.getDrawable(selectedAvatar.getId()));
+        img.setX(unitSize / 2);
+        img.setY(unitSize / 2);
+        img.setWidth(4 * unitSize);
+        img.setHeight(4 * unitSize);
+        stage.addActor(img);
     }
     public void drawDice() {
 
@@ -420,11 +444,13 @@ public class GameScreen implements Screen {
         stage.addActor(normalDiceDisplay);
         normalDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
+                if(!gc.getPlayerAbleToMove()) {
                     drawDice();
                     gc.setDiceRolled();
                     rolledDiceValue = normalDice.getValue();
-                    System.out.println("rolled dice value is = " +  rolledDiceValue);
-
+                    gc.isPlayerAbleToMove();
+                    System.out.println("rolled dice value is = " + rolledDiceValue);
+                }
             }
         });
     }
@@ -478,6 +504,14 @@ public class GameScreen implements Screen {
 
             }
         });
+    }
+
+    public void setSelectedUnit(Unit selectedUnit) {
+        this.selectedUnit = selectedUnit;
+    }
+
+    public void setSelectedRock(Rock selectedRock) {
+        this.selectedRock = selectedRock;
     }
 
     public void setPlayer(Player p)

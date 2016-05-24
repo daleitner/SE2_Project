@@ -20,12 +20,14 @@ import screens.GameScreen;
 public class GameController {
     private static GameController instance;
     GameScreen gameScreen;
-    HashMap<Integer, Player> players;
+    HashMap<Integer, Player> players = new HashMap<Integer, Player>();
     Player actualPlayer;
-    private int diceTries;
+    private int diceTries = 3;
     private boolean diceRolled;
     private boolean unitMoved;
+    private boolean playerAbleToMove;
     private boolean rockTaken;
+
 
     private GameController(){}
 
@@ -51,19 +53,25 @@ public class GameController {
         reset();
     }
 
+    public void gameloop() {
+
+    }
+
     /**
      * GameScreen pingt den Controller an, um Fortschritt zu überprüfen
      */
     public void check()
     {
-        if((diceRolled && unitMoved && !isRockTaken()) || !playerAbleToMove(getActualTeam()) && diceTries == 3)
+        if(((diceRolled && unitMoved) || (!playerAbleToMove && diceTries <= 0)) && !rockTaken)
         {
+            System.out.println("DiceRolled: " + diceRolled + " unitMoved: " + unitMoved + " PlayerAbleToMove: " + playerAbleToMove + " diceTries: " + diceTries + " Dicevalue: " + gameScreen.getRolledDiceValue());
             getNextPlayer();
         }
-        if(diceRolled && playerAbleToMove(getActualTeam()))
+
+        /*if(diceRolled && playerAbleToMove(getActualTeam()))
         {
             //ToDo: deaktivieren des Würfels
-        }
+        }*/
     }
 
     /**
@@ -72,19 +80,36 @@ public class GameController {
     public void reset()
     {
         diceRolled = false;
-        diceTries = 0;
         unitMoved = false;
         rockTaken = false;
+        playerAbleToMove = false;
     }
 
+
+
     /**
+
      * Beendet die Runde und aktiviert den nächsten Spieler
      */
     private void getNextPlayer()
     {
+
         int idx = actualPlayer.getIndex();
         reset();
-        actualPlayer =  players.get(idx%players.size());
+        actualPlayer =  players.get((idx+1)%players.size());
+        System.out.println("get next player team = " + actualPlayer.getTeam());
+        diceTries = 3;
+        gameScreen.drawAvatar();
+        for(Unit u : gameScreen.getUnits())
+        {
+            if(u.getTeam() == getActualTeam())
+            {
+                if(u.getCurrentFieldPosition() != u.getStartPosition())
+                {
+                    diceTries = 1;
+                }
+            }
+        }
     }
 
     /* set scaling and image position of unit */
@@ -119,36 +144,33 @@ public class GameController {
         // todo check if next position is empty
         //if (checkPossibleMoves(rolledDiceNumber, unit.getCurrentFieldPosition(), nextPosition)) {
         if (gameScreen.getPossibleMoves().contains(nextPosition)) {
+            Unit u = nextPosition.getUnit();
+            Rock r = nextPosition.getRock();
+
+            if (r != null)
+            {
+                setRockPosition(r, null);
+                nextPosition.setRock(null);
+                gameScreen.setSelectedRock(null);
+            }
+
+
+
+            if(u != null)
+            {
+                u.setPosition(u.getStartPosition());
+                setUnitImagePosition(u);
+            }
+            unit.currentFieldPosition.setUnit(null);
+
             unit.setPosition(nextPosition);
             setUnitImagePosition(unit);
+            nextPosition.setUnit(unit);
             clearPossibleMoves();
             unitMoved = true;
 
-            if (nextPosition.getRockId() > 0) {
-                for (Rock r : gameScreen.getRocks()) {
-                    if (r.getId() == nextPosition.getRockId()) {
-                        // draw taken rock
-                        int id = nextPosition.getRockId();
-                        nextPosition.setRockId(0);
-                        r.getRockImage().setX(gameScreen.getUnitSize()*15);
-                        r.getRockImage().setY(gameScreen.getUnitSize()/2);
-                        r.getRockImage().setWidth(4*gameScreen.getUnitSize());
-                        r.getRockImage().setHeight(4*gameScreen.getUnitSize());
-                        r.setTaken(true);
-                        gameScreen.getStage().addActor(r.getRockImage());
+            gameScreen.setSelectedUnit(null);
 
-                        r.getRockImage().addListener(new ClickListener(){
-                            public void clicked(InputEvent ev, float x, float y)
-                            {
-                                System.out.println("I AM LISTING");
-
-                            }
-                        });
-
-                        System.out.println("Rock taken new image");
-                    }
-                }
-            }
 
         }
 
@@ -199,7 +221,7 @@ public class GameController {
 
             for (int j = 0; j < size; j++) {
 
-                if (visitedFields.get(j).getRockId() == 0) {
+                if (visitedFields.get(j).getRock() == null) {
                     visitedFields.addAll(getNeighbourFieldsOfField(visitedFields.get(j)));
                 } else {
                     visitedTemp.add(visitedFields.get(j));
@@ -207,7 +229,7 @@ public class GameController {
             }
 
             for (Field f : visitedFields) {
-                if (f.getRockId() != 0) {
+                if (f.getRock() != null) {
                     visitedTemp.add(f);
                 }
             }
@@ -222,7 +244,15 @@ public class GameController {
         }
 
         possibleFields.removeAll(visitedTemp);
-
+        visitedTemp.clear();
+        for (Field field : possibleFields) {
+            if (field.getUnit() != null) {
+                if (field.getUnit().getTeam() == getActualTeam()) {
+                    visitedTemp.add(field);
+                }
+            }
+        }
+        possibleFields.removeAll(visitedTemp);
 
         gameScreen.setPossibleMoves(possibleFields);
 
@@ -315,7 +345,7 @@ public class GameController {
 
     public boolean playerAbleToMove (Team team) {
         for (Unit unit : gameScreen.getUnits()) {
-            if (team == unit.getTeam()) {
+            if (getActualTeam() == unit.getTeam()) {
                 if (!checkPossibleMoves(gameScreen.getRolledDiceValue(), unit.getCurrentFieldPosition())){
                     clearPossibleMoves();
                 } else {
@@ -331,7 +361,9 @@ public class GameController {
     {
         for(int i = 0; i < players.size(); i++)
         {
-            this.players.put(i, new Player(Team.BLUE.getById(players.get(i).getIndex()), i));
+            System.out.println(Team.BLUE.getById(players.get(i).getIndex())+ "  i" + i);
+            this.players.put(i, new Player(Team.BLUE.getById(players.get(i).getIndex()), i, players.get(i)));
+
         }
     }
 
@@ -359,13 +391,51 @@ public class GameController {
     public void setDiceRolled()
     {
         diceRolled = true;
-        if(diceTries < 3)
-        {
-            diceTries++;
+        diceTries--;
+
+    }
+
+    public void isPlayerAbleToMove()
+    {
+        playerAbleToMove = playerAbleToMove(getActualTeam());
+    }
+
+    public boolean getPlayerAbleToMove()
+    {
+        return this.playerAbleToMove;
+    }
+
+    public Player getActualPlayer()
+    {
+        return this.actualPlayer;
+    }
+
+    public boolean isDiceRolled() {
+        return diceRolled;
+    }
+
+    public void setRockPosition(Rock rock, Field field) {
+        if (rock.isTaken) {
+            System.out.println("rock small");
+            rock.setPosition(field);
+            setRockImagePosition(rock);
+            rock.setTaken(false);
+            rockTaken = false;
+
+
+        } else if (!rock.isTaken) {
+            System.out.println("rock big");
+            rock.getRockImage().setX(gameScreen.getUnitSize()*15);
+            rock.getRockImage().setY(gameScreen.getUnitSize()/2);
+            rock.getRockImage().setWidth(4*gameScreen.getUnitSize());
+            rock.getRockImage().setHeight(4*gameScreen.getUnitSize());
+            rock.setTaken(true);
+            rockTaken = true;
         }
-        else
-        {
-            getNextPlayer();
-        }
+
+    }
+
+    public boolean isUnitMoved() {
+        return unitMoved;
     }
 }

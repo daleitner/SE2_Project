@@ -163,11 +163,13 @@ public class Board{
      */
     private void createRocks(){
         int counter = 1;
+        Rock rock;
         for (Field field : fields) {
             if (field.getColor() == Color.RED && !redStartFields.contains(field)) {
-                rocks.add(new Rock (counter, field));
+                rock = new Rock (counter, field);
+                rocks.add(rock);
                 field.setRockId(counter);
-                field.setIsEmpty(false);
+                field.setRock(rock);
                 counter++;
             }
         }

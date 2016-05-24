@@ -17,14 +17,26 @@ public class Field {
     public boolean isTaken = false;
     ArrayList<Integer> neighbouringFields;
     public Image fieldImage;
+    private Unit unit = null;
+    private Rock rock = null;
+
 
     boolean empty = true;
     int rockId; // 0 == no rock
     int unitId = 0; // 0 == no unit
 
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
     public Field(int id, Color color, int coordX, int coordY, ArrayList neighbouringFields)
     {
         this.ID = id;
+
         this.color = color;
         this.coordX = coordX;
         this.coordY = coordY;
@@ -96,5 +108,13 @@ public class Field {
 
     public void setRockId(int rockId) {
         this.rockId = rockId;
+    }
+
+    public Rock getRock() {
+        return rock;
+    }
+
+    public void setRock(Rock rock) {
+        this.rock = rock;
     }
 }

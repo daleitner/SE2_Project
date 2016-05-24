@@ -34,6 +34,10 @@ public class Unit {
         this.currentFieldPosition = newPosition;
     }
 
+    public Field getStartPosition()
+    {
+        return this.startPosition;
+    }
 
     public int getUnitCoordX() {
         return coordX;
