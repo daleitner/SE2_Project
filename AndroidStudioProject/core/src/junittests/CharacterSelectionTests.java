@@ -1,4 +1,6 @@
 
+import junit.framework.Assert;
+
 import controllers.CharacterSelectionController;
 import models.Mode;
 
@@ -58,4 +60,100 @@ public class CharacterSelectionTests {
         sut.selectCharacter(3);
         assertEquals(sut.getCharacters().get(3), sut.getSelectedCharacters().get(0));
     }
+
+    @Test
+    public void CheckNumberOfPlayersTwoPlayer(){
+        CharacterSelectionController sut = CharacterSelectionController.getInstance();
+        sut.init(null, null, Mode.LOCAL, 2);
+        sut.selectCharacter(3);
+        assertEquals(sut.isCharacterSelected(3), true);
+        assertEquals(sut.isCharacterEnabled(3),true);
+
+        assertEquals(sut.isCharacterSelected(1), false);
+        assertEquals(sut.isCharacterEnabled(1),true);
+
+        sut.switchToNextScreen();
+        sut.selectCharacter(2);
+
+        assertEquals(sut.isCharacterSelected(2), true);
+        assertEquals(sut.isCharacterEnabled(2),true);
+        assertEquals(sut.isCharacterEnabled(3),false);
+        assertEquals(sut.isCharacterEnabled(1),true);
+
+        assertEquals(sut.canExecutePlayButton(),true);
+    }
+    @Test
+    public void CheckNumberOfPlayersFourPlayer(){
+        CharacterSelectionController sut = CharacterSelectionController.getInstance();
+        sut.init(null, null, Mode.LOCAL, 4);
+        sut.selectCharacter(2);
+        assertEquals(sut.isCharacterSelected(2), true);
+        assertEquals(sut.isCharacterEnabled(2),true);
+        sut.switchToNextScreen();
+        sut.selectCharacter(1);
+        sut.selectCharacter(3);
+        assertEquals(sut.isCharacterSelected(1), false);
+        assertEquals(sut.isCharacterSelected(3), true);
+        assertEquals(sut.isCharacterEnabled(4),true);
+        assertEquals(sut.isCharacterEnabled(3),true);
+        assertEquals(sut.isCharacterEnabled(2),false);
+        assertEquals(sut.isCharacterEnabled(1),true);
+        sut.switchToNextScreen();
+        sut.selectCharacter(1);
+        sut.selectCharacter(4);
+        assertEquals(sut.isCharacterSelected(1), false);
+        assertEquals(sut.isCharacterSelected(4), true);
+        assertEquals(sut.isCharacterEnabled(1),true);
+        assertEquals(sut.isCharacterEnabled(2),false);
+        assertEquals(sut.isCharacterEnabled(3),false);
+        assertEquals(sut.isCharacterEnabled(4),true);
+        sut.switchToNextScreen();
+        sut.selectCharacter(1);
+        assertEquals(sut.isCharacterSelected(1), true);
+        assertEquals(sut.isCharacterEnabled(1),true);
+        assertEquals(sut.isCharacterEnabled(2),false);
+        assertEquals(sut.isCharacterEnabled(3),false);
+        assertEquals(sut.isCharacterEnabled(4),false);
+
+        assertEquals(sut.canExecutePlayButton(),true);
+
+
+    }
+    @Test
+    public void UnFinishSelectionCheckNumberOfPlayersFourPlayer(){
+        CharacterSelectionController sut = CharacterSelectionController.getInstance();
+        sut.init(null, null, Mode.LOCAL, 4);
+        sut.selectCharacter(2);
+
+        //button next or play can be executed
+        assertEquals(sut.canExecutePlayButton(),true);
+
+        sut.switchToNextScreen();
+        sut.selectCharacter(4);
+
+        //button next or play can be executed
+        assertEquals(sut.canExecutePlayButton(),true);
+
+        sut.switchToNextScreen();
+        sut.selectCharacter(1);
+
+        //button next or play can be executed
+        assertEquals(sut.canExecutePlayButton(),true);
+
+        sut.switchToNextScreen();
+        sut.selectCharacter(3);
+
+        //button next or play can be executed
+        assertEquals(sut.canExecutePlayButton(),true);
+
+        assertEquals(sut.isCharacterSelected(3), true);
+        assertEquals(sut.isCharacterSelected(2), false);
+        assertEquals(sut.isCharacterSelected(1), false);
+        assertEquals(sut.isCharacterSelected(4), false);
+        assertEquals(sut.isCharacterEnabled(2),false);
+        assertEquals(sut.isCharacterEnabled(3),true);//current selected character - is also enabled
+        assertEquals(sut.isCharacterEnabled(1),false);
+
+    }
+
 }
