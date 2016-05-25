@@ -53,6 +53,7 @@ public class GameScreen implements Screen {
 
     int fieldSize = screenWidth/30;
     int unitSize = screenWidth/20;
+    boolean unitinit = true;
 
     Board b = new Board();
     Grid g = new Grid();
@@ -170,6 +171,7 @@ public class GameScreen implements Screen {
         gc.init();
         this.mode = mode;
         show();
+
     }
 
     @Override
@@ -216,6 +218,10 @@ public class GameScreen implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
         gc.check();
+        if (unitinit) {
+            unitinit = false;
+            gc.unitInit();
+        }
     }
 
     @Override
@@ -265,10 +271,21 @@ public class GameScreen implements Screen {
                 throw new RuntimeException("Error in game screen draw units");
             }
 
-            u.currentFieldPosition.setUnit(u);
-            u.setPosition(u.currentFieldPosition);
+            //u.currentFieldPosition.setUnit(u);
+            //u.setPosition(u.getCurrentFieldPosition());
+            System.out.println(u.getCurrentFieldPosition().getID() + " == " + u.getStartPosition().getID());
+
+            //u.setPosition(u.getStartPosition());
             gc.setUnitImagePosition(u);
-            stage.addActor(unit_image);
+
+            //gc.setFieldPosScal(u.getStartPosition(), 0);
+            //stage.addActor(unit_image);
+            stage.addActor(u.getUnitImage());
+
+            /**
+             * u.setPosition(u.getStartPosition());
+             * setUnitImagePosition(u);
+             * **/
 
             //todo move all listeners to another location
             /* Listener for unit movement and selection */
@@ -341,11 +358,13 @@ public class GameScreen implements Screen {
                 f.setFieldImage(field_img);
             }
 
+
+            stage.addActor(field_img);
             field_img.setX(unitSize * f.getCoordX() - fieldSize / 2);
 
             gc.setFieldPosScal(f, 0);
 
-            stage.addActor(field_img);
+
 
             //todo move all listeners to another location
             /* Field listener for unit movement */
@@ -354,7 +373,8 @@ public class GameScreen implements Screen {
                     System.out.print("FIELD: i am listening and my id is: " + f.getID());
                     System.out.print("\n - - - - - - - - - - - - - - - - - \n");
 
-                    if (selectedRock != null && f.getUnit() == null && f.getRock() == null && (f.getID() < 95 || f.getID() > 111) && (f.getID()<114)) {
+                    if (selectedRock != null && f.getUnit() == null && f.getRock() == null && (f.getID() < 95 || f.getID() > 111) && (f.getID()<114
+                    )) {
                         gc.setRockPosition(selectedRock, f);
                         f.setRock(selectedRock);
                         selectedRock = null;
@@ -454,6 +474,7 @@ public class GameScreen implements Screen {
                     rolledDiceValue = normalDice.getValue();
                     gc.isPlayerAbleToMove();
                     System.out.println("rolled dice value is = " + rolledDiceValue);
+
                 }
             }
         });

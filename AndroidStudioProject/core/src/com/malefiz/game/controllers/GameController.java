@@ -114,7 +114,9 @@ public class GameController {
     // scaling muss noch ueberarbeitet werden momentan nur von field uebernommen
     public void setUnitImagePosition (Unit unit) {
 
-        unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getUnitCoordX() - unit.getUnitImage().getImageWidth()/2);
+        unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getCurrentFieldPosition().getCoordX() - (unit.getUnitImage().getImageWidth()/2));
+        //unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getUnitCoordX() - gameScreen.getFieldSize() / 2);
+
 
         int y;
         if(unit.getUnitCoordY() == 6)
@@ -430,5 +432,16 @@ public class GameController {
 
     public boolean isUnitMoved() {
         return unitMoved;
+    }
+
+    public void unitInit() {
+
+        //System.out.println("ich mach das jetzt");
+        ArrayList<Unit> units = gameScreen.getUnits();
+        for (Unit u : gameScreen.getUnits()) {
+            u.setPosition(u.getStartPosition());
+            setUnitImagePosition(u);
+        }
+
     }
 }
