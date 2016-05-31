@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 import controllers.CharacterSelectionController;
 import controllers.GameController;
@@ -32,7 +32,6 @@ import models.Player;
 import models.Rock;
 import models.Team;
 import models.Unit;
-import java.util.ArrayList;
 
 public class GameScreen implements Screen {
 
@@ -43,13 +42,13 @@ public class GameScreen implements Screen {
 
     Skin skin;
     Stage stage;
-    SpriteBatch batch;
 
     int screenHeight = Gdx.graphics.getHeight();
     int screenWidth = Gdx.graphics.getWidth();
 
     private Avatar selectedAvatar;
     private Mode mode;
+    SpriteBatch batch;
 
     int fieldSize = screenWidth/30;
     int unitSize = screenWidth/20;
@@ -77,6 +76,9 @@ public class GameScreen implements Screen {
     String[] riggedOptions = new String[]{"","dice_one.png","dice_two.png","dice_three.png", "dice_four.png", "dice_five.png", "dice_six.png"};
     boolean diceRolled = true; // for testing true; has to be reseted after each turn
     int rolledDiceValue = 0;   // for testing fixed value; not sure if this var is necessary
+    Animation anim = normalDice.createAnimation();
+    float elapsedTime = 0;
+
 
     /* unit movement */
     boolean isUnitSelected = false;
@@ -221,6 +223,14 @@ public class GameScreen implements Screen {
         if (unitinit) {
             unitinit = false;
             gc.unitInit();
+
+        }
+        if(elapsedTime < 1) {
+            batch.begin();
+            elapsedTime += Gdx.graphics.getDeltaTime();
+
+            batch.draw(anim.getKeyFrame(elapsedTime, true), unitSize * 5, unitSize/2,4 * unitSize ,4 * unitSize);
+            batch.end();
         }
     }
 
@@ -460,15 +470,17 @@ public class GameScreen implements Screen {
     }
     public void drawDice() {
 
-        normalDiceDisplay = new Image(normalDice.rollDice());
-        normalDiceDisplay.setX(unitSize*5);
-        normalDiceDisplay.setY(unitSize/2);
-        normalDiceDisplay.setWidth(4*unitSize);
-        normalDiceDisplay.setHeight(4*unitSize);
-        stage.addActor(normalDiceDisplay);
+            normalDiceDisplay = new Image(normalDice.rollDice());
+            normalDiceDisplay.setX(unitSize * 5);
+            normalDiceDisplay.setY(unitSize / 2);
+            normalDiceDisplay.setWidth(4 * unitSize);
+            normalDiceDisplay.setHeight(4 * unitSize);
+            stage.addActor(normalDiceDisplay);
+
         normalDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 if(!gc.getPlayerAbleToMove()) {
+                    elapsedTime = 0;
                     drawDice();
                     gc.setDiceRolled();
                     rolledDiceValue = normalDice.getValue();
@@ -536,14 +548,17 @@ public class GameScreen implements Screen {
         });
     }
 
+
     public void setDiceDisplay(int i)
     {
-        diceDisplay = new Image(normalDice.rollDice(i));
-        diceDisplay.setX(unitSize*5);
-        diceDisplay.setY(unitSize/2);
-        diceDisplay.setWidth(4*unitSize);
-        diceDisplay.setHeight(4*unitSize);
-        stage.addActor(diceDisplay);
+            diceDisplay = new Image(normalDice.rollDice(i));
+            diceDisplay.setX(unitSize*5);
+            diceDisplay.setY(unitSize/2);
+            diceDisplay.setWidth(4*unitSize);
+            diceDisplay.setHeight(4*unitSize);
+            stage.addActor(diceDisplay);
+
+
     }
 
     public void deleteDiceDisplay()
