@@ -479,7 +479,7 @@ public class GameScreen implements Screen {
 
         normalDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
-                if(!gc.getPlayerAbleToMove()) {
+                if(!gc.getPlayerAbleToMove() && elapsedTime > 1) {
                     elapsedTime = 0;
                     drawDice();
                     gc.setDiceRolled();
