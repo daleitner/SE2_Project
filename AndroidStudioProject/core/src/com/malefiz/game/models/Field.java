@@ -36,7 +36,6 @@ public class Field {
     public Field(int id, Color color, int coordX, int coordY, ArrayList neighbouringFields)
     {
         this.ID = id;
-
         this.color = color;
         this.coordX = coordX;
         this.coordY = coordY;

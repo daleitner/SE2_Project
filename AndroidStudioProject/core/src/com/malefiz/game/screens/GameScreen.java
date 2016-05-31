@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import controllers.CharacterSelectionController;
 import controllers.GameController;
 import controllers.MyMalefiz;
+import interfaces.ActionResolver;
 import models.Avatar;
 import models.Board;
 import models.Color;
@@ -39,6 +40,7 @@ public class GameScreen implements Screen {
     private LanguagePack lp;
     private Player player;
     long startTime;
+    boolean animationActive = false;
 
     Skin skin;
     Stage stage;
@@ -68,11 +70,17 @@ public class GameScreen implements Screen {
 
     ShapeRenderer sr;
 
+    ActionResolver actionResolver = null;
+
     /* dice */
     Dice normalDice = new Dice(1,6);
     Image normalDiceDisplay = null;
     Image riggedDiceDisplay = null;
     Image diceDisplay = null;
+    Image randomDiceDisplay = null;
+    Image pistolLeft = null;
+    Image pistolRight = null;
+    Image forest = null;
     String[] riggedOptions = new String[]{"","dice_one.png","dice_two.png","dice_three.png", "dice_four.png", "dice_five.png", "dice_six.png"};
     boolean diceRolled = true; // for testing true; has to be reseted after each turn
     int rolledDiceValue = 0;   // for testing fixed value; not sure if this var is necessary
@@ -162,7 +170,7 @@ public class GameScreen implements Screen {
         this.stage = stage;
     }
 
-    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp, Mode mode) {
+    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp, Mode mode, ActionResolver actionResolver) {
 
         this.selectedAvatar = selectedAvatar;
         this.mainClass = mainClass;
@@ -172,6 +180,7 @@ public class GameScreen implements Screen {
         gc.setSelectedPlayers(CharacterSelectionController.getInstance().getSelectedCharacters());
         gc.init();
         this.mode = mode;
+        this.actionResolver = actionResolver;
         show();
 
     }
@@ -193,6 +202,12 @@ public class GameScreen implements Screen {
         skin.add("field_black", new Texture("feld_schwarz.png"));
         skin.add("pixel_black", new Texture("pixel_black_1x1.png"));
         skin.add("field_white", new Texture("ziel.png"));
+        skin.add("dice_random", new Texture("dice_qm.png"));
+
+        skin.add("pistol_left", new Texture("pistol_left.png"));
+        skin.add("pistol_right", new Texture("pistol_right.png"));
+
+        skin.add("forest", new Texture("wald.png"));
 
         // probably own skin for units
         skin.add("unit_yellow", new Texture("unit_yellow.png"));
@@ -205,11 +220,14 @@ public class GameScreen implements Screen {
         drawLines();
         drawFields();
         drawAvatar();
+        drawDeco();
         drawDice();
         drawRiggedDice();
         drawRocks();
         drawUnits();
+        activateRandomDiceDisplay();
 
+        elapsedTime = 1;
         startTime = 0;
     }
 
@@ -223,14 +241,17 @@ public class GameScreen implements Screen {
         if (unitinit) {
             unitinit = false;
             gc.unitInit();
-
         }
-        if(elapsedTime < 1) {
+        if(elapsedTime < 1 && animationActive) {
             batch.begin();
-            elapsedTime += Gdx.graphics.getDeltaTime();
+            elapsedTime += delta;
 
-            batch.draw(anim.getKeyFrame(elapsedTime, true), unitSize * 5, unitSize/2,4 * unitSize ,4 * unitSize);
+            batch.draw(anim.getKeyFrame(elapsedTime*5, true), unitSize*5, unitSize/2, 4*unitSize, 4*unitSize);
             batch.end();
+        }
+        else
+        {
+            animationActive = false;
         }
     }
 
@@ -485,6 +506,8 @@ public class GameScreen implements Screen {
                     gc.setDiceRolled();
                     rolledDiceValue = normalDice.getValue();
                     gc.isPlayerAbleToMove();
+                    removeRandomDiceDisplay();
+                    animationActive = true;
                     System.out.println("rolled dice value is = " + rolledDiceValue);
 
                 }
@@ -557,8 +580,40 @@ public class GameScreen implements Screen {
             diceDisplay.setWidth(4*unitSize);
             diceDisplay.setHeight(4*unitSize);
             stage.addActor(diceDisplay);
+    }
 
+    public void activateRandomDiceDisplay()
+    {
+        randomDiceDisplay = new Image(skin.getDrawable("dice_random"));
+        randomDiceDisplay.setX(unitSize*5);
+        randomDiceDisplay.setY(unitSize/2);
+        randomDiceDisplay.setWidth(4*unitSize);
+        randomDiceDisplay.setHeight(4*unitSize);
+        stage.addActor(randomDiceDisplay);
+        randomDiceDisplay.addListener(new ClickListener(){
+            public void clicked(InputEvent ev, float x, float y)
+            {
+                if(!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                    elapsedTime = 0;
+                    drawDice();
+                    gc.setDiceRolled();
+                    rolledDiceValue = normalDice.getValue();
+                    gc.isPlayerAbleToMove();
+                    removeRandomDiceDisplay();
+                    animationActive = true;
+                    System.out.println("rolled dice value is = " + rolledDiceValue);
+                }
+            }
+        });
+    }
 
+    public void removeRandomDiceDisplay() {
+        randomDiceDisplay.remove();
+    }
+
+    public boolean isAnimationActive()
+    {
+        return animationActive;
     }
 
     public void deleteDiceDisplay()
@@ -577,5 +632,43 @@ public class GameScreen implements Screen {
     public void setPlayer(Player p)
     {
         this.player = p;
+    }
+
+    public Board getBoard()
+    {
+        return b;
+    }
+
+    public MyMalefiz getMainClass()
+    {
+        return mainClass;
+    }
+
+    public ActionResolver getActionResolver()
+    {
+        return this.actionResolver;
+    }
+
+    public void drawDeco()
+    {
+        pistolLeft = new Image(skin.getDrawable("pistol_left"));
+        pistolLeft.setX(13*unitSize);
+        pistolLeft.setY(13*unitSize*g.getRatio());
+        pistolLeft.setWidth(6*unitSize);
+        pistolLeft.setHeight(2*unitSize*g.getRatio());
+        stage.addActor(pistolLeft);
+        pistolRight = new Image(skin.getDrawable("pistol_right"));
+        pistolRight.setX(unitSize);
+        pistolRight.setY(13*unitSize*g.getRatio());
+        pistolRight.setWidth(6*unitSize);
+        pistolRight.setHeight(2*unitSize*g.getRatio());
+        stage.addActor(pistolRight);
+
+        forest = new Image(skin.getDrawable("forest"));
+        forest.setX(8*unitSize);
+        forest.setY((10.1f*unitSize)*g.getRatio());
+        forest.setWidth(4*unitSize);
+        forest.setHeight(1.3f*unitSize*g.getRatio());
+        stage.addActor(forest);
     }
 }

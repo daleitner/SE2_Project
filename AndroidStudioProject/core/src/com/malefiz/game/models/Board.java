@@ -204,4 +204,16 @@ public class Board{
     public ArrayList getYellowStartFields() {return yellowStartFields;};
 
     public ArrayList getBlueStartFields() {return blueStartFields;};
+
+    public Field getFieldByID(int id)
+    {
+        for(Field f : fields)
+        {
+            if(f.getID() == id)
+            {
+                return f;
+            }
+        }
+        return null;
+    }
 }

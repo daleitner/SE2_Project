@@ -58,7 +58,7 @@ public class GameController {
      */
     public void check()
     {
-        if(((diceRolled && unitMoved) || (!playerAbleToMove && diceTries <= 0)) && !rockTaken)
+        if(((diceRolled && unitMoved) || (!playerAbleToMove && diceTries <= 0)) && !rockTaken && !gameScreen.isAnimationActive())
         {
             System.out.println("DiceRolled: " + diceRolled + " unitMoved: " + unitMoved + " PlayerAbleToMove: " + playerAbleToMove + " diceTries: " + diceTries + " Dicevalue: " + gameScreen.getRolledDiceValue());
             gameScreen.deleteDiceDisplay();
@@ -97,6 +97,7 @@ public class GameController {
         System.out.println("get next player team = " + actualPlayer.getTeam());
         diceTries = 3;
         gameScreen.drawAvatar();
+        gameScreen.activateRandomDiceDisplay();
         for(Unit u : gameScreen.getUnits())
         {
             if(u.getTeam() == getActualTeam())
@@ -107,6 +108,8 @@ public class GameController {
                 }
             }
         }
+        gameScreen.getActionResolver().showToast("Spieler " + actualPlayer.getTeam() + " ist am Zug!");
+        gameScreen.getActionResolver().showToast("Bitte würfeln!");
     }
 
     /* set scaling and image position of unit */
@@ -135,11 +138,15 @@ public class GameController {
             unit.getUnitImage().setY(y);
         }
 
-        unit.getUnitImage().setHeight(gameScreen.getFieldSize()*gameScreen.getG().getRatio()*1.5f);
+        unit.getUnitImage().setHeight(gameScreen.getFieldSize()*gameScreen.getG().getRatio()*1.2f);
         unit.getUnitImage().setWidth(gameScreen.getFieldSize()*2);
     }
 
     public void moveUnit (Field nextPosition, Unit unit) {
+        if(gameScreen.getBoard().getFieldByID(112).equals(nextPosition))
+        {
+            gameScreen.getMainClass().setWinnerScreen(unit.getTeam());
+        }
         // todo check if next position is empty
         //if (checkPossibleMoves(rolledDiceNumber, unit.getCurrentFieldPosition(), nextPosition)) {
         if (gameScreen.getPossibleMoves().contains(nextPosition)) {

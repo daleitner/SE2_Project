@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 
 import java.util.HashMap;
 
+import interfaces.ActionResolver;
 import models.Avatar;
 import models.LanguagePack;
 import models.Mode;
@@ -24,8 +25,14 @@ public class MyMalefiz extends Game {
 	private WinnerScreen winnerScreen;
 	private CharacterSelectionController characterSelectionController;
 	private NumberOfPlayersSelectionController numberOfPlayersSelectionController;
+	public ActionResolver actionResolver;
 
 	private LanguagePack lp = new LanguagePack("ger");
+
+	public MyMalefiz(ActionResolver actionResolver)
+	{
+		this.actionResolver = actionResolver;
+	}
 
 	@Override
 	public void create() {
@@ -41,7 +48,7 @@ public class MyMalefiz extends Game {
 
 	public void setGameScreen(Mode m, HashMap<Integer, Avatar> selectedCharacters)
 	{
-		this.gameScreen = new GameScreen(this, selectedCharacters.get(0), lp, m);
+		this.gameScreen = new GameScreen(this, selectedCharacters.get(0), lp, m, actionResolver);
 		setScreen(this.gameScreen);
 	}
 
