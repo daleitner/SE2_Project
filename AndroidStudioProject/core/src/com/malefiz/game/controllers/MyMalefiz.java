@@ -10,6 +10,7 @@ import models.LanguagePack;
 import models.Mode;
 import models.Team;
 import screens.CharacterSelectionScreen;
+import screens.ConnectionScreen;
 import screens.GameScreen;
 import screens.LanguageScreen;
 import screens.MenuScreen;
@@ -25,6 +26,7 @@ public class MyMalefiz extends Game {
 	private WinnerScreen winnerScreen;
 	private CharacterSelectionController characterSelectionController;
 	private NumberOfPlayersSelectionController numberOfPlayersSelectionController;
+	private ConnectionController connectionController;
 	public ActionResolver actionResolver;
 
 	private LanguagePack lp = new LanguagePack("ger");
@@ -80,6 +82,11 @@ public class MyMalefiz extends Game {
 	{
 		this.winnerScreen = new WinnerScreen(this, lp, t);
 		setScreen(this.winnerScreen);
+	}
+
+	public void setConnectionScreen() {
+		this.connectionController = new ConnectionController(this, lp);
+		setScreen(new ConnectionScreen()); //(this.connectionController));
 	}
 
 	public void setLanguagePack(LanguagePack lang)
