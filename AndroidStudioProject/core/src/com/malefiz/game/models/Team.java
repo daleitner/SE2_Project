@@ -2,9 +2,6 @@ package models;
 
 import java.util.ArrayList;
 
-/**
- * Created by friedemannzindler on 30/04/16.
- */
 public enum Team {
     RED(0, Color.RED),
     YELLOW(1, Color.YELLOW),

@@ -115,11 +115,6 @@ public class ConnectionScreen implements Screen {
         // Add scene to stage
         stage.addActor(vg);
 
-        // Setup a viewport to map screen to a 480x640 virtual resolution
-        // As otherwise this is way too tiny on my 1080p android phone.
-      //  stage.setViewport (new ExtendViewport(VIRTUAL_SCREEN_WIDTH, VIRTUAL_SCREEN_HEIGHT));
-      //  stage.getCamera().position.set(VIRTUAL_SCREEN_WIDTH/2,VIRTUAL_SCREEN_HEIGHT/2,0);
-
         // Now we create a thread that will listen for incoming socket connections
         new Thread(new Runnable(){
 

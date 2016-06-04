@@ -3,9 +3,6 @@ package models;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-/**
- * Created by friedemannzindler on 30/04/16.
- */
 public class Unit {
     /** id **/
     private int id;

@@ -3,9 +3,6 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by Dan on 09.05.2016.
- */
 public class LanguagePack {
     HashMap<String, String> languagePack = new HashMap<String, String>();
 

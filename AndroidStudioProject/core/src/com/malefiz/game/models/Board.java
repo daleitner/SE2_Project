@@ -9,10 +9,6 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-
-/**
- * Created by Dan on 26.04.2016.
- */
 public class Board{
     Logger logger = Logger.getLogger(Board.class.getName());
 

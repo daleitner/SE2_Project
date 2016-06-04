@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by MCLeite on 17.05.2016.
- */
 public class CharacterSelectionController {
     private MyMalefiz mainClass;
     private LanguagePack lp;

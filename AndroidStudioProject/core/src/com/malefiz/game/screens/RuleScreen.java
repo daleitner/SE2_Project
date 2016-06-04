@@ -21,9 +21,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.nio.CharBuffer;
 
-/**
- * Created by Dan on 29.04.2016.
- */
 public class RuleScreen implements Screen{
 
     SpriteBatch batch;

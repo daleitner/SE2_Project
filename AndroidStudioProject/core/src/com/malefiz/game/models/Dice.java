@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Random;
 
-/**
- * Created by Artist on 03.05.2016.
- */
 public class Dice {
 
     private String id;                  // Falls wir mehrere Würfel erstellen

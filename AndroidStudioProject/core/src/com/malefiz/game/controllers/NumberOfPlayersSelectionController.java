@@ -3,9 +3,6 @@ package controllers;
 import models.LanguagePack;
 import models.Mode;
 
-/**
- * Created by MCLeite on 22.05.2016.
- */
 public class NumberOfPlayersSelectionController {
     private MyMalefiz mainClass;
     private LanguagePack lp;

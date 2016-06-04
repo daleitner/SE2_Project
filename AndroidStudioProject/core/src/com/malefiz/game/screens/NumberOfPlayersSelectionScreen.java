@@ -22,9 +22,6 @@ import org.w3c.dom.Text;
 import controllers.NumberOfPlayersSelectionController;
 import models.Grid;
 
-/**
- * Created by MCLeite on 22.05.2016.
- */
 public class NumberOfPlayersSelectionScreen implements Screen {
     Skin skin;
     Stage stage;

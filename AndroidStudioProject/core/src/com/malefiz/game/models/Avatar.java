@@ -1,8 +1,5 @@
 package models;
 
-/**
- * Created by MCLeite on 25.04.2016.
- */
 public class Avatar {
     private String id;
     private String imageName;

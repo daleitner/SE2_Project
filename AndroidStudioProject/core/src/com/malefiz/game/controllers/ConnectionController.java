@@ -3,9 +3,6 @@ package controllers;
 
 import models.LanguagePack;
 
-/**
- * Created by MCLeite on 03.06.2016.
- */
 public class ConnectionController  {
     private MyMalefiz mainClass;
     private LanguagePack lp;

@@ -23,9 +23,6 @@ import models.LanguagePack;
 import models.Mode;
 import models.Team;
 
-/**
- * Created by Dan on 25.04.2016.
- */
 public class MenuScreen implements Screen {
     SpriteBatch batch;
     Texture logo;

@@ -2,9 +2,6 @@ package models;
 
 import com.badlogic.gdx.Gdx;
 
-/**
- * Created by Dan on 29.04.2016.
- */
 public class Grid {
     int screenWidth = Gdx.graphics.getWidth();
     int screenHeigth = Gdx.graphics.getHeight();

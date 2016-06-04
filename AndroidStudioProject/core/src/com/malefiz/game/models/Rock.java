@@ -2,9 +2,6 @@ package models;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-/**
- * Created by worm on 12.05.16.
- */
 public class Rock {
     /** id **/
     private int id;

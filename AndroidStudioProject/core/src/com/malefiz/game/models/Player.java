@@ -1,8 +1,5 @@
 package models;
 
-/**
- * Created by Dan on 23.05.2016.
- */
 public class Player {
     private Team team;
     private int index;

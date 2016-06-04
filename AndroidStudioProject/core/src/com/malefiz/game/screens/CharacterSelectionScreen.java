@@ -28,9 +28,6 @@ import models.Mode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by MCLeite on 25.04.2016.
- */
 public class CharacterSelectionScreen implements Screen {
     Skin skin;
     Stage stage;

@@ -4,9 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
 
-/**
- * Created by Dan on 26.04.2016.
- */
 public class Field {
     int ID;
     Color color;

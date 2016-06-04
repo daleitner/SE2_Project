@@ -14,9 +14,6 @@ import models.Team;
 import models.Unit;
 import screens.GameScreen;
 
-/**
- * Created by Dan on 20.05.2016.
- */
 public class GameController {
     private static GameController instance;
     GameScreen gameScreen;

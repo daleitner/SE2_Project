@@ -25,9 +25,6 @@ import java.nio.charset.Charset;
 //import sun.nio.cs.ISO_8859_2;
 //import sun.nio.cs.ext.ISO_8859_11;
 
-/**
- * Created by Dan on 18.05.2016.
- */
 public class WinnerScreen implements Screen{
     SpriteBatch batch;
     Texture logo;

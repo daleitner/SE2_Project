@@ -17,9 +17,6 @@ import controllers.MyMalefiz;
 import models.Grid;
 import models.LanguagePack;
 
-/**
- * Created by Dan on 17.05.2016.
- */
 public class LanguageScreen implements Screen{
     SpriteBatch batch;
     Texture logo;
