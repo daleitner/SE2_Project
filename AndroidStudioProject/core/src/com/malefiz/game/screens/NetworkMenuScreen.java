@@ -23,7 +23,7 @@ import models.LanguagePack;
 import models.Mode;
 import models.Team;
 
-public class MenuScreen implements Screen {
+public class NetworkMenuScreen implements Screen {
     SpriteBatch batch;
     Texture logo;
     Texture backgroundTexture;
@@ -36,7 +36,7 @@ public class MenuScreen implements Screen {
 
     Grid g = new Grid();
 
-    public MenuScreen(MyMalefiz mz, LanguagePack lp)
+    public NetworkMenuScreen(MyMalefiz mz, LanguagePack lp)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -54,7 +54,7 @@ public class MenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
 
-        TextButton startBtn = new TextButton("Mehrspieler (Lokal)"/*lp.getText("startgame")*/, skin, "default");
+        TextButton startBtn = new TextButton("Spiel erstellen", skin, "default");
 
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -63,11 +63,11 @@ public class MenuScreen implements Screen {
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setNumberOfPlayersSelectionScreen();
+                mymalefiz.setConnectionScreen();
             }
         });
 
-        TextButton connectBtn = new TextButton("Mehrspieler (Netzwerk)"/*lp.getText("joingame")*/, skin, "default");
+        TextButton connectBtn = new TextButton("Spiel beitreten", skin, "default");
 
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -76,40 +76,26 @@ public class MenuScreen implements Screen {
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setNetworkMenuScreen();
+                mymalefiz.setConnectionClientScreen();
             }
         });
 
-        TextButton ruleBtn = new TextButton(lp.getText("rules"), skin, "default");
+        TextButton backBtn = new TextButton("Zurück", skin, "default");
 
-        ruleBtn.setWidth(18*g.getUnitSize());
-        ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        ruleBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
-        ruleBtn.getLabel().setFontScale(3.0f);
-        ruleBtn.addListener(new ClickListener(){
+        backBtn.setWidth(18*g.getUnitSize());
+        backBtn.setHeight(2*g.getUnitSize()*g.getRatio());
+        backBtn.setPosition(g.getUnitSize(), 14*g.getUnitSize()*g.getRatio()/2);
+        backBtn.getLabel().setFontScale(3.0f);
+        backBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setRuleScreen();
-            }
-        });
-
-        TextButton exitBtn = new TextButton(lp.getText("leavegame"), skin, "default");
-
-        exitBtn.setWidth(18*g.getUnitSize());
-        exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        exitBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
-        exitBtn.getLabel().setFontScale(3.0f);
-        exitBtn.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                Gdx.app.exit();
+                mymalefiz.setMenuScreen();
             }
         });
 
         stage.addActor(connectBtn);
-        stage.addActor(exitBtn);
-        stage.addActor(ruleBtn);
         stage.addActor(startBtn);
+        stage.addActor(backBtn);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -127,7 +113,7 @@ public class MenuScreen implements Screen {
         batch.draw(logo, 2*g.getUnitSize(), 12*g.getUnitSize()*g.getRatio(), 16*g.getUnitSize(), 7*g.getUnitSize()*g.getRatio());
         batch.end();
         stage.draw();
-        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){mymalefiz.setLanguageScreen();}
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){mymalefiz.setMenuScreen();}
     }
 
     @Override

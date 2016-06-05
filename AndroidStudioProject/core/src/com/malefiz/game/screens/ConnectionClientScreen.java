@@ -35,19 +35,19 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import network.MalefizServer;
+import network.MalefizClient;
 
-public class ConnectionScreen implements Screen {
+public class ConnectionClientScreen implements Screen {
     private SpriteBatch batch;
     private Skin skin;
     private Stage stage;
 
-    private Label labelDetails;
     private Label labelMessage;
     private TextButton button;
+    private TextArea textIPAddress;
     private TextArea textMessage;
 
-    private MalefizServer server;
+    private MalefizClient client;
 
     // Pick a resolution that is 16:9 but not unreadibly small
     public float screenHeight = 960;
@@ -67,40 +67,39 @@ public class ConnectionScreen implements Screen {
         // Wire the stage to receive input, as we are using Scene2d in this example
         Gdx.input.setInputProcessor(stage);
 
-        this.server = new MalefizServer();
 
-
-        String ipAddress = server.getIpAddresses();
-
-
-        // Now setupt our scene UI
+        // The following code loops through the available network interfaces
+        // Keep in mind, there can be multiple interfaces per device, for example
+        // one per NIC, one per active wireless and the loopback
+        // In this case we only care about IPv4 address ( x.x.x.x format )
 
         // Vertical group groups contents vertically.  I suppose that was probably pretty obvious
-       VerticalGroup vg = new VerticalGroup().space(3).pad(5).fill();//.space(2).pad(5).fill();//.space(3).reverse().fill();
+        VerticalGroup vg = new VerticalGroup().space(3).pad(5).fill();//.space(2).pad(5).fill();//.space(3).reverse().fill();
         // Set the bounds of the group to the entire virtual display
         vg.setBounds(0, 0, screenWidth, screenHeight);
 
         // Create our controls
-        labelDetails = new Label(ipAddress,skin);
         labelMessage = new Label("Hello world",skin);
         button = new TextButton("Send message",skin);
+        textIPAddress = new TextArea("",skin);
         textMessage = new TextArea("",skin);
 
         // Add them to scene
-        vg.addActor(labelDetails);
         vg.addActor(labelMessage);
+        vg.addActor(textIPAddress);
         vg.addActor(textMessage);
         vg.addActor(button);
 
         // Add scene to stage
         stage.addActor(vg);
 
-        // Now we create a thread that will listen for incoming socket connections
-        server.startWaitingForClients();
         // Wire up a click listener to our button
         button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+
+                if(client == null)
+                    client = new MalefizClient(textIPAddress.getText());
 
                 // When the button is clicked, get the message text or create a default string value
                 String textToSend = new String();
@@ -109,7 +108,7 @@ public class ConnectionScreen implements Screen {
                 else
                     textToSend = textMessage.getText() + ("\n"); // Brute for a newline so readline gets a line
 
-                server.sendMessage(textToSend);
+                client.sendMessage(textToSend);
             }
         });
     }
@@ -123,13 +122,15 @@ public class ConnectionScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-       // batch.setProjectionMatrix(camera.combined);
+        // batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
-
-        String msg = server.getReceivedMessage();
-        if(!msg.isEmpty())
-            labelMessage.setText(msg);
+        if(client != null) {
+            String msg = client.getReceivedMessage();
+            if (!msg.isEmpty()) {
+                labelMessage.setText(msg);
+                client.clearReceivedMessage();
+            }
+        }
         stage.draw();
         batch.end();
     }

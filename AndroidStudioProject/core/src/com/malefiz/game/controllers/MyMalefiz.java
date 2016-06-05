@@ -10,10 +10,12 @@ import models.LanguagePack;
 import models.Mode;
 import models.Team;
 import screens.CharacterSelectionScreen;
+import screens.ConnectionClientScreen;
 import screens.ConnectionScreen;
 import screens.GameScreen;
 import screens.LanguageScreen;
 import screens.MenuScreen;
+import screens.NetworkMenuScreen;
 import screens.NumberOfPlayersSelectionScreen;
 import screens.RuleScreen;
 import screens.WinnerScreen;
@@ -87,6 +89,14 @@ public class MyMalefiz extends Game {
 	public void setConnectionScreen() {
 		this.connectionController = new ConnectionController(this, lp);
 		setScreen(new ConnectionScreen()); //(this.connectionController));
+	}
+
+	public void setNetworkMenuScreen() {
+		setScreen(new NetworkMenuScreen(this, lp));
+	}
+
+	public void setConnectionClientScreen() {
+		setScreen(new ConnectionClientScreen());
 	}
 
 	public void setLanguagePack(LanguagePack lang)

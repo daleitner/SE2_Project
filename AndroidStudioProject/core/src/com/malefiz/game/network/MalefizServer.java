@@ -20,12 +20,13 @@ import java.util.List;
 
 public class MalefizServer {
     private Thread communicationThread;
+    private Thread receivingThread;
     private String ipAddresses = "";
     private ServerSocket serverSocket;
-    private ArrayList<Socket> clientSockets;
+    private ArrayList<MalefizClientSocket> clientSockets;
     public MalefizServer() {
         this.ipAddresses = setIpAddresses();
-        this.clientSockets = new ArrayList<Socket>();
+        this.clientSockets = new ArrayList<MalefizClientSocket>();
 
         ServerSocketHints serverSocketHint = new ServerSocketHints();
         // 0 means no timeout.  Probably not the greatest idea in production!
@@ -41,22 +42,12 @@ public class MalefizServer {
             @Override
             public void run() {
                 // Loop forever
-                while(true){
+                while(true) {
                     // Create a socket
                     Socket socket = serverSocket.accept(null);
-                    clientSockets.add(socket);
+                    clientSockets.add(new MalefizClientSocket(socket));
                     // Read data from the socket into a BufferedReader
-
-                    /*
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    try {
-                        // Read to the next newline (\n) and display that text on labelMessage
-                        // labelMessage.setText(
-                        buffer.readLine();//);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
+                    System.out.println("socket added");
                 }
             }
         });
@@ -97,6 +88,7 @@ public class MalefizServer {
 
     public void startWaitingForClients() {
         this.communicationThread.start();
+        System.out.println("started listening");
     }
 
     public void stopWaitingForClients() {
@@ -105,13 +97,21 @@ public class MalefizServer {
 
     //sends a message to all clients
     public void sendMessage(String message) {
-        for(Socket socket:this.clientSockets)
+        for(MalefizClientSocket socket:this.clientSockets)
         {
-            try {
-                socket.getOutputStream().write(message.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
+            socket.sendMessage(message);
+        }
+    }
+
+    public String getReceivedMessage() {
+        for(MalefizClientSocket socket:this.clientSockets)
+        {
+            String ret = socket.getReceivedMessage();
+            if(!ret.isEmpty()) {
+                socket.clearReceivedMessage();
+                return ret;
             }
         }
+        return "";
     }
 }
