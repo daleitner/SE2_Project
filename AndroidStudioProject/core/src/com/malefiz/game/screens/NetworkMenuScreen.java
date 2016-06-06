@@ -58,7 +58,7 @@ public class NetworkMenuScreen implements Screen {
 
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        startBtn.setPosition(g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
+        startBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
         startBtn.getLabel().setFontScale(3.0f);
         startBtn.addListener(new ClickListener(){
             @Override
@@ -71,7 +71,7 @@ public class NetworkMenuScreen implements Screen {
 
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        connectBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
+        connectBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
         connectBtn.getLabel().setFontScale(3.0f);
         connectBtn.addListener(new ClickListener(){
             @Override
@@ -80,11 +80,11 @@ public class NetworkMenuScreen implements Screen {
             }
         });
 
-        TextButton backBtn = new TextButton("Zurück", skin, "default");
+        TextButton backBtn = new TextButton("Zurueck", skin, "default");
 
         backBtn.setWidth(18*g.getUnitSize());
         backBtn.setHeight(2*g.getUnitSize()*g.getRatio());
-        backBtn.setPosition(g.getUnitSize(), 14*g.getUnitSize()*g.getRatio()/2);
+        backBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
         backBtn.getLabel().setFontScale(3.0f);
         backBtn.addListener(new ClickListener(){
             @Override
