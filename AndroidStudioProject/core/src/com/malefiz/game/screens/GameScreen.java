@@ -408,6 +408,7 @@ public class GameScreen implements Screen {
                     )) {
                         gc.setRockPosition(selectedRock, f);
                         f.setRock(selectedRock);
+                        //send setContentField|fieldId|"rock"|rockId
                         selectedRock = null;
                     }
 
@@ -553,6 +554,8 @@ public class GameScreen implements Screen {
                                     gc.setDiceRolled();
                                     rolledDiceValue = (int) ((temp.getY() - 50) / (4 * unitSize));
                                     setDiceDisplay(rolledDiceValue);
+                                    elapsedTime = 0;
+                                    animationActive = true;
                                     gc.isPlayerAbleToMove();
                                 }
                                 removeDices();
@@ -647,6 +650,16 @@ public class GameScreen implements Screen {
     public ActionResolver getActionResolver()
     {
         return this.actionResolver;
+    }
+
+    public void setAnimationActive()
+    {
+        animationActive = true;
+    }
+
+    public void resetElapsedTime()
+    {
+        elapsedTime = 0;
     }
 
     public void drawDeco()

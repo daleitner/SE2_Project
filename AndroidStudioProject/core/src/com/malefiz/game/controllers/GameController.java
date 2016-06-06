@@ -119,14 +119,9 @@ public class GameController {
 
 
         int y;
-        if(unit.getUnitCoordY() == 6)
+        if(unit.getUnitCoordY() == 6 || unit.getUnitCoordY() == 5)
         {
             y = (int) (gameScreen.getG().getRatio() * gameScreen.getUnitSize() * unit.getUnitCoordY() - 4 * gameScreen.getUnitSize() - gameScreen.getFieldSize() / 2 + (gameScreen.getG().getRatio()-1)*gameScreen.getUnitSize());
-            unit.getUnitImage().setY(y);
-        }
-        else if(unit.getUnitCoordY() == 5)
-        {
-            y = (int) (gameScreen.getG().getRatio() * gameScreen.getUnitSize() * unit.getUnitCoordY() - 4 * gameScreen.getUnitSize() - gameScreen.getFieldSize() / 2 + 2*(gameScreen.getG().getRatio()-1)*gameScreen.getUnitSize());
             unit.getUnitImage().setY(y);
         }
         else
@@ -154,19 +149,24 @@ public class GameController {
             {
                 setRockPosition(r, null);
                 nextPosition.setRock(null);
+                // send rockOnField "|setFieldContent|nextposition.getId()|null]|null"
                 gameScreen.setSelectedRock(null);
+                // send rock position "setRockPosition;rockId;fieldId"
             }
 
             if(u != null)
             {
                 u.setPosition(u.getStartPosition());
                 setUnitImagePosition(u);
+                // send unit position "setUnitPosition;unitId;fieldId"
             }
             unit.currentFieldPosition.setUnit(null);
-
+            // "|setFieldContent|currentFieldPosition.getId()|null|null"
             unit.setPosition(nextPosition);
             setUnitImagePosition(unit);
+            // send unit position "setUnitPosition;unitId;fieldId"
             nextPosition.setUnit(unit);
+            // "|"setFieldContent"|nextPosition.getId()|"unit"|unit.getId"
             clearPossibleMoves();
             unitMoved = true;
 
@@ -418,6 +418,7 @@ public class GameController {
             System.out.println("rock small");
             rock.setPosition(field);
             setRockImagePosition(rock);
+            // send rock position
             rock.setTaken(false);
             rockTaken = false;
 
