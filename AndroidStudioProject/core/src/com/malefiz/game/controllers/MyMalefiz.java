@@ -29,6 +29,7 @@ public class MyMalefiz extends Game {
 	private CharacterSelectionController characterSelectionController;
 	private NumberOfPlayersSelectionController numberOfPlayersSelectionController;
 	private ConnectionController connectionController;
+	private ConnectionClientController connectionClientController;
 	public ActionResolver actionResolver;
 
 	private LanguagePack lp = new LanguagePack("ger");
@@ -88,7 +89,7 @@ public class MyMalefiz extends Game {
 
 	public void setConnectionScreen() {
 		this.connectionController = new ConnectionController(this, lp);
-		setScreen(new ConnectionScreen()); //(this.connectionController));
+		setScreen(new ConnectionScreen((this.connectionController)));
 	}
 
 	public void setNetworkMenuScreen() {
@@ -96,7 +97,8 @@ public class MyMalefiz extends Game {
 	}
 
 	public void setConnectionClientScreen() {
-		setScreen(new ConnectionClientScreen());
+		this.connectionClientController = new ConnectionClientController(this, lp);
+		setScreen(new ConnectionClientScreen(this.connectionClientController));
 	}
 
 	public void setLanguagePack(LanguagePack lang)

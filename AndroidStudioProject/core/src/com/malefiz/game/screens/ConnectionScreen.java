@@ -2,10 +2,12 @@ package screens;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.net.ServerSocket;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -35,119 +38,132 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
+import controllers.ConnectionController;
+import controllers.MyMalefiz;
+import models.Grid;
+import models.LanguagePack;
 import network.MalefizServer;
 
 public class ConnectionScreen implements Screen {
-    private SpriteBatch batch;
-    private Skin skin;
-    private Stage stage;
+    SpriteBatch batch;
+    Texture backgroundTexture;
+    int screenHeight;
+    int screenWidth;
+    Stage stage;
+    private ConnectionController controller;
+    Skin skin;
+    Grid g = new Grid();
 
-    private Label labelDetails;
-    private Label labelMessage;
-    private TextButton button;
-    private TextArea textMessage;
+    private Label labelIPAddresses;
+    private Label labelJoinedPlayers;
+    private TextButton playButton;
+    private TextButton cancelButton;
 
-    private MalefizServer server;
-
-    // Pick a resolution that is 16:9 but not unreadibly small
-    public float screenHeight = 960;
-    public float screenWidth = 540;
-
+    public ConnectionScreen(ConnectionController controller)
+    {
+        this.controller = controller;
+    }
 
     @Override
     public void show() {
         batch = new SpriteBatch();
-
+        backgroundTexture = new Texture("bg-startscreen.jpg");
         screenHeight = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
-        // Load our UI skin from file.  Once again, I used the files included in the tests.
-        // Make sure default.fnt, default.png, uiskin.[atlas/json/png] are all added to your assets
-        skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
+
         stage = new Stage();
-        // Wire the stage to receive input, as we are using Scene2d in this example
-        Gdx.input.setInputProcessor(stage);
-
-        this.server = new MalefizServer();
-
-
-        String ipAddress = server.getIpAddresses();
-
-
-        // Now setupt our scene UI
-
-        // Vertical group groups contents vertically.  I suppose that was probably pretty obvious
-       VerticalGroup vg = new VerticalGroup().space(3).pad(5).fill();//.space(2).pad(5).fill();//.space(3).reverse().fill();
+        skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
+        VerticalGroup vg = new VerticalGroup().space(3).pad(5).fill();//.space(2).pad(5).fill();//.space(3).reverse().fill();
         // Set the bounds of the group to the entire virtual display
-        vg.setBounds(0, 0, screenWidth, screenHeight);
+        vg.setBounds(0, screenHeight/2, screenWidth, screenHeight/2);
+        String ipAddress = this.controller.getIpAddresses();
+        this.labelIPAddresses = new Label(ipAddress,skin);
+        /*this.labelIPAddresses.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
+        this.labelIPAddresses.setWidth(18*g.getUnitSize());
+        this.labelIPAddresses.setHeight(4*g.getUnitSize()*g.getRatio());
+        this.labelIPAddresses.setFontScale(5);
+        this.labelIPAddresses.setAlignment(Align.center);*/
+        //stage.addActor(this.labelIPAddresses);
+        vg.addActor(this.labelIPAddresses);
 
-        // Create our controls
-        labelDetails = new Label(ipAddress,skin);
-        labelMessage = new Label("Hello world",skin);
-        button = new TextButton("Send message",skin);
-        textMessage = new TextArea("",skin);
-
-        // Add them to scene
-        vg.addActor(labelDetails);
-        vg.addActor(labelMessage);
-        vg.addActor(textMessage);
-        vg.addActor(button);
-
-        // Add scene to stage
+        this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
+        /*this.labelJoinedPlayers.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
+        this.labelJoinedPlayers.setWidth(18*g.getUnitSize());
+        this.labelJoinedPlayers.setHeight(4*g.getUnitSize()*g.getRatio());
+        this.labelJoinedPlayers.setFontScale(5);
+        this.labelJoinedPlayers.setAlignment(Align.center);*/
+        //stage.addActor(this.labelJoinedPlayers);
+        vg.addActor(this.labelJoinedPlayers);
         stage.addActor(vg);
 
-        // Now we create a thread that will listen for incoming socket connections
-        server.startWaitingForClients();
-        // Wire up a click listener to our button
-        button.addListener(new ClickListener(){
+        this.cancelButton =  new TextButton(this.controller.getLanguagePack().getText("cancel"), skin, "default");
+
+        this.cancelButton.setWidth((int)(8.5f*g.getUnitSize()));
+        this.cancelButton.setHeight(2* g.getUnitSize()*g.getRatio());
+        this.cancelButton.setPosition(g.getUnitSize(), g.getUnitSize());
+        this.cancelButton.getLabel().setFontScale(3.0f);
+        this.cancelButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-
-                // When the button is clicked, get the message text or create a default string value
-                String textToSend = new String();
-                if(textMessage.getText().length() == 0)
-                    textToSend = "Doesn't say much but likes clicking buttons\n";
-                else
-                    textToSend = textMessage.getText() + ("\n"); // Brute for a newline so readline gets a line
-
-                server.sendMessage(textToSend);
+                controller.switchToNetworkMenuScreen();
             }
         });
-    }
+        stage.addActor(this.cancelButton);
 
-    @Override
-    public void dispose() {
-        batch.dispose();
+        this.playButton = new TextButton(this.controller.getLanguagePack().getText("next"), skin, "default");
+
+        this.playButton.setWidth((int)(8.5*g.getUnitSize()));
+        this.playButton.setHeight(2*g.getUnitSize()*g.getRatio());
+        this.playButton.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
+        this.playButton.getLabel().setFontScale(3.0f);
+        this.playButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                controller.switchToCharacterSelectionScreen();
+            }
+        });
+        stage.addActor(this.playButton);
+
+        this.controller.startWaitingForClients();
+        Gdx.input.setInputProcessor(stage);
+
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-       // batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
-
-        String msg = server.getReceivedMessage();
-        if(!msg.isEmpty())
-            labelMessage.setText(msg);
-        stage.draw();
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
+        stage.draw();
+
+        this.labelJoinedPlayers.setText(this.controller.getPlayersString());
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){controller.switchToNetworkMenuScreen();}
     }
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width,height,true);
+
     }
 
     @Override
     public void pause() {
+
     }
 
     @Override
     public void resume() {
+
     }
 
     @Override
     public void hide() {
 
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
     }
 }

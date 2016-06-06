@@ -27,7 +27,7 @@ public class MalefizClient {
             @Override
             public void run() {
                 // Loop forever
-                while(true){
+                while(!Thread.currentThread().isInterrupted()){
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     try {
@@ -56,28 +56,16 @@ public class MalefizClient {
         }
     }
 
-    /*public String receiveMessage() {
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            try {
-                // Read to the next newline (\n) and display that text on labelMessage
-                // labelMessage.setText(
-                String ret = buffer.readLine();//);
-                if(ret != null && !ret.isEmpty()) {
-                    System.out.println("received a message:" + ret);
-                    return ret;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        return "";
-    }*/
-
     public String getReceivedMessage() {
         return receivedMessage;
     }
 
     public void clearReceivedMessage() {
         this.receivedMessage = "";
+    }
+
+    public void disconnect() {
+        this.receivingThread.interrupt();
+        this.socket.dispose();
     }
 }

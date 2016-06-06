@@ -17,11 +17,12 @@ public class MalefizClientSocket {
             @Override
             public void run() {
                 // Loop forever
-                while(true){
+                while(!Thread.currentThread().isInterrupted()){
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     try {
                         // Read to the next newline (\n) and display that text on labelMessage
+                        System.out.println("wait for a message  ");
                         String ret = buffer.readLine();
                         if(ret != null && !ret.isEmpty()) {
                             System.out.println("received a message:" + ret);
@@ -52,5 +53,11 @@ public class MalefizClientSocket {
 
     public void clearReceivedMessage() {
         this.receivedMessage = "";
+    }
+
+    public void disconnect(){
+        this.receivingThread.interrupt();
+        this.socket.dispose();
+
     }
 }

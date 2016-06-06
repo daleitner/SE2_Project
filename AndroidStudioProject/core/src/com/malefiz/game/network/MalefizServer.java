@@ -5,6 +5,7 @@ import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +21,6 @@ import java.util.List;
 
 public class MalefizServer {
     private Thread communicationThread;
-    private Thread receivingThread;
     private String ipAddresses = "";
     private ServerSocket serverSocket;
     private ArrayList<MalefizClientSocket> clientSockets;
@@ -42,12 +42,16 @@ public class MalefizServer {
             @Override
             public void run() {
                 // Loop forever
-                while(true) {
+                while(!Thread.currentThread().isInterrupted()) {
                     // Create a socket
-                    Socket socket = serverSocket.accept(null);
-                    clientSockets.add(new MalefizClientSocket(socket));
-                    // Read data from the socket into a BufferedReader
-                    System.out.println("socket added");
+                    try {
+                        Socket socket = serverSocket.accept(null);
+                        clientSockets.add(new MalefizClientSocket(socket));
+                        // Read data from the socket into a BufferedReader
+                        System.out.println("socket added");
+                    } catch(GdxRuntimeException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -113,5 +117,15 @@ public class MalefizServer {
             }
         }
         return "";
+    }
+
+    public void disconnect() {
+        for(MalefizClientSocket socket:this.clientSockets) {
+            socket.disconnect();
+        }
+        this.communicationThread.interrupt();
+        this.serverSocket.dispose();
+
+
     }
 }
