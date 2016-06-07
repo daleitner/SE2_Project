@@ -54,6 +54,7 @@ public class ConnectionClientScreen implements Screen {
 
     private Label labelJoinedPlayers;
     private TextArea textIPAddress;
+    private TextArea textNickName;
     private TextButton playButton;
     private TextButton cancelButton;
 
@@ -74,7 +75,7 @@ public class ConnectionClientScreen implements Screen {
         VerticalGroup vg = new VerticalGroup().space(3).pad(5).fill();//.space(2).pad(5).fill();//.space(3).reverse().fill();
         // Set the bounds of the group to the entire virtual display
         vg.setBounds(0, screenHeight/2, screenWidth, screenHeight/2);
-        Label labelIPAddresses = new Label("IP-Adresse:",skin);
+        Label labelIPAddresses = new Label("Server IP-Adresse:",skin);
         /*this.labelIPAddresses.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         this.labelIPAddresses.setWidth(18*g.getUnitSize());
         this.labelIPAddresses.setHeight(4*g.getUnitSize()*g.getRatio());
@@ -84,6 +85,10 @@ public class ConnectionClientScreen implements Screen {
         vg.addActor(labelIPAddresses);
         this.textIPAddress = new TextArea("192.168.1.1", skin);
         vg.addActor(this.textIPAddress);
+        Label labelNickName = new Label("Nickname:", skin);
+        vg.addActor(labelNickName);
+        this.textNickName = new TextArea("Spieler2", skin);
+        vg.addActor(this.textNickName);
         this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
         /*this.labelJoinedPlayers.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         this.labelJoinedPlayers.setWidth(18*g.getUnitSize());
@@ -133,6 +138,7 @@ public class ConnectionClientScreen implements Screen {
         batch.end();
         stage.draw();
         this.controller.setServerIPAddress(this.textIPAddress.getText());
+        this.controller.setNickName(this.textNickName.getText());
         this.labelJoinedPlayers.setText(this.controller.getPlayersString());
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){controller.switchToNetworkMenuScreen();}
     }

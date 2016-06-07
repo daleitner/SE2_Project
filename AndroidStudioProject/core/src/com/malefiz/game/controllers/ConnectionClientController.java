@@ -3,6 +3,8 @@ package controllers;
 import models.LanguagePack;
 import models.Mode;
 import network.MalefizClient;
+import network.MessageObject;
+import network.MessageTypeEnum;
 
 public class ConnectionClientController {
     private MyMalefiz mainClass;
@@ -10,11 +12,11 @@ public class ConnectionClientController {
     private MalefizClient client;
     private String playersString;
     private String serverIPAddress;
+    private String nickName;
 
     public ConnectionClientController(MyMalefiz mainClass, LanguagePack lp) {
         this.mainClass = mainClass;
         this.lp = lp;
-        //this.client = new MalefizClient();
         this.playersString = "Players:";
     }
 
@@ -40,6 +42,14 @@ public class ConnectionClientController {
         this.serverIPAddress = serverIPAddress;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public String getPlayersString() {
         if(this.client == null)
             return this.playersString;
@@ -53,6 +63,6 @@ public class ConnectionClientController {
     public void connect() {
         if(this.client == null)
             this.client = new MalefizClient(this.serverIPAddress);
-        client.sendMessage("connect\n");
+        client.sendMessage(new MessageObject(this.nickName, MessageTypeEnum.Connect, null).getMessage());
     }
 }

@@ -10,8 +10,11 @@ public class MalefizClientSocket {
     private Socket socket;
     private Thread receivingThread;
     private String receivedMessage = "";
-    public MalefizClientSocket(Socket _socket) {
+    private String nickName;
+    public MalefizClientSocket(String _nickName, Socket _socket) {
         this.socket = _socket;
+        this.nickName = _nickName;
+        this.receivedMessage = _nickName;
         this.receivingThread = new Thread(new Runnable(){
 
             @Override
@@ -22,7 +25,6 @@ public class MalefizClientSocket {
 
                     try {
                         // Read to the next newline (\n) and display that text on labelMessage
-                        System.out.println("wait for a message  ");
                         String ret = buffer.readLine();
                         if(ret != null && !ret.isEmpty()) {
                             System.out.println("received a message:" + ret);
@@ -47,12 +49,14 @@ public class MalefizClientSocket {
         }
     }
 
-    public String getReceivedMessage() {
-        return receivedMessage;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void clearReceivedMessage() {
+    public String getReceivedMessage() {
+        String ret = this.receivedMessage;
         this.receivedMessage = "";
+        return ret;
     }
 
     public void disconnect(){

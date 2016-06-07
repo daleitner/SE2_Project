@@ -19,13 +19,14 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
+
 public class MalefizServer {
     private Thread communicationThread;
-    private String ipAddresses = "";
+    private String ipAddress = "";
     private ServerSocket serverSocket;
     private ArrayList<MalefizClientSocket> clientSockets;
     public MalefizServer() {
-        this.ipAddresses = setIpAddresses();
+        this.ipAddress = setIpAddress();
         this.clientSockets = new ArrayList<MalefizClientSocket>();
 
         ServerSocketHints serverSocketHint = new ServerSocketHints();
@@ -46,9 +47,20 @@ public class MalefizServer {
                     // Create a socket
                     try {
                         Socket socket = serverSocket.accept(null);
-                        clientSockets.add(new MalefizClientSocket(socket));
-                        // Read data from the socket into a BufferedReader
-                        System.out.println("socket added");
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        // Read to the next newline (\n) and display that text on labelMessage
+                        String ret = buffer.readLine();
+                        if(ret != null && !ret.isEmpty()) {
+                            System.out.println("received first message:" + ret);
+                            MessageObject obj = MessageObject.MessageToMessageObject(ret);
+                            if(obj.getMessageType() == MessageTypeEnum.Connect){
+                                clientSockets.add(new MalefizClientSocket(obj.getNickName(), socket));
+                                // Read data from the socket into a BufferedReader
+                                System.out.println("socket added");
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     } catch(GdxRuntimeException ex) {
                         ex.printStackTrace();
                     }
@@ -57,7 +69,7 @@ public class MalefizServer {
         });
     }
 
-    private String setIpAddresses() {
+    private String setIpAddress() {
         // The following code loops through the available network interfaces
         // Keep in mind, there can be multiple interfaces per device, for example
         // one per NIC, one per active wireless and the loopback
@@ -69,25 +81,26 @@ public class MalefizServer {
                 for(InetAddress address : Collections.list(ni.getInetAddresses()))
                 {
                     if(address instanceof Inet4Address){
-                        addresses.add(address.getHostAddress());
+                        if(!address.getHostAddress().contains("127.0.0.1"))
+                            addresses.add(address.getHostAddress());
                     }
                 }
             }
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
-        // Print the contents of our array to a string.  Yeah, should have used StringBuilder
+        return addresses.get(0);
+        /*// Print the contents of our array to a string.  Yeah, should have used StringBuilder
         String ipAddress = new String("");
         for(String str:addresses)
         {
             ipAddress = ipAddress + str + "\n";
         }
-        return ipAddress;
+        return ipAddress;*/
     }
 
-    public String getIpAddresses() {
-        return this.ipAddresses;
+    public String getIpAddress() {
+        return this.ipAddress;
     }
 
     public void startWaitingForClients() {
@@ -107,16 +120,15 @@ public class MalefizServer {
         }
     }
 
-    public String getReceivedMessage() {
+    public String getConnectedPlayers() {
+        String ret = "";
         for(MalefizClientSocket socket:this.clientSockets)
         {
-            String ret = socket.getReceivedMessage();
-            if(!ret.isEmpty()) {
-                socket.clearReceivedMessage();
-                return ret;
-            }
+            ret += socket.getNickName() + "\n";
         }
-        return "";
+        if(!ret.isEmpty())
+            ret = ret.substring(0, ret.length()-1);
+        return ret;
     }
 
     public void disconnect() {
