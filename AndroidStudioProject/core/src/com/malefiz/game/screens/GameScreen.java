@@ -528,11 +528,11 @@ public class GameScreen implements Screen {
     public void drawRiggedDice() {
         boolean visible = false;
         riggedDiceDisplay = new Image(new Sprite(new Texture(Gdx.files.internal("dice_idle.png"))));
-        riggedDiceDisplay.setX(unitSize*10);
-        riggedDiceDisplay.setY(unitSize/2);
-        riggedDiceDisplay.setWidth(4*unitSize);
-        riggedDiceDisplay.setHeight(4*unitSize);
-        stage.addActor(riggedDiceDisplay);
+            riggedDiceDisplay.setX(unitSize*10);
+            riggedDiceDisplay.setY(unitSize/2);
+            riggedDiceDisplay.setWidth(4*unitSize);
+            riggedDiceDisplay.setHeight(4*unitSize);
+            stage.addActor(riggedDiceDisplay);
         riggedDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 if(riggedDices.size() == 0)
