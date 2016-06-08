@@ -18,9 +18,23 @@ public class Dice {
     private Texture texture;            // Das Bild des Würfel selbst
     private Sprite dice_idle;
 
+    Texture text1;
+    Texture text2;
+    Texture text3;
+    Texture text4;
+    Texture text5;
+    Texture text6;
+
     public Dice(int id, int range) {
         this.range = range;
         this.dice_idle = new Sprite(new Texture(Gdx.files.internal("dice_idle.png")));
+
+        this.text1 = new Texture(Gdx.files.internal("dice_one.png"));
+        this.text2 = new Texture(Gdx.files.internal("dice_two.png"));
+        this.text3 = new Texture(Gdx.files.internal("dice_three.png"));
+        this.text4 = new Texture(Gdx.files.internal("dice_four.png"));
+        this.text5 = new Texture(Gdx.files.internal("dice_five.png"));
+        this.text6 = new Texture(Gdx.files.internal("dice_six.png"));
 
     }
 
@@ -39,24 +53,25 @@ public class Dice {
     public Sprite setImage(int number) {
         switch (number) {
             case 1:
-                texture = new Texture(Gdx.files.internal("dice_one.png"));
+                texture = text1;
                 break;
             case 2:
-                texture = new Texture(Gdx.files.internal("dice_two.png"));
+                texture = text2;
                 break;
             case 3:
-                texture = new Texture(Gdx.files.internal("dice_three.png"));
+                texture = text3;
                 break;
             case 4:
-                texture = new Texture(Gdx.files.internal("dice_four.png"));
+                texture = text4;
                 break;
             case 5:
-                texture = new Texture(Gdx.files.internal("dice_five.png"));
+                texture = text5;
                 break;
             case 6:
-                texture = new Texture(Gdx.files.internal("dice_six.png"));
+                texture = text6;
                 break;
             default:
+                System.out.println("Falscher Dicevalue uebergeben!");
         }
         dice_picture = new Sprite(texture);
         return dice_picture;
@@ -74,19 +89,18 @@ public class Dice {
     wieder ein Input kommt.
     */
     public Sprite rollDice() {
-        int result = random();
+        int result = (int)(Math.random()*6+1);
+        value = result;
         return setImage(result);
     }
 
     public Sprite rollDice(int dice)
     {
+        value = dice;
         return setImage(dice);
     }
 
-    public int random() {
-        value = rng.nextInt(range) + 1;
-        return value;
-    }
+
     public Animation createAnimation() {
         TextureRegion tex1 = new TextureRegion(new Texture(Gdx.files.internal("dice_one.png")));
         TextureRegion tex2 = new TextureRegion(new Texture(Gdx.files.internal("dice_two.png")));

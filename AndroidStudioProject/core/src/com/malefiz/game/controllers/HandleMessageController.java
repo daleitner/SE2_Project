@@ -25,14 +25,10 @@ public class HandleMessageController {
         // "|command|unitID|newPositionID|"
         if (splitMessage[0].equals("setUnit"))
         {
-        Unit u = getUnitById(Integer.parseInt(splitMessage[1]));
-            for (Field f : fields) {
-                if (f.getID() == Integer.parseInt(splitMessage[2])){
-                    u.setPosition(f);
-                    gameController.setUnitImagePosition(u);
-                }
-            }
-
+            Unit u = getUnitById(Integer.parseInt(splitMessage[1]));
+            Field f = getFieldById(Integer.parseInt(splitMessage[2]));
+            u.setPosition(f);
+            gameController.setUnitImagePosition(u);
         }
 
         // "|command|fieldId|Content["rock" || "unit" || "null"]|(RockId || UnitId)"
@@ -62,11 +58,6 @@ public class HandleMessageController {
             gameScreen.setDiceDisplay(Integer.parseInt(splitMessage[1]));
             gameScreen.setAnimationActive();
             gameScreen.resetElapsedTime();
-        }
-        //""
-        else if(splitMessage[0].equals("rollDice"))
-        {
-
         }
     }
 

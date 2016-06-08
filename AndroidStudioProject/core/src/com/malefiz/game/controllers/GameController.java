@@ -87,7 +87,6 @@ public class GameController {
      */
     private void getNextPlayer()
     {
-
         int idx = actualPlayer.getIndex();
         reset();
         actualPlayer =  players.get((idx+1)%players.size());
@@ -119,9 +118,14 @@ public class GameController {
 
 
         int y;
-        if(unit.getUnitCoordY() == 6 || unit.getUnitCoordY() == 5)
+        if(unit.getUnitCoordY() == 6)
         {
             y = (int) (gameScreen.getG().getRatio() * gameScreen.getUnitSize() * unit.getUnitCoordY() - 4 * gameScreen.getUnitSize() - gameScreen.getFieldSize() / 2 + (gameScreen.getG().getRatio()-1)*gameScreen.getUnitSize());
+            unit.getUnitImage().setY(y);
+        }
+        else if(unit.getUnitCoordY() == 5)
+        {
+            y = (int) (gameScreen.getG().getRatio() * gameScreen.getUnitSize() * unit.getUnitCoordY() - 4 * gameScreen.getUnitSize() - gameScreen.getFieldSize() / 2 + 2*(gameScreen.getG().getRatio()-1)*gameScreen.getUnitSize());
             unit.getUnitImage().setY(y);
         }
         else

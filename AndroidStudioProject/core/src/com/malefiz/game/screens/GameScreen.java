@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -35,7 +37,7 @@ import models.Team;
 import models.Unit;
 
 public class GameScreen implements Screen {
-
+    boolean shake = false;
     private MyMalefiz mainClass = null;
     private LanguagePack lp;
     private Player player;
@@ -74,6 +76,7 @@ public class GameScreen implements Screen {
 
     /* dice */
     Dice normalDice = new Dice(1,6);
+    Image shakeDiceDisplay = null;
     Image normalDiceDisplay = null;
     Image riggedDiceDisplay = null;
     Image diceDisplay = null;
@@ -181,6 +184,7 @@ public class GameScreen implements Screen {
         gc.init();
         this.mode = mode;
         this.actionResolver = actionResolver;
+
         show();
 
     }
@@ -229,6 +233,8 @@ public class GameScreen implements Screen {
 
         elapsedTime = 1;
         startTime = 0;
+
+        actionResolver.shiftGameScreen(this);
     }
 
     @Override
@@ -550,7 +556,7 @@ public class GameScreen implements Screen {
                             public void clicked(InputEvent ev, float x, float y)
                             {
                                 //Implementierung der Würfelzahlübergabe
-                                if(!gc.getPlayerAbleToMove()) {
+                                if(!gc.getPlayerAbleToMove() && elapsedTime >=1 ) {
                                     gc.setDiceRolled();
                                     rolledDiceValue = (int) ((temp.getY() - 50) / (4 * unitSize));
                                     setDiceDisplay(rolledDiceValue);
@@ -604,14 +610,13 @@ public class GameScreen implements Screen {
                     gc.isPlayerAbleToMove();
                     removeRandomDiceDisplay();
                     animationActive = true;
-                    System.out.println("rolled dice value is = " + rolledDiceValue);
                 }
             }
         });
     }
 
     public void removeRandomDiceDisplay() {
-        randomDiceDisplay.remove();
+        if(randomDiceDisplay.isVisible()) randomDiceDisplay.remove();
     }
 
     public boolean isAnimationActive()
@@ -683,5 +688,43 @@ public class GameScreen implements Screen {
         forest.setWidth(4*unitSize);
         forest.setHeight(1.3f*unitSize*g.getRatio());
         stage.addActor(forest);
+    }
+
+    public void forceDice()
+    {
+        /*if(!gc.getPlayerAbleToMove() && elapsedTime >=1 ) {
+            removeRandomDiceDisplay();
+            gc.setDiceRolled();
+            normalDice.rollDice();
+            setDiceDisplay(normalDice.getValue());
+            rolledDiceValue = normalDice.getValue();
+            System.out.println("normaldice.getvalue = " + normalDice.getValue());
+            elapsedTime = 0;
+            animationActive = true;
+            gc.isPlayerAbleToMove();
+        }*/
+        if(randomDiceDisplay.isVisible())
+        {
+            if(!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                elapsedTime = 0;
+                drawDice();
+                gc.setDiceRolled();
+                rolledDiceValue = normalDice.getValue();
+                gc.isPlayerAbleToMove();
+                removeRandomDiceDisplay();
+                animationActive = true;
+            }
+        }
+        else
+        {
+            if(!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                elapsedTime = 0;
+                drawDice();
+                gc.setDiceRolled();
+                rolledDiceValue = normalDice.getValue();
+                gc.isPlayerAbleToMove();
+                animationActive = true;
+            }
+        }
     }
 }
