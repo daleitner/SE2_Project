@@ -108,9 +108,10 @@ public class GameController {
         gameScreen.getActionResolver().showToast("Bitte würfeln!");
     }
 
-    /* set scaling and image position of unit */
-    /* muss noch auf die units angepasst werden */
-    // scaling muss noch ueberarbeitet werden momentan nur von field uebernommen
+    /**
+     * Setzte das Bild einer ausgewaehlten Unit auf ihre akuelle Position (currentposition)
+     * @param unit
+     */
     public void setUnitImagePosition (Unit unit) {
 
         unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getCurrentFieldPosition().getCoordX() - (unit.getUnitImage().getImageWidth()/2));
@@ -138,6 +139,13 @@ public class GameController {
         unit.getUnitImage().setWidth(gameScreen.getFieldSize()*2);
     }
 
+    /**
+     * Bewegt Unit
+     * checked ob der Zug moeglich ist
+     * checked ob ein stein aufgenommen oder eine unit geschlagen wird
+     * @param nextPosition
+     * @param unit
+     */
     public void moveUnit (Field nextPosition, Unit unit) {
         if(gameScreen.getBoard().getFieldByID(112).equals(nextPosition))
         {
@@ -179,6 +187,11 @@ public class GameController {
 
     }
 
+    /**
+     * Gibt eine Liste mit allen Nachbarfeldern eines uebergebenen Felds(field) zurueck
+     * @param field
+     * @return neighbours
+     */
     private ArrayList<Field> getNeighbourFieldsOfField (Field field) {
         ArrayList<Field> neighbours= new ArrayList<Field>();
         for (Integer id : field.getNeighbouringFields()) {
@@ -191,6 +204,15 @@ public class GameController {
         return neighbours;
     }
 
+    /**
+     * Ermittelt alle moeglichen Zuege anhand einer ausgewaehlten Unit und des gewuerfelten Wertes
+     * Vergroessert die Bilder aller moeglichen Felder zur besseren auswahl
+     * return true: Die ausgewaehlte Unit hat mindestens einen moeglichen Zug
+     * return false: Die ausgewaehlte Unit hat keinen moeglichen Zug
+     * @param rolledDiceValue
+     * @param unitPosition
+     * @return
+     */
     public boolean checkPossibleMoves(int rolledDiceValue, Field unitPosition) {
 
         ArrayList<Field> possibleFields = new ArrayList<Field>();
@@ -275,6 +297,10 @@ public class GameController {
         //todo if unit current pos == start pos
     }
 
+    /**
+     * Clear Arraylist possilbeMoves
+     * setzte die groesse dieser Felder auf die normale groesse zurueck
+     */
     public void clearPossibleMoves () {
         if (gameScreen.getPossibleMoves() != null) {
             for (Field f : gameScreen.getPossibleMoves()) {
@@ -283,6 +309,7 @@ public class GameController {
         }
         gameScreen.setPossibleMoves(null);
     }
+
 
     // 0 for standard field size; 1 for selected size
     public void setFieldPosScal(Field field, int selected) {
@@ -346,6 +373,11 @@ public class GameController {
         this.gameScreen = gameScreen;
     }
 
+    /**
+     * Ueberprueft ein Spieler einen moeglichen Zug hat
+     * @param team
+     * @return
+     */
     public boolean playerAbleToMove (Team team) {
         for (Unit unit : gameScreen.getUnits()) {
             if (getActualTeam() == unit.getTeam()) {

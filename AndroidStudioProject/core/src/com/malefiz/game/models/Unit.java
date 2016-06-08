@@ -8,12 +8,12 @@ public class Unit {
     private int id;
     /** related to team of player **/
     public final Team team;
-    /** position current **/
+    /** position current + coords **/
     public int coordX;
     public int coordY;
+    public Field currentFieldPosition;
 
     public Image unitImage;
-    public Field currentFieldPosition;
     public Field startPosition;
 
 
@@ -25,6 +25,10 @@ public class Unit {
         this.id = id;
     }
 
+    /**
+     * Versetzt diese Unit auf eine neue Position (Field)
+     * @param newPosition
+     */
     public void setPosition(Field newPosition){
         this.coordX = newPosition.getCoordX();
         this.coordY = newPosition.getCoordY();
@@ -63,8 +67,6 @@ public class Unit {
     public Field getCurrentFieldPosition() {
         return this.currentFieldPosition;
     }
-
-
 
 
 }
