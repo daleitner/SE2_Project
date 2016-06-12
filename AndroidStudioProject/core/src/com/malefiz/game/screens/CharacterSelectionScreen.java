@@ -171,7 +171,7 @@ public class CharacterSelectionScreen implements Screen {
             this.nextBtn.setTouchable(Touchable.disabled);
 
         //if(this.controller.getSelectedCharacter() != null || !this.controller.isCharacterMapEmpty()) {
-            if(this.controller.getMode() == Mode.NETWORK)
+          /*  if(this.controller.getMode() == Mode.NETWORK)
             {
                 for (int i = 0; i < this.controller.getCharacters().size(); i++) {
                     Avatar character = this.controller.getCharacters().get(i);
@@ -189,7 +189,7 @@ public class CharacterSelectionScreen implements Screen {
                 }
             }
             else
-            {
+            {*/
                 for (int i = 0; i < this.controller.getCharacters().size(); i++) {
                     Avatar character = this.controller.getCharacters().get(i);
                     if(controller.isCharacterEnabled(i)) {
@@ -214,7 +214,7 @@ public class CharacterSelectionScreen implements Screen {
                     }
 
                 }
-            }
+           // }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 

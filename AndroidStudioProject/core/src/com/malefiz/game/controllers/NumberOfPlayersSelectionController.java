@@ -46,6 +46,6 @@ public class NumberOfPlayersSelectionController {
     }
 
     public void switchToCharacterSelectionScreen() {
-        this.mainClass.setCharacterSelectionScreen(Mode.LOCAL, this.selectedNumberOfPlayers);
+        this.mainClass.setLocalCharacterSelectionScreen(this.selectedNumberOfPlayers);
     }
 }

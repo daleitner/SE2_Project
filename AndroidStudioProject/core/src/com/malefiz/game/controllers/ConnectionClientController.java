@@ -31,7 +31,7 @@ public class ConnectionClientController {
     }
 
     public void switchToCharacterSelectionScreen(int playerCount) {
-        this.mainClass.setCharacterSelectionScreen(Mode.NETWORK, playerCount);
+        this.mainClass.setRemoteCharacterSelectionScreen(playerCount, this.client);
     }
 
     public String getServerIPAddress() {

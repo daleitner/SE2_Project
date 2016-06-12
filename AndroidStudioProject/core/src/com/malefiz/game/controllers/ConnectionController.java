@@ -43,7 +43,7 @@ public class ConnectionController  {
         ArrayList<String>infos = new ArrayList<String>();
         infos.add(Integer.toString(count));
         this.server.sendMessage(new MessageObject(this.client.getNickName(), MessageTypeEnum.GoToCharacterSelection, infos).getMessage());
-        this.mainClass.setCharacterSelectionScreen(Mode.NETWORK, count);
+        this.mainClass.setRemoteCharacterSelectionScreen(count, this.client);
     }
 
     public String getIpAddresses() {

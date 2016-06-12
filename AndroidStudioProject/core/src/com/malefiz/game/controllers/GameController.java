@@ -15,7 +15,6 @@ import models.Unit;
 import screens.GameScreen;
 
 public class GameController {
-    private static GameController instance;
     GameScreen gameScreen;
     HashMap<Integer, Player> players = new HashMap<Integer, Player>();
     Player actualPlayer;
@@ -26,27 +25,10 @@ public class GameController {
     private boolean rockTaken;
 
 
-    private GameController(){}
-
-    /**
-     * Liefert die Instanz des GameControllers zurück
-     * @return GameController-Instanz
-     */
-    public static GameController getInstance()
-    {
-        if(instance == null)
-        {
-            instance = new GameController();
-        }
-        return instance;
-    }
-
-    /**
-     * Initialisiert die erste Runde
-     */
-    public void init()
-    {
-        actualPlayer = players.get(0);
+    public GameController(GameScreen gameScreen, HashMap<Integer, Player> _players){
+        this.gameScreen = gameScreen;
+        this.players = _players;
+        this.actualPlayer = this.players.get(0);
         reset();
     }
 
@@ -369,10 +351,6 @@ public class GameController {
         rock.getRockImage().setWidth(gameScreen.getFieldSize());
     }
 
-    public void setGameScreenInstance(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
-    }
-
     /**
      * Ueberprueft ein Spieler einen moeglichen Zug hat
      * @param team
@@ -390,16 +368,6 @@ public class GameController {
             }
         }
         return false;
-    }
-
-    public void setSelectedPlayers(HashMap<Integer, Avatar> players)
-    {
-        for(int i = 0; i < players.size(); i++)
-        {
-            System.out.println(Team.BLUE.getById(players.get(i).getIndex())+ "  i" + i);
-            this.players.put(i, new Player(Team.BLUE.getById(players.get(i).getIndex()), i, players.get(i)));
-
-        }
     }
 
     public Team getActualTeam()

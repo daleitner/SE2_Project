@@ -3,6 +3,9 @@ package controllers;
 import models.Avatar;
 import models.LanguagePack;
 import models.Mode;
+import models.Player;
+import models.Team;
+import network.MalefizClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,36 +16,30 @@ public class CharacterSelectionController {
     private LanguagePack lp;
     private int selectedIndex = -1;
     private List<Avatar> characters;
-    private HashMap<Integer, Integer> selectedCharacterIndicess;
+    private HashMap<Integer, Player> selectedPlayers;
     private Mode mode;
     private int numberOfPlayers;
     private int actualPlayer;
-    private static CharacterSelectionController instance;
+    private MalefizClient client;
 
-    private CharacterSelectionController() {}
-
-    public static CharacterSelectionController getInstance()
-    {
-        if(instance == null)
-        {
-            instance = new CharacterSelectionController();
-        }
-        return instance;
-    }
-
-    public void init(MyMalefiz mainClass, LanguagePack lp, Mode m, int numberOfPlayers)
-    {
+    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, HashMap<Integer, Player> players) {
         this.mainClass = mainClass;
         this.lp = lp;
-        this.mode = m;
-        this.numberOfPlayers = numberOfPlayers;
+        this.mode = Mode.LOCAL;
+        this.numberOfPlayers = players.size();
+        this.selectedPlayers = players;
         this.actualPlayer = 1;
         this.characters = new ArrayList<Avatar>();
-        this.selectedCharacterIndicess = new HashMap<Integer, Integer>();
         this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 3, 5, 0));
         this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5, 3));
         this.characters.add(new Avatar("avatar_yellow", "avatar_gelb.png", "avatar_gelb_disabled.png", 3, 10, 1));
         this.characters.add(new Avatar("avatar_green", "avatar_gruen.png", "avatar_gruen_disabled.png", 11, 10, 2));
+    }
+
+    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, HashMap<Integer, Player> players, MalefizClient client) {
+        this(mainClass, lp, players);
+        this.mode = Mode.NETWORK;
+        this.client = client;
     }
 
     public List<Avatar> getCharacters() {
@@ -53,12 +50,8 @@ public class CharacterSelectionController {
         return this.selectedIndex;
     }
 
-    public HashMap<Integer, Avatar> getSelectedCharacters() {
-        HashMap<Integer, Avatar> ret = new HashMap<Integer, Avatar>();
-        for(int i = 0; i<this.selectedCharacterIndicess.size(); i++) {
-            ret.put(i, this.characters.get(this.selectedCharacterIndicess.get(i)));
-        }
-        return ret;
+    public HashMap<Integer, Player> getSelectedCharacters() {
+        return this.selectedPlayers;
     }
 
     public Mode getMode() {
@@ -71,15 +64,15 @@ public class CharacterSelectionController {
      * @param index     Index des Charakters
      */
     public void selectCharacter(int index) {
-        if(this.selectedCharacterIndicess.containsKey(this.actualPlayer-1))
-            this.selectedCharacterIndicess.remove(this.actualPlayer-1);
-        selectedCharacterIndicess.put(this.actualPlayer-1, index);
+        String nickName = this.selectedPlayers.get(this.actualPlayer-1).getNickName();
+        this.selectedPlayers.remove(this.actualPlayer-1);
+        this.selectedPlayers.put(this.actualPlayer-1, new Player(nickName, Team.BLUE.getById(this.characters.get(index).getIndex()), this.actualPlayer-1, this.characters.get(index)));
     }
 
-    public void deselectCharacter() {
+    /*public void deselectCharacter() {
         if(this.selectedCharacterIndicess.containsKey(this.actualPlayer-1))
             this.selectedCharacterIndicess.remove(this.actualPlayer-1);
-    }
+    }*/
 
     /**
      * Überprüft, ob der Charakter schon ausgewählt wurde
@@ -88,25 +81,26 @@ public class CharacterSelectionController {
      */
     public boolean isCharacterSelected(int index)
     {
-        return selectedCharacterIndicess.containsKey(this.actualPlayer-1) && selectedCharacterIndicess.get(this.actualPlayer-1) == index;
+        return this.selectedPlayers.get(this.actualPlayer-1).getAvatar() == this.characters.get(index);
+        //return selectedCharacterIndicess.containsKey(this.actualPlayer-1) && selectedCharacterIndicess.get(this.actualPlayer-1) == index;
     }
 
     public void handleCharacter(int index) {
-        if(mode == Mode.NETWORK) {
+        /*if(mode == Mode.NETWORK) {
         }
-        else {
+        else {*/
             if(isCharacterEnabled(index)) {
                 if(!isCharacterSelected(index))
                     selectCharacter(index);
                 //else
                 //    deselectCharacter();
             }
-        }
+        //}
     }
 
     public boolean isCharacterEnabled(int index) {
-        for(int i = 0; i<this.selectedCharacterIndicess.size(); i++){
-            if(i != this.actualPlayer-1 && this.selectedCharacterIndicess.get(i) == index)
+        for(int i = 0; i<this.selectedPlayers.size(); i++) {
+            if(i != this.actualPlayer-1 && this.selectedPlayers.get(i).getAvatar() == this.characters.get(index))
                 return false;
         }
         return true;
@@ -123,7 +117,12 @@ public class CharacterSelectionController {
     }
 
     public boolean canExecutePlayButton() {
-        return this.actualPlayer < this.numberOfPlayers || this.selectedCharacterIndicess.size() == this.numberOfPlayers;
+        boolean check = true;
+        for(int i = 0; i<this.selectedPlayers.size() && check; i++) {
+            if(this.selectedPlayers.get(i).getAvatar() == null)
+                check = false;
+        }
+        return this.actualPlayer < this.numberOfPlayers || check;
     }
 
     public LanguagePack getLanguagePack() {
@@ -143,11 +142,4 @@ public class CharacterSelectionController {
         else
             this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
     }
-    public HashMap<Integer, Integer> getSelectedCharacterIndicess()
-    {
-        return  selectedCharacterIndicess;
-    }
-
-
-
 }

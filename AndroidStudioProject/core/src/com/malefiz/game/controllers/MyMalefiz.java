@@ -2,13 +2,16 @@ package controllers;
 
 import com.badlogic.gdx.Game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import interfaces.ActionResolver;
 import models.Avatar;
 import models.LanguagePack;
 import models.Mode;
+import models.Player;
 import models.Team;
+import network.MalefizClient;
 import network.MalefizServer;
 import screens.CharacterSelectionScreen;
 import screens.ConnectionClientScreen;
@@ -53,9 +56,9 @@ public class MyMalefiz extends Game {
 		setScreen(this.menuScreen);
 	}
 
-	public void setGameScreen(Mode m, HashMap<Integer, Avatar> selectedCharacters)
+	public void setGameScreen(Mode m, HashMap<Integer, Player> selectedCharacters)
 	{
-		this.gameScreen = new GameScreen(this, selectedCharacters.get(0), lp, m, actionResolver);
+		this.gameScreen = new GameScreen(this, selectedCharacters, lp, m, actionResolver);
 		setScreen(this.gameScreen);
 	}
 
@@ -64,11 +67,19 @@ public class MyMalefiz extends Game {
 		setScreen(new NumberOfPlayersSelectionScreen(this.numberOfPlayersSelectionController));
 	}
 
-	public void setCharacterSelectionScreen(Mode m, int numberOfCharacters)
-	{
-		this. characterSelectionController = characterSelectionController.getInstance();
-		this.characterSelectionController.init(this, lp, m, numberOfCharacters);
+	public void setLocalCharacterSelectionScreen(int numberOfCharacters) {
+		HashMap<Integer, Player> players = new HashMap<Integer, Player>();
+		for(int i = 0; i<numberOfCharacters; i++) {
+			Player player = new Player("Spieler " + (i+1));
+			players.put(i, player);
+		}
+		this.characterSelectionController = new CharacterSelectionController(this, lp, players);
 		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
+	}
+
+	public void setRemoteCharacterSelectionScreen(int numberOfCharacters, MalefizClient client) {
+		//this.characterSelectionController = new CharacterSelectionController(this, lp, numberOfCharacters, client);
+		//setScreen(new CharacterSelectionScreen(this.characterSelectionController));
 	}
 
 	public void setRuleScreen()

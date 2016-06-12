@@ -18,8 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import controllers.CharacterSelectionController;
 import controllers.GameController;
 import controllers.MyMalefiz;
 import interfaces.ActionResolver;
@@ -173,15 +173,12 @@ public class GameScreen implements Screen {
         this.stage = stage;
     }
 
-    public GameScreen(MyMalefiz mainClass, Avatar selectedAvatar, LanguagePack lp, Mode mode, ActionResolver actionResolver) {
+    public GameScreen(MyMalefiz mainClass, HashMap<Integer, Player> selectedPlayers, LanguagePack lp, Mode mode, ActionResolver actionResolver) {
 
-        this.selectedAvatar = selectedAvatar;
+        this.selectedAvatar = selectedPlayers.get(0).getAvatar();
         this.mainClass = mainClass;
         this.lp = lp;
-        this.gc = GameController.getInstance();
-        gc.setGameScreenInstance(this);
-        gc.setSelectedPlayers(CharacterSelectionController.getInstance().getSelectedCharacters());
-        gc.init();
+        this.gc = new GameController(this, selectedPlayers);
         this.mode = mode;
         this.actionResolver = actionResolver;
 
