@@ -27,7 +27,7 @@ public class MalefizClientSocket {
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
                         if(ret != null && !ret.isEmpty()) {
-                            System.out.println("received a message:" + ret);
+                            System.out.println("received a message on server side:" + ret);
                             receivedMessage = ret;
                         }
                     } catch (IOException e) {

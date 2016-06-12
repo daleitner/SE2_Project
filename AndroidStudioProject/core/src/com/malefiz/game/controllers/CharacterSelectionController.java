@@ -151,7 +151,7 @@ public class CharacterSelectionController {
     }
 
     public void playButtonClicked() {
-        if(this.actualPlayer < this.numberOfPlayers) {
+        if(this.mode == Mode.NETWORK && this.actualPlayer < this.numberOfPlayers) {
             ArrayList<String> info = new ArrayList<String>();
             info.add(String.valueOf(this.selectedPlayers.get(this.actualPlayer-1).getAvatar().getIndex()));
             MessageObject obj = new MessageObject(this.client.getNickName(), MessageTypeEnum.CharacterSelected, info);
