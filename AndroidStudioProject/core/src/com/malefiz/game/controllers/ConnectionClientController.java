@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import models.LanguagePack;
 import models.Mode;
 import network.MalefizClient;
@@ -17,7 +20,7 @@ public class ConnectionClientController {
     public ConnectionClientController(MyMalefiz mainClass, LanguagePack lp) {
         this.mainClass = mainClass;
         this.lp = lp;
-        this.playersString = "Players:";
+        this.playersString = "";
     }
 
     public LanguagePack getLanguagePack() {
@@ -31,7 +34,8 @@ public class ConnectionClientController {
     }
 
     public void switchToCharacterSelectionScreen(int playerCount) {
-        this.mainClass.setRemoteCharacterSelectionScreen(playerCount, this.client);
+        ArrayList<String> nickNames = new ArrayList<String>(Arrays.asList(this.playersString.split("\n")));
+        this.mainClass.setRemoteCharacterSelectionScreen(nickNames, this.client);
     }
 
     public String getServerIPAddress() {
@@ -59,9 +63,10 @@ public class ConnectionClientController {
             MessageObject obj = MessageObject.MessageToMessageObject(msg);
             switch(obj.getMessageType()) {
                 case Connect:
-                    this.playersString = "Players:";
+                    this.playersString = "";
                     for(String str:obj.getInformation())
-                        this.playersString += "\n" + str;
+                        this.playersString += str + "\n";
+                    this.playersString = this.playersString.substring(0, this.playersString.length()-1);
                     break;
                 case GoToCharacterSelection:
                     switchToCharacterSelectionScreen(Integer.parseInt(obj.getInformation().get(0)));
@@ -77,6 +82,6 @@ public class ConnectionClientController {
     public void connect() {
         if(this.client == null)
             this.client = new MalefizClient(this.nickName, this.serverIPAddress);
-        client.sendMessage(new MessageObject(this.nickName, MessageTypeEnum.Connect, null).getMessage());
+        client.sendMessage(new MessageObject(this.nickName, MessageTypeEnum.Connect, null));
     }
 }

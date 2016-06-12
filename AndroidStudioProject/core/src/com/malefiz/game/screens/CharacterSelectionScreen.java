@@ -144,7 +144,7 @@ public class CharacterSelectionScreen implements Screen {
         nextBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                    controller.switchToNextScreen();
+                    controller.playButtonClicked();
             }
         });
         stage.addActor(nextBtn);
@@ -162,7 +162,7 @@ public class CharacterSelectionScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.end();
-
+        this.controller.receiveMessage();
         this.head.setText(this.controller.getHeaderText());
         this.nextBtn.setText(this.controller.getNextButtonText());
         if(this.controller.canExecutePlayButton())

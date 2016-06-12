@@ -6,6 +6,8 @@ import models.Mode;
 import models.Player;
 import models.Team;
 import network.MalefizClient;
+import network.MessageObject;
+import network.MessageTypeEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,16 +88,18 @@ public class CharacterSelectionController {
     }
 
     public void handleCharacter(int index) {
-        /*if(mode == Mode.NETWORK) {
-        }
-        else {*/
-            if(isCharacterEnabled(index)) {
-                if(!isCharacterSelected(index))
+        if(mode == Mode.NETWORK ) {
+            if(this.selectedPlayers.get(this.actualPlayer-1).getNickName().equals(this.client.getNickName())) {
+                if(isCharacterEnabled(index) && !isCharacterSelected(index)) {
                     selectCharacter(index);
-                //else
-                //    deselectCharacter();
+                }
             }
-        //}
+        }
+        else {
+            if(isCharacterEnabled(index) && !isCharacterSelected(index)) {
+                selectCharacter(index);
+            }
+        }
     }
 
     public boolean isCharacterEnabled(int index) {
@@ -107,7 +111,7 @@ public class CharacterSelectionController {
     }
 
     public String getHeaderText() {
-        return lp.getText("player") + " " + this.actualPlayer + " " + lp.getText("choosecharacter");
+        return this.selectedPlayers.get(this.actualPlayer-1).getNickName() + " " + lp.getText("choosecharacter");
     }
 
     public String getNextButtonText() {
@@ -117,6 +121,8 @@ public class CharacterSelectionController {
     }
 
     public boolean canExecutePlayButton() {
+        if(mode == Mode.NETWORK && !(this.selectedPlayers.get(this.actualPlayer-1).getNickName().equals(this.client.getNickName())))
+            return false;
         boolean check = true;
         for(int i = 0; i<this.selectedPlayers.size() && check; i++) {
             if(this.selectedPlayers.get(i).getAvatar() == null)
@@ -137,9 +143,33 @@ public class CharacterSelectionController {
     }
 
     public void switchToNextScreen() {
-        if(this.actualPlayer < this.numberOfPlayers)
+        if(this.actualPlayer < this.numberOfPlayers) {
             this.actualPlayer += 1;
+        }
         else
             this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
+    }
+
+    public void playButtonClicked() {
+        if(this.actualPlayer < this.numberOfPlayers) {
+            ArrayList<String> info = new ArrayList<String>();
+            info.add(String.valueOf(this.selectedPlayers.get(this.actualPlayer-1).getAvatar().getIndex()));
+            MessageObject obj = new MessageObject(this.client.getNickName(), MessageTypeEnum.CharacterSelected, info);
+            this.client.sendMessage(obj);
+        }
+        switchToNextScreen();
+    }
+
+    public void receiveMessage(){
+        if(this.mode == Mode.NETWORK) {
+            String msg = this.client.getReceivedMessage();
+            if(!msg.isEmpty()) {
+                MessageObject obj = MessageObject.MessageToMessageObject(msg);
+                if(obj.getMessageType() == MessageTypeEnum.CharacterSelected) {
+                    handleCharacter(Integer.parseInt(obj.getInformation().get(0)));
+                    switchToNextScreen();
+                }
+            }
+        }
     }
 }

@@ -2,10 +2,12 @@ package controllers;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import models.LanguagePack;
 import models.Mode;
 import network.MalefizClient;
+import network.MalefizClientSocket;
 import network.MalefizServer;
 import network.MessageObject;
 import network.MessageTypeEnum;
@@ -30,7 +32,7 @@ public class ConnectionController  {
 
     public void addClient(String playerName) {
         this.client = new MalefizClient(playerName, this.server.getIpAddress());
-        this.client.sendMessage(new MessageObject(playerName, MessageTypeEnum.Connect, null).getMessage());
+        this.client.sendMessage(new MessageObject(playerName, MessageTypeEnum.Connect, null));
     }
 
     public void switchToNetworkMenuScreen() {
@@ -39,11 +41,13 @@ public class ConnectionController  {
     }
 
     public void switchToCharacterSelectionScreen() {
+        this.server.stopWaitingForClients();
         int count = this.server.getConnectedPlayersCount();
         ArrayList<String>infos = new ArrayList<String>();
         infos.add(Integer.toString(count));
-        this.server.sendMessage(new MessageObject(this.client.getNickName(), MessageTypeEnum.GoToCharacterSelection, infos).getMessage());
-        this.mainClass.setRemoteCharacterSelectionScreen(count, this.client);
+        this.server.sendMessage(new MessageObject(this.client.getNickName(), MessageTypeEnum.GoToCharacterSelection, infos));
+        ArrayList<String> nickNames = new ArrayList<String>(Arrays.asList(this.server.getConnectedPlayers().split("\n")));
+        this.mainClass.setRemoteCharacterSelectionScreen(nickNames, this.client);
     }
 
     public String getIpAddresses() {

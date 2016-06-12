@@ -60,7 +60,8 @@ public class MalefizServer {
                                 System.out.println("socket added");
                                 ArrayList<String>clients = new ArrayList<String>(Arrays.asList(getConnectedPlayers().split("\n")));
                                 obj.setInformation(clients);
-                                sendMessage(obj.getMessage());
+                                obj.setNickName("server");
+                                sendMessage(obj);
                             }
                         }
                     } catch (IOException e) {
@@ -117,10 +118,11 @@ public class MalefizServer {
     }
 
     //sends a message to all clients
-    public void sendMessage(String message) {
+    public void sendMessage(MessageObject message) {
         for(MalefizClientSocket socket:this.clientSockets)
         {
-            socket.sendMessage(message);
+            if(!socket.getNickName().equals(message.getNickName()))
+                socket.sendMessage(message.getMessage());
         }
     }
 

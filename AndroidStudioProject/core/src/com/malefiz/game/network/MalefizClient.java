@@ -52,11 +52,12 @@ public class MalefizClient {
         return nickName;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(MessageObject message) {
         try {
             // write our entered message to the stream
-            this.socket.getOutputStream().write(message.getBytes());
-            System.out.println("Sent:" + message);
+            String msg = message.getMessage();
+            this.socket.getOutputStream().write(msg.getBytes());
+            System.out.println("Sent:" + msg);
         } catch (IOException e) {
             e.printStackTrace();
         }

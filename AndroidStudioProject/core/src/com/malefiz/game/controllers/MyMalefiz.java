@@ -77,9 +77,14 @@ public class MyMalefiz extends Game {
 		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
 	}
 
-	public void setRemoteCharacterSelectionScreen(int numberOfCharacters, MalefizClient client) {
-		//this.characterSelectionController = new CharacterSelectionController(this, lp, numberOfCharacters, client);
-		//setScreen(new CharacterSelectionScreen(this.characterSelectionController));
+	public void setRemoteCharacterSelectionScreen(ArrayList<String> nickNames, MalefizClient client) {
+		HashMap<Integer, Player> players = new HashMap<Integer, Player>();
+		for(int i = 0; i<nickNames.size(); i++) {
+			Player player = new Player(nickNames.get(i));
+			players.put(i, player);
+		}
+		this.characterSelectionController = new CharacterSelectionController(this, lp, players, client);
+		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
 	}
 
 	public void setRuleScreen()

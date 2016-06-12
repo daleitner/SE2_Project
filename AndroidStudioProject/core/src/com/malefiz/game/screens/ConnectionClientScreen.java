@@ -90,6 +90,8 @@ public class ConnectionClientScreen implements Screen {
         vg.addActor(labelNickName);
         this.textNickName = new TextArea("Spieler2", skin);
         vg.addActor(this.textNickName);
+        Label labelPlayers = new Label("Players:", skin);
+        vg.addActor(labelPlayers);
         this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
         /*this.labelJoinedPlayers.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         this.labelJoinedPlayers.setWidth(18*g.getUnitSize());
