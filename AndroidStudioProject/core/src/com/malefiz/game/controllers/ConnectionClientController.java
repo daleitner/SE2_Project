@@ -30,8 +30,8 @@ public class ConnectionClientController {
         this.mainClass.setNetworkMenuScreen();
     }
 
-    public void switchToCharacterSelectionScreen() {
-        this.mainClass.setCharacterSelectionScreen(Mode.NETWORK, 2);
+    public void switchToCharacterSelectionScreen(int playerCount) {
+        this.mainClass.setCharacterSelectionScreen(Mode.NETWORK, playerCount);
     }
 
     public String getServerIPAddress() {
@@ -50,19 +50,33 @@ public class ConnectionClientController {
         this.nickName = nickName;
     }
 
-    public String getPlayersString() {
+    public void receiveMessage() {
         if(this.client == null)
-            return this.playersString;
+            return;
 
         String msg = this.client.getReceivedMessage();
-        if(!msg.isEmpty())
-            this.playersString += "\n" + msg;
+        if(!msg.isEmpty()) {
+            MessageObject obj = MessageObject.MessageToMessageObject(msg);
+            switch(obj.getMessageType()) {
+                case Connect:
+                    this.playersString = "Players:";
+                    for(String str:obj.getInformation())
+                        this.playersString += "\n" + str;
+                    break;
+                case GoToCharacterSelection:
+                    switchToCharacterSelectionScreen(Integer.parseInt(obj.getInformation().get(0)));
+                    break;
+            }
+        }
+    }
+
+    public String getPlayersString() {
         return this.playersString;
     }
 
     public void connect() {
         if(this.client == null)
-            this.client = new MalefizClient(this.serverIPAddress);
+            this.client = new MalefizClient(this.nickName, this.serverIPAddress);
         client.sendMessage(new MessageObject(this.nickName, MessageTypeEnum.Connect, null).getMessage());
     }
 }

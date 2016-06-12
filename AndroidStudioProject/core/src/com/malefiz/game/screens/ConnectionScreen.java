@@ -16,6 +16,8 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
@@ -56,6 +58,9 @@ public class ConnectionScreen implements Screen {
 
     private Label labelIPAddresses;
     private Label labelJoinedPlayers;
+    private Label labelName;
+    private TextArea textName;
+    private TextButton addButton;
     private TextButton playButton;
     private TextButton cancelButton;
 
@@ -85,6 +90,27 @@ public class ConnectionScreen implements Screen {
         this.labelIPAddresses.setAlignment(Align.center);*/
         //stage.addActor(this.labelIPAddresses);
         vg.addActor(this.labelIPAddresses);
+
+        this.labelName = new Label("Name:", skin);
+        vg.addActor(this.labelName);
+        HorizontalGroup hg = new HorizontalGroup();
+        this.textName = new TextArea("Spieler1", skin);
+        hg.addActor(this.textName);
+        this.addButton =  new TextButton("Beitreten", skin, "default");
+
+        this.addButton.setWidth((int)(8.5f*g.getUnitSize()));
+        this.addButton.setHeight(2* g.getUnitSize()*g.getRatio());
+        //this.addButton.setPosition(g.getUnitSize(), g.getUnitSize());
+        this.addButton.getLabel().setFontScale(3.0f);
+        this.addButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                controller.addClient(textName.getText());
+                addButton.setTouchable(Touchable.disabled);
+            }
+        });
+        hg.addActor(this.addButton);
+        vg.addActor(hg);
 
         this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
         /*this.labelJoinedPlayers.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());

@@ -9,6 +9,7 @@ import models.Avatar;
 import models.LanguagePack;
 import models.Mode;
 import models.Team;
+import network.MalefizServer;
 import screens.CharacterSelectionScreen;
 import screens.ConnectionClientScreen;
 import screens.ConnectionScreen;
@@ -31,6 +32,7 @@ public class MyMalefiz extends Game {
 	private ConnectionController connectionController;
 	private ConnectionClientController connectionClientController;
 	public ActionResolver actionResolver;
+	public MalefizServer server;
 
 	private LanguagePack lp = new LanguagePack("ger");
 
@@ -88,7 +90,8 @@ public class MyMalefiz extends Game {
 	}
 
 	public void setConnectionScreen() {
-		this.connectionController = new ConnectionController(this, lp);
+		this.server = new MalefizServer();
+		this.connectionController = new ConnectionController(this, server, lp);
 		setScreen(new ConnectionScreen((this.connectionController)));
 	}
 

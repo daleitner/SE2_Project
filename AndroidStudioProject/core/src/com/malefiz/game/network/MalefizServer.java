@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -57,6 +58,9 @@ public class MalefizServer {
                                 clientSockets.add(new MalefizClientSocket(obj.getNickName(), socket));
                                 // Read data from the socket into a BufferedReader
                                 System.out.println("socket added");
+                                ArrayList<String>clients = new ArrayList<String>(Arrays.asList(getConnectedPlayers().split("\n")));
+                                obj.setInformation(clients);
+                                sendMessage(obj.getMessage());
                             }
                         }
                     } catch (IOException e) {
@@ -129,6 +133,10 @@ public class MalefizServer {
         if(!ret.isEmpty())
             ret = ret.substring(0, ret.length()-1);
         return ret;
+    }
+
+    public int getConnectedPlayersCount() {
+        return this.clientSockets.size();
     }
 
     public void disconnect() {

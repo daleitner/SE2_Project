@@ -1,5 +1,6 @@
 package network;
 
 public enum MessageTypeEnum {
-    Connect
+    Connect,
+    GoToCharacterSelection
 }

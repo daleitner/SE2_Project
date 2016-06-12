@@ -11,11 +11,13 @@ import java.io.InputStreamReader;
 
 
 public class MalefizClient {
+    private String nickName;
     private String ipAddress;
     private Socket socket;
     private Thread receivingThread;
     private String receivedMessage = "";
-    public MalefizClient(String ipAddress) {
+    public MalefizClient(String nickName, String ipAddress) {
+        this.nickName = nickName;
         this.ipAddress = ipAddress;
         SocketHints socketHints = new SocketHints();
         // Socket will time our in 4 seconds
@@ -44,6 +46,10 @@ public class MalefizClient {
             }
         });
         this.receivingThread.start();
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 
     public void sendMessage(String message) {

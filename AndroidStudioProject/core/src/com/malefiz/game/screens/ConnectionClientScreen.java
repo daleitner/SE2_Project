@@ -16,6 +16,7 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
@@ -123,6 +124,7 @@ public class ConnectionClientScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 controller.connect();
+                playButton.setTouchable(Touchable.disabled);
             }
         });
         stage.addActor(this.playButton);
@@ -137,6 +139,7 @@ public class ConnectionClientScreen implements Screen {
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         stage.draw();
+        this.controller.receiveMessage();
         this.controller.setServerIPAddress(this.textIPAddress.getText());
         this.controller.setNickName(this.textNickName.getText());
         this.labelJoinedPlayers.setText(this.controller.getPlayersString());
