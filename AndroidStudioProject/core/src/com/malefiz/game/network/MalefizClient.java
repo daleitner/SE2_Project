@@ -64,7 +64,9 @@ public class MalefizClient {
     }
 
     public String getReceivedMessage() {
-        return receivedMessage;
+        String msg = receivedMessage;
+        clearReceivedMessage();
+        return msg;
     }
 
     public void clearReceivedMessage() {

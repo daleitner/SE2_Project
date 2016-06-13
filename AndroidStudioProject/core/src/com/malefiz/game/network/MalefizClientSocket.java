@@ -5,16 +5,18 @@ import com.badlogic.gdx.net.Socket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MalefizClientSocket {
     private Socket socket;
     private Thread receivingThread;
-    private String receivedMessage = "";
     private String nickName;
-    public MalefizClientSocket(String _nickName, Socket _socket) {
+    private IDistribute messageDistributor;
+    public MalefizClientSocket(String _nickName, Socket _socket, final IDistribute messageDistributor) {
         this.socket = _socket;
         this.nickName = _nickName;
-        this.receivedMessage = _nickName;
+        this.messageDistributor = messageDistributor;
         this.receivingThread = new Thread(new Runnable(){
 
             @Override
@@ -27,8 +29,9 @@ public class MalefizClientSocket {
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
                         if(ret != null && !ret.isEmpty()) {
-                            System.out.println("received a message on server side:" + ret);
-                            receivedMessage = ret;
+                            System.out.println("received a message on server side. <" + nickName + ">,:" + ret);
+                            if(messageDistributor != null)
+                                messageDistributor.distributeMessage(ret);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -53,11 +56,6 @@ public class MalefizClientSocket {
         return nickName;
     }
 
-    public String getReceivedMessage() {
-        String ret = this.receivedMessage;
-        this.receivedMessage = "";
-        return ret;
-    }
 
     public void disconnect(){
         this.receivingThread.interrupt();

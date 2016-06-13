@@ -19,9 +19,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class MalefizServer {
+public class MalefizServer implements IDistribute{
     private Thread communicationThread;
     private String ipAddress = "";
     private ServerSocket serverSocket;
@@ -55,7 +57,8 @@ public class MalefizServer {
                             System.out.println("received first message:" + ret);
                             MessageObject obj = MessageObject.MessageToMessageObject(ret);
                             if(obj.getMessageType() == MessageTypeEnum.Connect){
-                                clientSockets.add(new MalefizClientSocket(obj.getNickName(), socket));
+                                MalefizClientSocket mcs = createMalefizClientSocket(obj.getNickName(), socket);
+                                clientSockets.add(mcs);
                                 // Read data from the socket into a BufferedReader
                                 System.out.println("socket added");
                                 ArrayList<String>clients = new ArrayList<String>(Arrays.asList(getConnectedPlayers().split("\n")));
@@ -74,6 +77,9 @@ public class MalefizServer {
         });
     }
 
+    private MalefizClientSocket createMalefizClientSocket(String nickName, Socket socket) {
+        return new MalefizClientSocket(nickName, socket, this);
+    }
     private String setIpAddress() {
         // The following code loops through the available network interfaces
         // Keep in mind, there can be multiple interfaces per device, for example
@@ -149,5 +155,10 @@ public class MalefizServer {
         this.serverSocket.dispose();
 
 
+    }
+
+    @Override
+    public void distributeMessage(String message) {
+        sendMessage(MessageObject.MessageToMessageObject(message));
     }
 }

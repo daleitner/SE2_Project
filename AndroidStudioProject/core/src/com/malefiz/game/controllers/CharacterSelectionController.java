@@ -28,14 +28,16 @@ public class CharacterSelectionController {
         this.mainClass = mainClass;
         this.lp = lp;
         this.mode = Mode.LOCAL;
-        this.numberOfPlayers = players.size();
+        this.numberOfPlayers = 0;
+        if(players != null)
+            this.numberOfPlayers = players.size();
         this.selectedPlayers = players;
         this.actualPlayer = 1;
         this.characters = new ArrayList<Avatar>();
         this.characters.add(new Avatar("avatar_red", "avatar_rot.png", "avatar_rot_disabled.png", 3, 5, 0));
-        this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5, 3));
         this.characters.add(new Avatar("avatar_yellow", "avatar_gelb.png", "avatar_gelb_disabled.png", 3, 10, 1));
         this.characters.add(new Avatar("avatar_green", "avatar_gruen.png", "avatar_gruen_disabled.png", 11, 10, 2));
+        this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5, 3));
     }
 
     public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, HashMap<Integer, Player> players, MalefizClient client) {
@@ -90,16 +92,17 @@ public class CharacterSelectionController {
     public void handleCharacter(int index) {
         if(mode == Mode.NETWORK ) {
             if(this.selectedPlayers.get(this.actualPlayer-1).getNickName().equals(this.client.getNickName())) {
-                if(isCharacterEnabled(index) && !isCharacterSelected(index)) {
-                    selectCharacter(index);
-                }
+                selectCharacterIfPossible(index);
             }
         }
         else {
-            if(isCharacterEnabled(index) && !isCharacterSelected(index)) {
-                selectCharacter(index);
-            }
+            selectCharacterIfPossible(index);
         }
+    }
+
+    private void selectCharacterIfPossible(int index) {
+        if(isCharacterEnabled(index) && !isCharacterSelected(index))
+            selectCharacter(index);
     }
 
     public boolean isCharacterEnabled(int index) {
@@ -131,6 +134,10 @@ public class CharacterSelectionController {
         return this.actualPlayer < this.numberOfPlayers || check;
     }
 
+    public boolean canExecutePreviousButton() {
+        return mode == Mode.LOCAL;
+    }
+
     public LanguagePack getLanguagePack() {
         return this.lp;
     }
@@ -151,7 +158,7 @@ public class CharacterSelectionController {
     }
 
     public void playButtonClicked() {
-        if(this.mode == Mode.NETWORK && this.actualPlayer < this.numberOfPlayers) {
+        if(this.mode == Mode.NETWORK) {
             ArrayList<String> info = new ArrayList<String>();
             info.add(String.valueOf(this.selectedPlayers.get(this.actualPlayer-1).getAvatar().getIndex()));
             MessageObject obj = new MessageObject(this.client.getNickName(), MessageTypeEnum.CharacterSelected, info);
@@ -166,7 +173,7 @@ public class CharacterSelectionController {
             if(!msg.isEmpty()) {
                 MessageObject obj = MessageObject.MessageToMessageObject(msg);
                 if(obj.getMessageType() == MessageTypeEnum.CharacterSelected) {
-                    handleCharacter(Integer.parseInt(obj.getInformation().get(0)));
+                    selectCharacterIfPossible(Integer.parseInt(obj.getInformation().get(0)));
                     switchToNextScreen();
                 }
             }

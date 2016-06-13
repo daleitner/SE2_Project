@@ -46,6 +46,7 @@ public class CharacterSelectionScreen implements Screen {
 
     private Label head;
     private TextButton nextBtn;
+    private TextButton backBtn;
 
     Grid g = new Grid();
 
@@ -121,7 +122,7 @@ public class CharacterSelectionScreen implements Screen {
             stage.addActor(this.images.get(i));
         }
 
-        TextButton backBtn = new TextButton(this.controller.getLanguagePack().getText("back"), skin, "default");
+        backBtn = new TextButton(this.controller.getLanguagePack().getText("back"), skin, "default");
 
         backBtn.setWidth((int)(8.5f*g.getUnitSize()));
         backBtn.setHeight(2* g.getUnitSize()*g.getRatio());
@@ -165,56 +166,41 @@ public class CharacterSelectionScreen implements Screen {
         this.controller.receiveMessage();
         this.head.setText(this.controller.getHeaderText());
         this.nextBtn.setText(this.controller.getNextButtonText());
+
         if(this.controller.canExecutePlayButton())
             this.nextBtn.setTouchable(Touchable.enabled);
         else
             this.nextBtn.setTouchable(Touchable.disabled);
 
-        //if(this.controller.getSelectedCharacter() != null || !this.controller.isCharacterMapEmpty()) {
-          /*  if(this.controller.getMode() == Mode.NETWORK)
-            {
-                for (int i = 0; i < this.controller.getCharacters().size(); i++) {
-                    Avatar character = this.controller.getCharacters().get(i);
-                    if (i == this.controller.getSelectedIndex()) {
-                        this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
-                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
-                        this.images.get(i).setWidth(8*g.getUnitSize());
-                        this.images.get(i).setHeight(8*g.getUnitSize());
-                    } else {
-                        this.images.get(i).setX(character.getxPos()*g.getUnitSize());
-                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
-                        this.images.get(i).setWidth(6*g.getUnitSize());
-                        this.images.get(i).setHeight(6*g.getUnitSize());
-                    }
-                }
-            }
-            else
-            {*/
-                for (int i = 0; i < this.controller.getCharacters().size(); i++) {
-                    Avatar character = this.controller.getCharacters().get(i);
-                    if(controller.isCharacterEnabled(i)) {
-                        this.images.get(i).setDrawable(skin.getDrawable(this.controller.getCharacters().get(i).getId()));
-                        if (controller.isCharacterSelected(i)) {
-                            this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
-                            this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
-                            this.images.get(i).setWidth(8*g.getUnitSize());
-                            this.images.get(i).setHeight(8*g.getUnitSize());
-                        } else {
-                            this.images.get(i).setX(character.getxPos()*g.getUnitSize());
-                            this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
-                            this.images.get(i).setWidth(6*g.getUnitSize());
-                            this.images.get(i).setHeight(6*g.getUnitSize());
-                        }
-                    } else {
-                        this.images.get(i).setDrawable(skin.getDrawable(this.controller.getCharacters().get(i).getId() + "_disabled"));
-                        this.images.get(i).setX(character.getxPos()*g.getUnitSize());
-                        this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
-                        this.images.get(i).setWidth(6*g.getUnitSize());
-                        this.images.get(i).setHeight(6*g.getUnitSize());
-                    }
+        if(this.controller.canExecutePreviousButton())
+            this.backBtn.setTouchable(Touchable.enabled);
+        else
+            this.backBtn.setTouchable(Touchable.disabled);
 
+        for (int i = 0; i < this.controller.getCharacters().size(); i++) {
+            Avatar character = this.controller.getCharacters().get(i);
+            if(controller.isCharacterEnabled(i)) {
+                this.images.get(i).setDrawable(skin.getDrawable(this.controller.getCharacters().get(i).getId()));
+                if (controller.isCharacterSelected(i)) {
+                    this.images.get(i).setX(character.getxPos()*g.getUnitSize()-g.getUnitSize());
+                    this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio()-g.getUnitSize());
+                    this.images.get(i).setWidth(8*g.getUnitSize());
+                    this.images.get(i).setHeight(8*g.getUnitSize());
+                } else {
+                    this.images.get(i).setX(character.getxPos()*g.getUnitSize());
+                    this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
+                    this.images.get(i).setWidth(6*g.getUnitSize());
+                    this.images.get(i).setHeight(6*g.getUnitSize());
                 }
-           // }
+            } else {
+                this.images.get(i).setDrawable(skin.getDrawable(this.controller.getCharacters().get(i).getId() + "_disabled"));
+                this.images.get(i).setX(character.getxPos()*g.getUnitSize());
+                this.images.get(i).setY(character.getyPos()*g.getUnitSize()*g.getRatio());
+                this.images.get(i).setWidth(6*g.getUnitSize());
+                this.images.get(i).setHeight(6*g.getUnitSize());
+            }
+
+        }
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
