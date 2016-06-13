@@ -37,6 +37,10 @@ public class RuleScreen implements Screen{
     Image arrowRight = new Image(new Sprite(new Texture(Gdx.files.internal("arrow_right.png"))));
     int unitSize = screenWidth/20;
     Label head;
+    Texture rule1;
+    Texture rule2;
+    Texture rule3;
+    Texture rule4;
 
     Grid g = new Grid();
 
@@ -66,6 +70,11 @@ public class RuleScreen implements Screen{
         head.setHeight(4*g.getUnitSize()*g.getRatio());
         head.setFontScale(5);
         head.setAlignment(Align.center);
+
+        rule1 = new Texture(Gdx.files.internal("rules1.png"));
+        rule2 = new Texture(Gdx.files.internal("rules2.png"));
+        rule3 = new Texture(Gdx.files.internal("rules3.png"));
+        rule4 = new Texture(Gdx.files.internal("rules4.png"));
     /*
         String text = "Lorem ipsum dolor sit amet, \r\nconsetetur sadipscing elitr, sed\r\n diam nonumy eirmod tempor invidunt \r\nut labore et dolore magna aliquyam \r\nerat, sed diam voluptua. At vero \r\neos et accusam et justo duo dolores\r\n et ea rebum. Stet clita kasd gubergren, no \r\nsea takimata sanctus est Lorem ipsum \r\ndolor sit amet. Lorem ipsum \r\ndolor sit amet, consetetur sadipscing elitr, \r\nsed diam nonumy eirmod tempor invidunt \r\nut labore et dolore magna aliquyam erat, \\r\\nsed diam voluptua. At vero eos et accusam \\r\\net justo duo dolores et ea rebum. Stet clita kasd \\r\\ngubergren, no sea takimata sanctus est Lorem ipsum dolor\\r\\n sit amet. Lorem ipsum dolor sit amet, \\r\\nconsetetur sadipscing elitr, sed diam \\r\\nnonumy eirmod tempor invidunt ut labore et \\r\\ndolore magna aliquyam erat, sed diam \\r\\nvoluptua. At vero eos et accusam et justo duo dolores\\r\\n et ea rebum. Stet clita kasd gubergren,\\r\\n no sea takimata sanctus est Lorem ipsum dolor sit amet.\\r\\n\n" +
                 "\n" +
@@ -99,7 +108,7 @@ public class RuleScreen implements Screen{
 
     @Override
     public void show() {
-
+        renderArrows();
     }
 
     @Override
@@ -107,7 +116,7 @@ public class RuleScreen implements Screen{
         stage.act();
         batch.begin();
         renderBackground();
-        renderArrows();
+
         renderRule(this.indexRule);
         batch.end();
         stage.draw();
@@ -148,30 +157,30 @@ public class RuleScreen implements Screen{
 
         switch(indexRule) {
             case 1:
-                ruleDisplay = new Texture(Gdx.files.internal("rules1.png"));
+                ruleDisplay = rule1;
                 batch.draw(ruleDisplay, g.getUnitSize()*2, g.getUnitSize(), 16*g.getUnitSize(), 14*g.getUnitSize()*g.getRatio());
                 break;
             case 2:
-                ruleDisplay = new Texture(Gdx.files.internal("rules2.png"));
+                ruleDisplay = rule2;
                 batch.draw(ruleDisplay, g.getUnitSize()*2, g.getUnitSize(), 16*g.getUnitSize(), 14*g.getUnitSize()*g.getRatio());
                 break;
             case 3:
-                ruleDisplay = new Texture(Gdx.files.internal("rules3.png"));
+                ruleDisplay = rule3;
                 batch.draw(ruleDisplay, g.getUnitSize()*2, g.getUnitSize(), 16*g.getUnitSize(), 14*g.getUnitSize()*g.getRatio());
                 break;
             case 4:
-                ruleDisplay = new Texture(Gdx.files.internal("rules4.png"));
+                ruleDisplay = rule4;
                 batch.draw(ruleDisplay, g.getUnitSize()*2, g.getUnitSize(), 16*g.getUnitSize(), 14*g.getUnitSize()*g.getRatio());
                 break;
         }
     }
     public void renderArrows() {
         arrowLeft.setX(g.getUnitSize());
-        arrowLeft.setY(g.getUnitSize()*30);
+        arrowLeft.setY(g.getUnitSize()*28);
         arrowLeft.setWidth(2*g.getUnitSize());
         arrowLeft.setHeight(2*g.getUnitSize());
         arrowRight.setX(g.getUnitSize()*17);
-        arrowRight.setY(g.getUnitSize()*30);
+        arrowRight.setY(g.getUnitSize()*28);
         arrowRight.setWidth(2*g.getUnitSize());
         arrowRight.setHeight(2*g.getUnitSize());
         stage.addActor(arrowLeft);
