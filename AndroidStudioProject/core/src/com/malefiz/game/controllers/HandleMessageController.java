@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import models.Field;
 import models.Mode;
 import models.Rock;
+import models.Team;
 import models.Unit;
 import network.MessageObject;
 import network.MessageTypeEnum;
@@ -78,11 +79,14 @@ public class HandleMessageController {
                 gameController.getNextPlayer();
                 break;
 
+            case SetWinner:
+                // Info []
+                gameScreen.getMainClass().setWinnerScreen(gameScreen.getBoard().getFieldByID(112).getUnit().getTeam());
+
 
         }
 
     }
-
 
 
     public Unit getUnitById(int id)

@@ -34,4 +34,9 @@ public enum Team {
                 throw new RuntimeException("wrong team id");
         }
     }
+
+    public int getId()
+    {
+        return this.id;
+    }
 }

@@ -8,5 +8,6 @@ public enum MessageTypeEnum {
     SetFieldContent,
     SetRock,
     RollDice,
-    NextPlayer
+    NextPlayer,
+    SetWinner,
 }

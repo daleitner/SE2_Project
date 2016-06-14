@@ -165,6 +165,12 @@ public class GameController {
         if(gameScreen.getBoard().getFieldByID(112).equals(nextPosition))
         {
             gameScreen.getMainClass().setWinnerScreen(unit.getTeam());
+            if(this.mode == Mode.NETWORK) {
+                // send unit position "setUnitPosition;unitId;fieldId"
+                msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetWinner, null);
+                client.sendMessage(msg);
+                letSleep();
+            }
         }
         // todo check if next position is empty
         //if (checkPossibleMoves(rolledDiceNumber, unit.getCurrentFieldPosition(), nextPosition)) {
