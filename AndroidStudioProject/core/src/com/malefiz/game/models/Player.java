@@ -6,6 +6,8 @@ public class Player {
     private Avatar avatar;
     private String nickName;
 
+    int cheatCount = 0;
+
     public Player(String nickName) {
         this.nickName = nickName;
     }
@@ -51,5 +53,13 @@ public class Player {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public int getCheatCount() {
+        return cheatCount;
+    }
+
+    public void incCheatCount() {
+        this.cheatCount = cheatCount + 1;
     }
 }

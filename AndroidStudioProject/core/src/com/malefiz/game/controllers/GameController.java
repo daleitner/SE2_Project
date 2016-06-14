@@ -69,9 +69,22 @@ public class GameController {
      */
     private void getNextPlayer()
     {
+        System.out.println("team = " + actualPlayer.getTeam().color + " cheatCount = " + actualPlayer.getCheatCount());
         int idx = actualPlayer.getIndex();
         reset();
         actualPlayer =  players.get((idx+1)%players.size());
+
+        if(actualPlayer.getCheatCount() >= 3)
+        {
+            gameScreen.removeRiggedDice();
+        }
+        else
+        {
+            if(!gameScreen.isRiggedDiceVisible())
+            {
+                gameScreen.showRiggedDice();
+            }
+        }
         System.out.println("get next player team = " + actualPlayer.getTeam());
         diceTries = 3;
         gameScreen.drawAvatar();
@@ -376,7 +389,7 @@ public class GameController {
     }
 
     /**
-     * Überprüft, ob sich ein Stein in der Ablge befindet
+     * Überprüft, ob sich ein Stein in der Ablage befindet
      * @return
      */
     public boolean isRockTaken()
@@ -451,6 +464,5 @@ public class GameController {
             u.setPosition(u.getStartPosition());
             setUnitImagePosition(u);
         }
-
     }
 }

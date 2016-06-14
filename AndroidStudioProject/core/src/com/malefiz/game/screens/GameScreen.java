@@ -58,6 +58,8 @@ public class GameScreen implements Screen {
     int unitSize = screenWidth/20;
     boolean unitinit = true;
 
+
+
     Board b = new Board();
     Grid g = new Grid();
 
@@ -537,29 +539,36 @@ public class GameScreen implements Screen {
             riggedDiceDisplay.setHeight(4*unitSize);
             stage.addActor(riggedDiceDisplay);
         riggedDiceDisplay.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y){
-                if(riggedDices.size() == 0)
-                {
-                    for (int i = 1; i < riggedOptions.length; i++)
-                    {
+            public void clicked(InputEvent event, float x, float y) {
+
+                if (riggedDices.size() == 0) {
+                    for (int i = 1; i < riggedOptions.length; i++) {
 
                         final Image temp = new Image(new Sprite(new Texture(Gdx.files.internal(riggedOptions[i]))));
                         temp.setX(unitSize * 10);
-                        temp.setY(unitSize * 4 * i+50);
+                        temp.setY(unitSize * 4 * i + 50);
                         temp.setWidth(4 * unitSize);
                         temp.setHeight(4 * unitSize);
                         riggedDices.add(temp);
-                        temp.addListener(new ClickListener(){
-                            public void clicked(InputEvent ev, float x, float y)
-                            {
+                        temp.addListener(new ClickListener() {
+                            public void clicked(InputEvent ev, float x, float y) {
                                 //Implementierung der Würfelzahlübergabe
-                                if(!gc.getPlayerAbleToMove() && elapsedTime >=1 ) {
+                                if (!gc.getPlayerAbleToMove() && elapsedTime >= 1 ) {
+                                    if (diceDisplay != null)
+                                    {
+                                        diceDisplay.remove();
+                                    }
+
                                     gc.setDiceRolled();
                                     rolledDiceValue = (int) ((temp.getY() - 50) / (4 * unitSize));
                                     setDiceDisplay(rolledDiceValue);
                                     elapsedTime = 0;
                                     animationActive = true;
                                     gc.isPlayerAbleToMove();
+                                    gc.getActualPlayer().incCheatCount();
+                                    if (gc.getActualPlayer().getCheatCount() >= 3) {
+                                        removeRiggedDice();
+                                    }
                                 }
                                 removeDices();
                             }
@@ -567,14 +576,14 @@ public class GameScreen implements Screen {
                         stage.addActor(temp);
 
                     }
-                }
-                else
-                {
+                } else {
                     removeDices();
                 }
 
             }
+
         });
+
     }
 
 
@@ -586,6 +595,22 @@ public class GameScreen implements Screen {
             diceDisplay.setWidth(4*unitSize);
             diceDisplay.setHeight(4*unitSize);
             stage.addActor(diceDisplay);
+            diceDisplay.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y){
+                    if(!gc.getPlayerAbleToMove() && elapsedTime > 1) {
+                        elapsedTime = 0;
+                        drawDice();
+                        gc.setDiceRolled();
+                        rolledDiceValue = normalDice.getValue();
+                        gc.isPlayerAbleToMove();
+                        removeRandomDiceDisplay();
+                        animationActive = true;
+                        System.out.println("rolled dice value is = " + rolledDiceValue);
+                        diceDisplay.remove();
+
+                    }
+                }
+            });
     }
 
     public void activateRandomDiceDisplay()
@@ -723,5 +748,19 @@ public class GameScreen implements Screen {
                 animationActive = true;
             }
         }
+    }
+
+    public void removeRiggedDice()
+    {
+        riggedDiceDisplay.setVisible(false);
+    }
+    public void showRiggedDice()
+    {
+        riggedDiceDisplay.setVisible(true);
+    }
+
+    public boolean isRiggedDiceVisible()
+    {
+        return riggedDiceDisplay.isVisible();
     }
 }

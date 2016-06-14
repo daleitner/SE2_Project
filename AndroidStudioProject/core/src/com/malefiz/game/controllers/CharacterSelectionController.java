@@ -153,8 +153,11 @@ public class CharacterSelectionController {
         if(this.actualPlayer < this.numberOfPlayers) {
             this.actualPlayer += 1;
         }
-        else
+        else{
             this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
+            //System.out.println(getSelectedCharacters().size());
+        }
+
     }
 
     public void playButtonClicked() {
