@@ -35,6 +35,8 @@ import models.Player;
 import models.Rock;
 import models.Team;
 import models.Unit;
+import network.MessageObject;
+import network.MessageTypeEnum;
 
 public class GameScreen implements Screen {
     boolean shake = false;
@@ -67,7 +69,7 @@ public class GameScreen implements Screen {
 
     ArrayList<Field> fields;
     ArrayList<Integer[]> lines;
-    ArrayList<Unit> units;
+    ArrayList<Unit> units = null;
     ArrayList<Image> riggedDices = new ArrayList<Image>();
 
     ArrayList<Rock> rocks;
@@ -118,7 +120,7 @@ public class GameScreen implements Screen {
     }
 
     public ArrayList<Unit> getUnits() {
-        return units;
+        return this.units;
     }
 
     public void setUnits(ArrayList<Unit> units) {
@@ -180,12 +182,12 @@ public class GameScreen implements Screen {
         this.selectedAvatar = selectedPlayers.get(0).getAvatar();
         this.mainClass = mainClass;
         this.lp = lp;
-        this.gc = new GameController(this, selectedPlayers);
+        this.gc = new GameController(this, selectedPlayers, mode);
+        this.gc.setMalefizClient(mainClass.getMalefizClient());
         this.mode = mode;
         this.actionResolver = actionResolver;
 
         show();
-
     }
 
     @Override
@@ -258,6 +260,7 @@ public class GameScreen implements Screen {
         {
             animationActive = false;
         }
+        gc.receiveMessage();
     }
 
     @Override
@@ -287,7 +290,8 @@ public class GameScreen implements Screen {
 
     public void drawUnits() {
 
-        units = b.getUnits();
+        this.units = b.getUnits();
+        System.out.println("Units drawn");
 
         for (final Unit u : units) {
             Image unit_image;
@@ -413,7 +417,16 @@ public class GameScreen implements Screen {
                     )) {
                         gc.setRockPosition(selectedRock, f);
                         f.setRock(selectedRock);
-                        //send setContentField|fieldId|"rock"|rockId
+                        if(gc.getMode() == Mode.NETWORK) {
+                            //send setContentField|fieldId|"rock"|rockId
+                            ArrayList<String> info = new ArrayList<String>();
+                            info.add(String.valueOf(f.getID()));
+                            info.add("rock");
+                            info.add(String.valueOf(selectedRock.getId()));
+                            MessageObject msg = new MessageObject(gc.getClient().getNickName(), MessageTypeEnum.SetFieldContent, info);
+                            gc.getClient().sendMessage(msg);
+                            gc.letSleep();
+                        }
                         selectedRock = null;
                     }
 
@@ -541,7 +554,7 @@ public class GameScreen implements Screen {
         riggedDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
 
-                if (riggedDices.size() == 0) {
+                if (riggedDices.size() == 0 && gc.roundActive()) {
                     for (int i = 1; i < riggedOptions.length; i++) {
 
                         final Image temp = new Image(new Sprite(new Texture(Gdx.files.internal(riggedOptions[i]))));
@@ -553,7 +566,7 @@ public class GameScreen implements Screen {
                         temp.addListener(new ClickListener() {
                             public void clicked(InputEvent ev, float x, float y) {
                                 //Implementierung der Würfelzahlübergabe
-                                if (!gc.getPlayerAbleToMove() && elapsedTime >= 1 ) {
+                                if (!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
                                     if (diceDisplay != null)
                                     {
                                         diceDisplay.remove();
@@ -597,7 +610,7 @@ public class GameScreen implements Screen {
             stage.addActor(diceDisplay);
             diceDisplay.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y){
-                    if(!gc.getPlayerAbleToMove() && elapsedTime > 1) {
+                    if(!gc.getPlayerAbleToMove() && elapsedTime > 1 && gc.roundActive()) {
                         elapsedTime = 0;
                         drawDice();
                         gc.setDiceRolled();
@@ -624,7 +637,7 @@ public class GameScreen implements Screen {
         randomDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent ev, float x, float y)
             {
-                if(!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                if(!gc.getPlayerAbleToMove() && elapsedTime >= 1 && gc.roundActive()) {
                     elapsedTime = 0;
                     drawDice();
                     gc.setDiceRolled();

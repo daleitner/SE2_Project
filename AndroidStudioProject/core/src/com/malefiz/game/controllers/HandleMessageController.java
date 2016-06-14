@@ -3,66 +3,94 @@ package controllers;
 import java.util.ArrayList;
 
 import models.Field;
+import models.Mode;
 import models.Rock;
 import models.Unit;
+import network.MessageObject;
+import network.MessageTypeEnum;
 import screens.GameScreen;
 
 public class HandleMessageController {
     GameController gameController;
     GameScreen gameScreen;
+    MessageTypeEnum mEnum;
 
-    public HandleMessageController (GameController gameController) {
+    public HandleMessageController (GameController gameController, GameScreen gameScreen) {
         this.gameController = gameController;
-        this.gameScreen = gameController.gameScreen;
+        this.gameScreen = gameScreen;
     }
 
-    public void handleMessage(String message) {
-        String[] splitMessage = message.split(";");
-        ArrayList<Unit> units = gameScreen.getUnits();
-        ArrayList<Field> fields = gameScreen.getFields();
-        ArrayList<Rock> rocks = gameScreen.getRocks();
+    public void receiveMessage() {
+            String msg = gameController.getClient().getReceivedMessage();
+            if(!msg.isEmpty()) {
+                MessageObject obj = MessageObject.MessageToMessageObject(msg);
+                handleMessage(obj);
+            }
 
-        // "|command|unitID|newPositionID|"
-        if (splitMessage[0].equals("setUnit"))
-        {
-            Unit u = getUnitById(Integer.parseInt(splitMessage[1]));
-            Field f = getFieldById(Integer.parseInt(splitMessage[2]));
-            u.setPosition(f);
-            gameController.setUnitImagePosition(u);
-        }
-
-        // "|command|fieldId|Content["rock" || "unit" || "null"]|(RockId || UnitId)"
-         else if (splitMessage[0].equals("setFieldContent"))
-        {
-            Field f = getFieldById(Integer.parseInt(splitMessage[1]));
-                    if (splitMessage[2].equals("rock")) {
-                        f.setRock(getRockById(Integer.parseInt(splitMessage[3])));
-                    } else if (splitMessage[2].equals("unit")) {
-                        f.setUnit(getUnitById(Integer.parseInt(splitMessage[3])));
-                    } else if (splitMessage[2].equals("null")) {
-                        f.setUnit(null);
-                        f.setRock(null);
-                    }
-        }
-        // "|command|rockID|newPositionID|"
-        else if(splitMessage[0].equals("setRock"))
-        {
-            Rock r = getRockById(Integer.parseInt(splitMessage[1]));
-            Field f = getFieldById(Integer.parseInt(splitMessage[2]));
-            r.setPosition(f);
-            gameController.setRockImagePosition(r);
-        }
-        //"|command|diceValue|"
-        else if(splitMessage[0].equals("rollDice"))
-        {
-            gameScreen.setDiceDisplay(Integer.parseInt(splitMessage[1]));
-            gameScreen.setAnimationActive();
-            gameScreen.resetElapsedTime();
-        }
     }
+
+
+    public void handleMessage(MessageObject message) {
+        Field field = null;
+        Unit unit = null;
+        Rock rock = null;
+
+        switch (message.getMessageType()) {
+
+            case SetUnit:
+                // Info [unitId; fieldId]
+                unit = getUnitById(Integer.parseInt(message.getInformation().get(0)));
+                field = getFieldById(Integer.parseInt(message.getInformation().get(1)));
+                unit.setPosition(field);
+                gameController.setUnitImagePosition(unit);
+                break;
+
+            case SetFieldContent:
+                // Info [fieldId; ["rock"||"unit"||"null"]; [unitId||rockId]]
+                field = getFieldById(Integer.parseInt(message.getInformation().get(0)));
+                if (message.getInformation().size() == 1) {
+                    field.setUnit(null);
+                    field.setRock(null);
+                } else if (message.getInformation().get(1).equals("unit")) {
+                    field.setUnit(getUnitById(Integer.parseInt(message.getInformation().get(2))));
+                } else if (message.getInformation().get(1).equals("rock")) {
+                    field.setRock(getRockById(Integer.parseInt(message.getInformation().get(2))));
+                }
+                break;
+
+            case SetRock:
+                // Info [rockId; newPositionId(field)]
+                rock = getRockById(Integer.parseInt(message.getInformation().get(0)));
+                field = getFieldById(Integer.parseInt(message.getInformation().get(1)));
+                rock.setPosition(field);
+                gameController.setRockImagePosition(rock);
+                break;
+
+            case RollDice:
+                // Info [diceValue]
+                gameScreen.setDiceDisplay(Integer.parseInt(message.getInformation().get(0)));
+                gameScreen.setAnimationActive();
+                gameScreen.resetElapsedTime();
+                break;
+
+            case NextPlayer:
+                // Info []
+                gameController.getNextPlayer();
+                break;
+
+
+        }
+
+    }
+
+
 
     public Unit getUnitById(int id)
     {
+        if(gameScreen == null)
+        {
+            System.out.println("Gamescreen = null");
+        }
         ArrayList<Unit> units = gameScreen.getUnits();
         for (Unit u : units){
             if (u.getId() == id)

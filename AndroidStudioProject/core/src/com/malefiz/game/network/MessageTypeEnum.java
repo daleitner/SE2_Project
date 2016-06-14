@@ -3,5 +3,10 @@ package network;
 public enum MessageTypeEnum {
     Connect,
     GoToCharacterSelection,
-    CharacterSelected
+    CharacterSelected,
+    SetUnit,
+    SetFieldContent,
+    SetRock,
+    RollDice,
+    NextPlayer
 }

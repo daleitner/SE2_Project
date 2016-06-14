@@ -36,6 +36,7 @@ public class MyMalefiz extends Game {
 	private ConnectionClientController connectionClientController;
 	public ActionResolver actionResolver;
 	public MalefizServer server;
+	private MalefizClient gameclient;
 
 	private LanguagePack lp = new LanguagePack("ger");
 
@@ -62,6 +63,12 @@ public class MyMalefiz extends Game {
 		setScreen(this.gameScreen);
 	}
 
+	public void setGameScreen(Mode m, HashMap<Integer, Player> selectedCharacters, MalefizClient client)
+	{
+		this.gameScreen = new GameScreen(this, selectedCharacters, lp, m, actionResolver);
+		setScreen(this.gameScreen);
+	}
+
 	public void setNumberOfPlayersSelectionScreen() {
 		this.numberOfPlayersSelectionController = new NumberOfPlayersSelectionController(this, lp);
 		setScreen(new NumberOfPlayersSelectionScreen(this.numberOfPlayersSelectionController));
@@ -83,6 +90,7 @@ public class MyMalefiz extends Game {
 			Player player = new Player(nickNames.get(i));
 			players.put(i, player);
 		}
+		this.gameclient = client;
 		this.characterSelectionController = new CharacterSelectionController(this, lp, players, client);
 		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
 	}
@@ -125,5 +133,8 @@ public class MyMalefiz extends Game {
 		this.lp = lang;
 	}
 
-
+	public MalefizClient getMalefizClient()
+	{
+		return this.gameclient;
+	}
 }

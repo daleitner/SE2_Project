@@ -5,13 +5,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Exchanger;
 
 import models.Avatar;
 import models.Field;
+import models.Mode;
 import models.Player;
 import models.Rock;
 import models.Team;
 import models.Unit;
+import network.MalefizClient;
+import network.MessageObject;
+import network.MessageTypeEnum;
 import screens.GameScreen;
 
 public class GameController {
@@ -23,12 +28,18 @@ public class GameController {
     private boolean unitMoved;
     private boolean playerAbleToMove;
     private boolean rockTaken;
+    private MalefizClient client;
+    private Mode mode;
+
+    private HandleMessageController handleMessageController = null;
 
 
-    public GameController(GameScreen gameScreen, HashMap<Integer, Player> _players){
+    public GameController(GameScreen gameScreen, HashMap<Integer, Player> _players, Mode mode){
+        this.handleMessageController = new HandleMessageController(this, gameScreen);
         this.gameScreen = gameScreen;
         this.players = _players;
         this.actualPlayer = this.players.get(0);
+        this.mode = mode;
         reset();
     }
 
@@ -41,7 +52,13 @@ public class GameController {
         {
             System.out.println("DiceRolled: " + diceRolled + " unitMoved: " + unitMoved + " PlayerAbleToMove: " + playerAbleToMove + " diceTries: " + diceTries + " Dicevalue: " + gameScreen.getRolledDiceValue());
             gameScreen.deleteDiceDisplay();
+
             getNextPlayer();
+            if(this.mode == Mode.NETWORK) {
+                MessageObject msg = new MessageObject(client.getNickName(), MessageTypeEnum.NextPlayer, null);
+                client.sendMessage(msg);
+                letSleep();
+            }
         }
 
         /*if(diceRolled && playerAbleToMove(getActualTeam()))
@@ -67,9 +84,8 @@ public class GameController {
 
      * Beendet die Runde und aktiviert den nächsten Spieler
      */
-    private void getNextPlayer()
+    public void getNextPlayer()
     {
-        System.out.println("team = " + actualPlayer.getTeam().color + " cheatCount = " + actualPlayer.getCheatCount());
         int idx = actualPlayer.getIndex();
         reset();
         actualPlayer =  players.get((idx+1)%players.size());
@@ -142,6 +158,10 @@ public class GameController {
      * @param unit
      */
     public void moveUnit (Field nextPosition, Unit unit) {
+
+        ArrayList<String> info;
+        MessageObject msg;
+
         if(gameScreen.getBoard().getFieldByID(112).equals(nextPosition))
         {
             gameScreen.getMainClass().setWinnerScreen(unit.getTeam());
@@ -156,24 +176,70 @@ public class GameController {
             {
                 setRockPosition(r, null);
                 nextPosition.setRock(null);
-                // send rockOnField "|setFieldContent|nextposition.getId()|null]|null"
+
+                if(this.mode == Mode.NETWORK) {
+                    // send rockOnField "|setFieldContent|nextposition.getId()|null]|null"
+                    info = new ArrayList<String>();
+                    info.add(String.valueOf(nextPosition.getID()));
+                    msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetFieldContent, info);
+                    client.sendMessage(msg);
+                    letSleep();
+                }
+
                 gameScreen.setSelectedRock(null);
                 // send rock position "setRockPosition;rockId;fieldId"
+
             }
 
             if(u != null)
             {
                 u.setPosition(u.getStartPosition());
                 setUnitImagePosition(u);
-                // send unit position "setUnitPosition;unitId;fieldId"
+                if(this.mode == Mode.NETWORK) {
+                    // send unit position "setUnitPosition;unitId;fieldId"
+                    info = new ArrayList<String>();
+                    info.add(String.valueOf(u.getId()));
+                    info.add(String.valueOf(u.getStartPosition().getID()));
+                    msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetUnit, info);
+                    client.sendMessage(msg);
+                    letSleep();
+                }
             }
             unit.currentFieldPosition.setUnit(null);
-            // "|setFieldContent|currentFieldPosition.getId()|null|null"
+            if(this.mode == Mode.NETWORK) {
+                // "|setFieldContent|currentFieldPosition.getId()|null|null"
+                info = new ArrayList<String>();
+                info.add(String.valueOf(unit.currentFieldPosition.getID()));
+                msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetFieldContent, info);
+                client.sendMessage(msg);
+                letSleep();
+            }
+
             unit.setPosition(nextPosition);
             setUnitImagePosition(unit);
-            // send unit position "setUnitPosition;unitId;fieldId"
+            if(this.mode == Mode.NETWORK) {
+                // send unit position "setUnitPosition;unitId;fieldId"
+                info = new ArrayList<String>();
+                info.add(String.valueOf(unit.getId()));
+                info.add(String.valueOf(nextPosition.getID()));
+                msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetUnit, info);
+                client.sendMessage(msg);
+                letSleep();
+            }
+
             nextPosition.setUnit(unit);
-            // "|"setFieldContent"|nextPosition.getId()|"unit"|unit.getId"
+
+            if(this.mode == Mode.NETWORK) {
+                // "|"setFieldContent"|nextPosition.getId()|"unit"|unit.getId"
+                info = new ArrayList<String>();
+                info.add(String.valueOf(nextPosition.getID()));
+                info.add("unit");
+                info.add(String.valueOf(unit.getId()));
+                msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetFieldContent, info);
+                client.sendMessage(msg);
+                letSleep();
+            }
+
             clearPossibleMoves();
             unitMoved = true;
 
@@ -435,7 +501,16 @@ public class GameController {
             System.out.println("rock small");
             rock.setPosition(field);
             setRockImagePosition(rock);
-            // send rock position
+            if(this.mode == Mode.NETWORK) {
+                // send rock position // Info [rockId; newPositionId(field)]
+                ArrayList<String> info = new ArrayList<String>();
+                info.add(String.valueOf(rock.getId()));
+                info.add(String.valueOf(field.getID()));
+                MessageObject msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetRock, info);
+                client.sendMessage(msg);
+                letSleep();
+            }
+
             rock.setTaken(false);
             rockTaken = false;
 
@@ -464,5 +539,52 @@ public class GameController {
             u.setPosition(u.getStartPosition());
             setUnitImagePosition(u);
         }
+    }
+
+    public void setMalefizClient(MalefizClient client)
+    {
+        this.client = client;
+    }
+
+    public boolean roundActive()
+    {
+        if (mode == Mode.LOCAL) {
+            return true;
+        }
+        System.out.println("Playername" + actualPlayer.getNickName());
+
+        if (client!=null) {
+            System.out.println("Clientname" + client.getNickName());
+
+            if (client.getNickName().equals(actualPlayer.getNickName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void receiveMessage(){
+        if(this.mode == Mode.NETWORK) {
+            handleMessageController.receiveMessage();
+        }
+    }
+
+    public MalefizClient getClient() {
+        return client;
+    }
+
+    public void letSleep()
+    {
+        try {
+            Thread.sleep(280);
+        }
+        catch (InterruptedException ex)
+        {
+
+        }
+    }
+
+    public Mode getMode() {
+        return mode;
     }
 }

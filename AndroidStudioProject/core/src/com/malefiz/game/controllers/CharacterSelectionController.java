@@ -154,8 +154,16 @@ public class CharacterSelectionController {
             this.actualPlayer += 1;
         }
         else{
-            this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
-            //System.out.println(getSelectedCharacters().size());
+            if(mode == Mode.LOCAL)
+            {
+                this.mainClass.setGameScreen(this.mode, getSelectedCharacters());
+            }
+            else
+            {
+                this.mainClass.setGameScreen(this.mode, getSelectedCharacters(), client);
+            }
+
+            System.out.println(getSelectedCharacters().size());
         }
 
     }
