@@ -31,15 +31,16 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		downFontColor: RGBA_153_10_10_255
 		up: button-bg
 		down: button-bg-pressed
-		pressedOffsetX: 2
+		pressedOffsetX: -3
+		pressedOffsetY: -3
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: Roboto-hdpi
-		fontColor: RGBA_255_255_255_255
+		fontColor: RGBA_153_10_10_255
 		background: textfield-bg
-		cursor: cursor-tf
+		cursor: cursor
 		messageFont: Roboto-hdpi
 	}
 }

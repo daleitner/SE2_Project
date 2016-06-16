@@ -709,35 +709,35 @@ window-resizable
   index: -1
 button-bg
   rotate: false
-  xy: 773, 973
+  xy: 1, 457
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 button-bg-pressed
   rotate: false
-  xy: 1, 405
+  xy: 773, 973
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 cursor
   rotate: false
-  xy: 1021, 973
+  xy: 77, 294
   size: 2, 50
   orig: 2, 50
   offset: 0, 0
   index: -1
 cursor-tf
   rotate: false
-  xy: 77, 294
+  xy: 1021, 973
   size: 2, 50
   orig: 2, 50
   offset: 0, 0
   index: -1
 textfield-bg
   rotate: false
-  xy: 1, 457
+  xy: 1, 405
   size: 200, 50
   orig: 200, 50
   offset: 0, 0

@@ -1143,30 +1143,6 @@ atlasData: {
 			name: window-resizable
 		}
 		{
-			file: F:/Uni/4. Semester/SE2/skins/skin/cursor.png
-			bgColor: {
-				r: 1
-				g: 1
-				b: 1
-				a: 1
-			}
-			visible: true
-			tint: null
-			name: cursor
-		}
-		{
-			file: F:/Uni/4. Semester/SE2/skins/skin/textfield-bg.png
-			bgColor: {
-				r: 1
-				g: 1
-				b: 1
-				a: 1
-			}
-			visible: true
-			tint: null
-			name: textfield-bg
-		}
-		{
 			file: F:/Uni/4. Semester/SE2/skins/skin/cursor-tf.png
 			bgColor: {
 				r: 0
@@ -1201,6 +1177,30 @@ atlasData: {
 			visible: true
 			tint: null
 			name: button-bg-pressed
+		}
+		{
+			file: F:/Uni/4. Semester/SE2/skins/skin/textfield-bg.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			name: textfield-bg
+		}
+		{
+			file: F:/Uni/4. Semester/SE2/skins/skin/cursor.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			visible: true
+			tint: null
+			name: cursor
 		}
 	]
 }
@@ -2451,14 +2451,14 @@ jsonData: {
 						type: float
 						name: pressedOffsetX
 						optional: true
-						value: 2
+						value: -3
 					}
 					pressedOffsetY: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: float
 						name: pressedOffsetY
 						optional: true
-						value: 0
+						value: -3
 					}
 					unpressedOffsetX: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2510,7 +2510,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: false
-						value: RGBA_255_255_255_255
+						value: RGBA_153_10_10_255
 					}
 					focusedFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2552,7 +2552,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: cursor
 						optional: true
-						value: cursor-tf
+						value: cursor
 					}
 					selection: {
 						class: com.ray3k.skincomposer.data.StyleProperty
