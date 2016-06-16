@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -41,6 +42,7 @@ import java.util.List;
 import controllers.ConnectionClientController;
 import controllers.ConnectionController;
 import models.Grid;
+import models.LanguagePack;
 import network.MalefizClient;
 
 public class ConnectionClientScreen implements Screen {
@@ -52,16 +54,18 @@ public class ConnectionClientScreen implements Screen {
     private ConnectionClientController controller;
     Skin skin;
     Grid g = new Grid();
+    private LanguagePack lp;
 
     private Label labelJoinedPlayers;
-    private TextArea textIPAddress;
-    private TextArea textNickName;
+    private TextField textIPAddress;
+    private TextField textNickName;
     private TextButton playButton;
     private TextButton cancelButton;
 
-    public ConnectionClientScreen(ConnectionClientController controller)
+    public ConnectionClientScreen(ConnectionClientController controller, LanguagePack lp)
     {
         this.controller = controller;
+        this.lp = lp;
     }
 
     @Override
@@ -73,41 +77,56 @@ public class ConnectionClientScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
-        VerticalGroup vg = new VerticalGroup().space(3).pad(5).fill();//.space(2).pad(5).fill();//.space(3).reverse().fill();
-        // Set the bounds of the group to the entire virtual display
-        vg.setBounds(0, screenHeight/2, screenWidth, screenHeight/2);
-        Label labelIPAddresses = new Label("Server IP-Adresse:",skin);
-        /*this.labelIPAddresses.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
-        this.labelIPAddresses.setWidth(18*g.getUnitSize());
-        this.labelIPAddresses.setHeight(4*g.getUnitSize()*g.getRatio());
-        this.labelIPAddresses.setFontScale(5);
-        this.labelIPAddresses.setAlignment(Align.center);*/
-        //stage.addActor(this.labelIPAddresses);
-        vg.addActor(labelIPAddresses);
-        this.textIPAddress = new TextArea("192.168.1.1", skin);
-        vg.addActor(this.textIPAddress);
-        Label labelNickName = new Label("Nickname:", skin);
-        vg.addActor(labelNickName);
-        this.textNickName = new TextArea("Spieler2", skin);
-        vg.addActor(this.textNickName);
-        Label labelPlayers = new Label("Players:", skin);
-        vg.addActor(labelPlayers);
-        this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
-        /*this.labelJoinedPlayers.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
-        this.labelJoinedPlayers.setWidth(18*g.getUnitSize());
-        this.labelJoinedPlayers.setHeight(4*g.getUnitSize()*g.getRatio());
-        this.labelJoinedPlayers.setFontScale(5);
-        this.labelJoinedPlayers.setAlignment(Align.center);*/
-        //stage.addActor(this.labelJoinedPlayers);
-        vg.addActor(this.labelJoinedPlayers);
-        stage.addActor(vg);
+
+        Label labelIPAddresses = new Label(lp.getText("ip"),skin);
+        labelIPAddresses.setHeight(g.getUnitSize());
+        labelIPAddresses.setWidth(g.getUnitSize()*18);
+        labelIPAddresses.setPosition(g.getUnitSize(), g.getUnitSize()*18*g.getRatio());
+        labelIPAddresses.setFontScale(2f);
+        stage.addActor(labelIPAddresses);
+
+        this.textIPAddress = new TextField("192.168.1.1", skin);
+        this.textIPAddress.setAlignment(1);
+        this.textIPAddress.setHeight(g.getUnitSize()*2);
+        this.textIPAddress.setWidth(g.getUnitSize()*18);
+        this.textIPAddress.setPosition(g.getUnitSize(), g.getUnitSize()*16.5f*g.getRatio());
+        this.textIPAddress.scaleBy(2);
+        stage.addActor(textIPAddress);
+
+        Label labelNickName = new Label(lp.getText("nick"), skin);
+        labelNickName.setHeight(g.getUnitSize());
+        labelNickName.setWidth(g.getUnitSize()*18);
+        labelNickName.setPosition(g.getUnitSize(), g.getUnitSize()*15*g.getRatio());
+        labelNickName.setFontScale(2f);
+        stage.addActor(labelNickName);
+
+        this.textNickName = new TextField(lp.getText("p2"), skin);
+        this.textNickName.setAlignment(1);
+        this.textNickName.setHeight(g.getUnitSize()*2);
+        this.textNickName.setWidth(g.getUnitSize()*18);
+        this.textNickName.setPosition(g.getUnitSize(), g.getUnitSize()*13.5f*g.getRatio());
+        stage.addActor(textNickName);
+
+        Label labelPlayers = new Label(lp.getText("conplayers")+":", skin);
+        labelPlayers.setHeight(g.getUnitSize());
+        labelPlayers.setWidth(g.getUnitSize()*18);
+        labelPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*11*g.getRatio());
+        labelPlayers.setFontScale(2f);
+        stage.addActor(labelPlayers);
+
+        this.labelJoinedPlayers = new Label(this.controller.getPlayersString(), skin);
+        labelJoinedPlayers.setHeight(g.getUnitSize());
+        labelJoinedPlayers.setWidth(g.getUnitSize()*18);
+        labelJoinedPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*10*g.getRatio());
+        labelJoinedPlayers.setFontScale(1.5f);
+        stage.addActor(labelJoinedPlayers);
 
         this.cancelButton =  new TextButton(this.controller.getLanguagePack().getText("cancel"), skin, "default");
 
         this.cancelButton.setWidth((int)(8.5f*g.getUnitSize()));
         this.cancelButton.setHeight(2* g.getUnitSize()*g.getRatio());
         this.cancelButton.setPosition(g.getUnitSize(), g.getUnitSize());
-        this.cancelButton.getLabel().setFontScale(3.0f);
+        this.cancelButton.getLabel().setFontScale(2.0f);
         this.cancelButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -121,7 +140,7 @@ public class ConnectionClientScreen implements Screen {
         this.playButton.setWidth((int)(8.5*g.getUnitSize()));
         this.playButton.setHeight(2*g.getUnitSize()*g.getRatio());
         this.playButton.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
-        this.playButton.getLabel().setFontScale(3.0f);
+        this.playButton.getLabel().setFontScale(2.0f);
         this.playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

@@ -116,7 +116,6 @@ public class RuleScreen implements Screen{
         stage.act();
         batch.begin();
         renderBackground();
-
         renderRule(this.indexRule);
         batch.end();
         stage.draw();

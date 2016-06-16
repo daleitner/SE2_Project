@@ -54,12 +54,12 @@ public class MenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
 
-        TextButton startBtn = new TextButton("Mehrspieler (Lokal)"/*lp.getText("startgame")*/, skin, "default");
+        TextButton startBtn = new TextButton(lp.getText("mplocal"), skin, "default");
 
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         startBtn.setPosition(g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
-        startBtn.getLabel().setFontScale(3.0f);
+        startBtn.getLabel().setFontScale(2.0f);
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -67,12 +67,12 @@ public class MenuScreen implements Screen {
             }
         });
 
-        TextButton connectBtn = new TextButton("Mehrspieler (Netzwerk)"/*lp.getText("joingame")*/, skin, "default");
+        TextButton connectBtn = new TextButton(lp.getText("mpnetw"), skin, "default");
 
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         connectBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
-        connectBtn.getLabel().setFontScale(3.0f);
+        connectBtn.getLabel().setFontScale(2.0f);
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -85,7 +85,7 @@ public class MenuScreen implements Screen {
         ruleBtn.setWidth(18*g.getUnitSize());
         ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         ruleBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
-        ruleBtn.getLabel().setFontScale(3.0f);
+        ruleBtn.getLabel().setFontScale(2.0f);
         ruleBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -98,7 +98,7 @@ public class MenuScreen implements Screen {
         exitBtn.setWidth(18*g.getUnitSize());
         exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         exitBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
-        exitBtn.getLabel().setFontScale(3.0f);
+        exitBtn.getLabel().setFontScale(2.0f);
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

@@ -54,7 +54,7 @@ public class NetworkMenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("uiskin.json"), new TextureAtlas(Gdx.files.internal("uiskin.atlas")));
 
-        TextButton startBtn = new TextButton("Spiel erstellen", skin, "default");
+        TextButton startBtn = new TextButton(lp.getText("hostgame"), skin, "default");
 
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -67,7 +67,7 @@ public class NetworkMenuScreen implements Screen {
             }
         });
 
-        TextButton connectBtn = new TextButton("Spiel beitreten", skin, "default");
+        TextButton connectBtn = new TextButton(lp.getText("joingame"), skin, "default");
 
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
@@ -80,7 +80,7 @@ public class NetworkMenuScreen implements Screen {
             }
         });
 
-        TextButton backBtn = new TextButton("Zurueck", skin, "default");
+        TextButton backBtn = new TextButton(lp.getText("back"), skin, "default");
 
         backBtn.setWidth(18*g.getUnitSize());
         backBtn.setHeight(2*g.getUnitSize()*g.getRatio());

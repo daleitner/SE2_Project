@@ -116,7 +116,7 @@ public class MyMalefiz extends Game {
 	public void setConnectionScreen() {
 		this.server = new MalefizServer();
 		this.connectionController = new ConnectionController(this, server, lp);
-		setScreen(new ConnectionScreen((this.connectionController)));
+		setScreen(new ConnectionScreen(this.connectionController, lp));
 	}
 
 	public void setNetworkMenuScreen() {
@@ -125,7 +125,7 @@ public class MyMalefiz extends Game {
 
 	public void setConnectionClientScreen() {
 		this.connectionClientController = new ConnectionClientController(this, lp);
-		setScreen(new ConnectionClientScreen(this.connectionClientController));
+		setScreen(new ConnectionClientScreen(this.connectionClientController, lp));
 	}
 
 	public void setLanguagePack(LanguagePack lang)

@@ -56,9 +56,9 @@ public class ConnectionController  {
 
     public String getPlayersString() {
         String msg = this.server.getConnectedPlayers();
-        this.playersString = "Players:";
+        this.playersString = "";
         if(!msg.isEmpty())
-            this.playersString += "\n" + msg;
+            this.playersString += msg + "\n";
         return this.playersString;
     }
 
