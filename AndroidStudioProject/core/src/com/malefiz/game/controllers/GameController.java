@@ -57,7 +57,6 @@ public class GameController {
             if(this.mode == Mode.NETWORK) {
                 MessageObject msg = new MessageObject(client.getNickName(), MessageTypeEnum.NextPlayer, null);
                 client.sendMessage(msg);
-                letSleep();
             }
         }
 
@@ -169,7 +168,6 @@ public class GameController {
                 // send unit position "setUnitPosition;unitId;fieldId"
                 msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetWinner, null);
                 client.sendMessage(msg);
-                letSleep();
             }
         }
         // todo check if next position is empty
@@ -189,7 +187,6 @@ public class GameController {
                     info.add(String.valueOf(nextPosition.getID()));
                     msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetFieldContent, info);
                     client.sendMessage(msg);
-                    letSleep();
                 }
 
                 gameScreen.setSelectedRock(null);
@@ -208,7 +205,6 @@ public class GameController {
                     info.add(String.valueOf(u.getStartPosition().getID()));
                     msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetUnit, info);
                     client.sendMessage(msg);
-                    letSleep();
                 }
             }
             unit.currentFieldPosition.setUnit(null);
@@ -218,7 +214,6 @@ public class GameController {
                 info.add(String.valueOf(unit.currentFieldPosition.getID()));
                 msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetFieldContent, info);
                 client.sendMessage(msg);
-                letSleep();
             }
 
             unit.setPosition(nextPosition);
@@ -230,7 +225,6 @@ public class GameController {
                 info.add(String.valueOf(nextPosition.getID()));
                 msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetUnit, info);
                 client.sendMessage(msg);
-                letSleep();
             }
 
             nextPosition.setUnit(unit);
@@ -243,7 +237,6 @@ public class GameController {
                 info.add(String.valueOf(unit.getId()));
                 msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetFieldContent, info);
                 client.sendMessage(msg);
-                letSleep();
             }
 
             clearPossibleMoves();
@@ -514,7 +507,6 @@ public class GameController {
                 info.add(String.valueOf(field.getID()));
                 MessageObject msg = new MessageObject(client.getNickName(), MessageTypeEnum.SetRock, info);
                 client.sendMessage(msg);
-                letSleep();
             }
 
             rock.setTaken(false);
@@ -577,17 +569,6 @@ public class GameController {
 
     public MalefizClient getClient() {
         return client;
-    }
-
-    public void letSleep()
-    {
-        try {
-            Thread.sleep(280);
-        }
-        catch (InterruptedException ex)
-        {
-
-        }
     }
 
     public Mode getMode() {

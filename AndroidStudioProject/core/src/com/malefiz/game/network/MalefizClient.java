@@ -55,11 +55,15 @@ public class MalefizClient {
     public void sendMessage(MessageObject message) {
         try {
             // write our entered message to the stream
+                Thread.sleep(200);
             String msg = message.getMessage();
             this.socket.getOutputStream().write(msg.getBytes());
-            System.out.println("Sent:" + msg);
+            System.out.println("Sent to server:\n" + msg);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException ex)
+        {
+
         }
     }
 

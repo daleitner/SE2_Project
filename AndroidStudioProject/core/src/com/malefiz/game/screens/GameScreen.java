@@ -425,7 +425,6 @@ public class GameScreen implements Screen {
                             info.add(String.valueOf(selectedRock.getId()));
                             MessageObject msg = new MessageObject(gc.getClient().getNickName(), MessageTypeEnum.SetFieldContent, info);
                             gc.getClient().sendMessage(msg);
-                            gc.letSleep();
                         }
                         selectedRock = null;
                     }
