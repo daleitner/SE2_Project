@@ -405,6 +405,34 @@ public class GameController {
         field.getFieldImage().setWidth(size);
     }
 
+    /**
+     * Vergroessert die alle freien Felder
+     * Dies hilft bei der Auswahl der Felder beim Setzen eines Steines
+     * @param show
+     */
+    public void showPossibleRockPosition(boolean show) {
+        if (show)
+        {
+            for (Field field: gameScreen.getFields())
+            {
+                if (field.getUnit() == null && field.getRock() == null && field.getID() < 112)
+                {
+                    setFieldPosScal(field, 1);
+                }
+            }
+        }
+        else
+        {
+            for (Field field: gameScreen.getFields())
+            {
+                setFieldPosScal(field, 0);
+            }
+        }
+
+
+
+    }
+
     public void setRockImagePosition (Rock rock) {
         rock.getRockImage().setX(gameScreen.getUnitSize() * rock.getCoordX() - gameScreen.getFieldSize() / 2);
 

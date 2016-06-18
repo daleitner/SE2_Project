@@ -426,6 +426,7 @@ public class GameScreen implements Screen {
                             MessageObject msg = new MessageObject(gc.getClient().getNickName(), MessageTypeEnum.SetFieldContent, info);
                             gc.getClient().sendMessage(msg);
                         }
+                        gc.showPossibleRockPosition(false);
                         selectedRock = null;
                     }
 
@@ -456,6 +457,7 @@ public class GameScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     if (rock.isTaken) {
                         selectedRock = rock;
+                        gc.showPossibleRockPosition(true);
                         System.out.println("i was taken i am listing");
                     }
                 }
