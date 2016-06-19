@@ -8,9 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -93,6 +92,9 @@ public class GameScreen implements Screen {
     int rolledDiceValue = 0;   // for testing fixed value; not sure if this var is necessary
     Animation anim = normalDice.createAnimation();
     float elapsedTime = 0;
+    TextureRegion tex1 = new TextureRegion(new Texture(Gdx.files.internal("dice_one.png")));
+    TextureRegion tex2 = new TextureRegion(new Texture(Gdx.files.internal("dice_two.png")));
+    Animation revolver = new Animation(0.2f, tex1, tex2, tex1, tex2, tex1, tex2);
 
 
     /* unit movement */
