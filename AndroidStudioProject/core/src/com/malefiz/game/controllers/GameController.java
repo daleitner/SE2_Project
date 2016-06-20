@@ -342,7 +342,7 @@ public class GameController {
         gameScreen.setPossibleMoves(possibleFields);
 
         for (Field f : gameScreen.getPossibleMoves()) {
-            setFieldPosScal(f, 1);
+            setFieldPosScal(f, 1, false);
         }
 
         if (gameScreen.getPossibleMoves().isEmpty()) {
@@ -364,7 +364,7 @@ public class GameController {
     public void clearPossibleMoves () {
         if (gameScreen.getPossibleMoves() != null) {
             for (Field f : gameScreen.getPossibleMoves()) {
-                setFieldPosScal(f, 0);
+                setFieldPosScal(f, 0, false);
             }
         }
         gameScreen.setPossibleMoves(null);
@@ -372,10 +372,11 @@ public class GameController {
 
 
     // 0 for standard field size; 1 for selected size
-    public void setFieldPosScal(Field field, int selected) {
+    public void setFieldPosScal(Field field, int selected, boolean rockPos) {
         int size;
         if (selected == 1) {
             size = gameScreen.getFieldSize() * 2;
+            if(rockPos) size =  (int) (gameScreen.getFieldSize() * 1.5);
         } else {
             size = gameScreen.getFieldSize();
         }
@@ -415,9 +416,9 @@ public class GameController {
         {
             for (Field field: gameScreen.getFields())
             {
-                if (field.getUnit() == null && field.getRock() == null && field.getID() < 112)
+                if (field.getUnit() == null && field.getRock() == null && field.getID() < 95)
                 {
-                    setFieldPosScal(field, 1);
+                    setFieldPosScal(field, 1, true);
                 }
             }
         }
@@ -425,7 +426,7 @@ public class GameController {
         {
             for (Field field: gameScreen.getFields())
             {
-                setFieldPosScal(field, 0);
+                setFieldPosScal(field, 0, true);
             }
         }
 

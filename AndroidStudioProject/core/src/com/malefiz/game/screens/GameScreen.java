@@ -404,7 +404,7 @@ public class GameScreen implements Screen {
             stage.addActor(field_img);
             field_img.setX(unitSize * f.getCoordX() - fieldSize / 2);
 
-            gc.setFieldPosScal(f, 0);
+            gc.setFieldPosScal(f, 0, false);
 
 
 
