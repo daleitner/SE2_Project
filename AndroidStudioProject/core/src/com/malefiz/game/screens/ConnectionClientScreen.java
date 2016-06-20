@@ -123,8 +123,20 @@ public class ConnectionClientScreen implements Screen {
         this.playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                controller.connect();
-                playButton.setTouchable(Touchable.disabled);
+                if(textNickName.getText().equals(lp.getText("p2")))
+                {
+                    ar.showToast(lp.getText("newname"));
+                }
+                else if(textNickName.getText().isEmpty())
+                {
+                    ar.showToast(lp.getText("emptyname"));
+                }
+                else
+                {
+                    controller.connect();
+                    playButton.setTouchable(Touchable.disabled);
+                }
+
             }
         });
         stage.addActor(this.playButton);

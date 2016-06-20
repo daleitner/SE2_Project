@@ -36,6 +36,8 @@ public class Config {
             languagePack.put("p2", "Spieler 2");
             languagePack.put("rolldice", "Bitte würfeln!");
             languagePack.put("turn", ", du bist dran!");
+            languagePack.put("newname", "Du musst noch deinen Namen eingeben!");
+            languagePack.put("emptyname", "Das Namensfeld darf nicht leer sein!");
 
         }
         else if(lang.equals("eng"))
@@ -64,7 +66,37 @@ public class Config {
             languagePack.put("p2", "Player 2");
             languagePack.put("rolldice", "Please roll the dice!");
             languagePack.put("turn", ", it's your turn!");
-
+            languagePack.put("newname", "You should enter your name!");
+            languagePack.put("emptyname", "The name field must not be empty!");
+        }
+        else
+        {
+            languagePack.put("startgame", "Inizia il gioco");
+            languagePack.put("joingame", "Partecipa gioco");
+            languagePack.put("rules","Regole");
+            languagePack.put("leavegame","Lasciare il gioco");
+            languagePack.put("choosecharacter",",\r\nchoose your\r\ncharacter!");
+            languagePack.put("cancel","Annulla");
+            languagePack.put("play","Giocare");
+            languagePack.put("tomenu","Tornare al menu");
+            languagePack.put("winner","Vincitore!");
+            languagePack.put("choosenumberofplayers", "Numero di giocatori?");
+            languagePack.put("next", "Oltre");
+            languagePack.put("back", "Ritorno");
+            languagePack.put("player", "Player");
+            languagePack.put("mplocal", "Multiplayer (local)");
+            languagePack.put("mpnetw", "Multiplayer (network)");
+            languagePack.put("hostgame", "Host Game");
+            languagePack.put("join", "Join");
+            languagePack.put("ip", "IP-address of the host:");
+            languagePack.put("nick", "Your name:");
+            languagePack.put("conplayers", "Connected players");
+            languagePack.put("p1", "Player 1");
+            languagePack.put("p2", "Player 2");
+            languagePack.put("rolldice", "Please roll the dice!");
+            languagePack.put("turn", ", it's your turn!");
+            languagePack.put("newname", "You should enter your name!");
+            languagePack.put("emptyname", "The name field must not be empty!");
         }
     }
 

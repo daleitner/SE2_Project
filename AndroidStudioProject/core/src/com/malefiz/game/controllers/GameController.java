@@ -57,7 +57,7 @@ public class GameController {
             if(mode == Mode.LOCAL)
             {
                 try{
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 }
                 catch (InterruptedException ex){}
             }
@@ -123,8 +123,8 @@ public class GameController {
                 }
             }
         }
-        gameScreen.getActionResolver().showToast(actualPlayer.getNickName() + lp.getText("turn"));
-        gameScreen.getActionResolver().showToast(lp.getText("rolldice"));
+        gameScreen.getActionResolver().showToast(actualPlayer.getNickName() + lp.getText("turn") + " " + lp.getText("rolldice"));
+        //gameScreen.getActionResolver().showToast(lp.getText("rolldice"));
     }
 
     /**
