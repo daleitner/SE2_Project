@@ -1,27 +1,20 @@
 package screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import controllers.MyMalefiz;
-import models.Color;
 import models.Grid;
-import models.LanguagePack;
-import models.Mode;
-import models.Team;
+import models.Config;
 
 public class NetworkMenuScreen implements Screen {
     SpriteBatch batch;
@@ -31,12 +24,12 @@ public class NetworkMenuScreen implements Screen {
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
-    private LanguagePack lp;
+    private Config lp;
     Skin skin;
 
     Grid g = new Grid();
 
-    public NetworkMenuScreen(MyMalefiz mz, LanguagePack lp)
+    public NetworkMenuScreen(MyMalefiz mz, Config lp)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -59,7 +52,7 @@ public class NetworkMenuScreen implements Screen {
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         startBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
-        startBtn.getLabel().setFontScale(3.0f);
+        startBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -72,7 +65,7 @@ public class NetworkMenuScreen implements Screen {
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         connectBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
-        connectBtn.getLabel().setFontScale(3.0f);
+        connectBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -85,7 +78,7 @@ public class NetworkMenuScreen implements Screen {
         backBtn.setWidth(18*g.getUnitSize());
         backBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         backBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
-        backBtn.getLabel().setFontScale(3.0f);
+        backBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         backBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

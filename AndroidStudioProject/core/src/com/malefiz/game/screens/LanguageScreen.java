@@ -12,12 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.kotcrab.vis.ui.VisUI;
 
-import controllers.CharacterSelectionController;
 import controllers.MyMalefiz;
 import models.Grid;
-import models.LanguagePack;
+import models.Config;
 
 public class LanguageScreen implements Screen{
     SpriteBatch batch;
@@ -27,12 +25,12 @@ public class LanguageScreen implements Screen{
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
-    private LanguagePack lp;
+    private Config lp;
     Skin skin;
 
     Grid g = new Grid();
 
-    public LanguageScreen(MyMalefiz mz, LanguagePack lp)
+    public LanguageScreen(MyMalefiz mz, Config lp)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -58,11 +56,11 @@ public class LanguageScreen implements Screen{
         startBtn.setWidth(12*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         startBtn.setPosition(7*g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
-        startBtn.getLabel().setFontScale(3.0f);
+        startBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setLanguagePack(new LanguagePack("ger"));
+                mymalefiz.setLanguagePack(new Config("ger"));
                 mymalefiz.setMenuScreen();
             }
         });
@@ -72,11 +70,11 @@ public class LanguageScreen implements Screen{
         connectBtn.setWidth(12*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         connectBtn.setPosition(7*g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
-        connectBtn.getLabel().setFontScale(3.0f);
+        connectBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setLanguagePack(new LanguagePack("eng"));
+                mymalefiz.setLanguagePack(new Config("eng"));
                 mymalefiz.setMenuScreen();
             }
         });
@@ -86,11 +84,11 @@ public class LanguageScreen implements Screen{
         ruleBtn.setWidth(12*g.getUnitSize());
         ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         ruleBtn.setPosition(7*g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
-        ruleBtn.getLabel().setFontScale(3.0f);
+        ruleBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         ruleBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setLanguagePack(new LanguagePack("ger"));
+                mymalefiz.setLanguagePack(new Config("ger"));
                 mymalefiz.setMenuScreen();
             }
         });
@@ -100,7 +98,7 @@ public class LanguageScreen implements Screen{
         exitBtn.setWidth(18*g.getUnitSize());
         exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         exitBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
-        exitBtn.getLabel().setFontScale(3.0f);
+        exitBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

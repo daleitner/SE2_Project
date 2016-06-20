@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Align;
 
 import controllers.MyMalefiz;
 import models.Grid;
-import models.LanguagePack;
+import models.Config;
 
 public class RuleScreen implements Screen{
 
@@ -28,7 +28,7 @@ public class RuleScreen implements Screen{
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
-    private LanguagePack lp;
+    private Config lp;
     Texture startBtn;
     Skin skin;
     int indexRule = 1;
@@ -44,7 +44,7 @@ public class RuleScreen implements Screen{
 
     Grid g = new Grid();
 
-    public RuleScreen(MyMalefiz mz, LanguagePack lp)
+    public RuleScreen(MyMalefiz mz, Config lp)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -68,7 +68,7 @@ public class RuleScreen implements Screen{
         head.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         head.setWidth(18*g.getUnitSize());
         head.setHeight(4*g.getUnitSize()*g.getRatio());
-        head.setFontScale(5);
+        head.setFontScale(3*lp.getScreenScaleFactor());
         head.setAlignment(Align.center);
 
         rule1 = new Texture(Gdx.files.internal("rules1.png"));

@@ -28,7 +28,7 @@ import models.Color;
 import models.Dice;
 import models.Field;
 import models.Grid;
-import models.LanguagePack;
+import models.Config;
 import models.Mode;
 import models.Player;
 import models.Rock;
@@ -40,7 +40,7 @@ import network.MessageTypeEnum;
 public class GameScreen implements Screen {
     boolean shake = false;
     private MyMalefiz mainClass = null;
-    private LanguagePack lp;
+    private Config lp;
     private Player player;
     long startTime;
     boolean animationActive = false;
@@ -179,7 +179,7 @@ public class GameScreen implements Screen {
         this.stage = stage;
     }
 
-    public GameScreen(MyMalefiz mainClass, HashMap<Integer, Player> selectedPlayers, LanguagePack lp, Mode mode, ActionResolver actionResolver) {
+    public GameScreen(MyMalefiz mainClass, HashMap<Integer, Player> selectedPlayers, Config lp, Mode mode, ActionResolver actionResolver) {
 
         this.selectedAvatar = selectedPlayers.get(0).getAvatar();
         this.mainClass = mainClass;

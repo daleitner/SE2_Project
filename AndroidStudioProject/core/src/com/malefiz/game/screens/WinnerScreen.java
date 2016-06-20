@@ -17,10 +17,8 @@ import com.badlogic.gdx.utils.Align;
 
 import controllers.MyMalefiz;
 import models.Grid;
-import models.LanguagePack;
+import models.Config;
 import models.Team;
-
-import java.nio.charset.Charset;
 
 //import sun.nio.cs.ISO_8859_2;
 //import sun.nio.cs.ext.ISO_8859_11;
@@ -33,14 +31,14 @@ public class WinnerScreen implements Screen{
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
-    private LanguagePack lp;
+    private Config lp;
     Skin skin;
     Team winnerTeam;
     private Label head;
 
     Grid g = new Grid();
 
-    public WinnerScreen(MyMalefiz mz, LanguagePack lp, Team t)
+    public WinnerScreen(MyMalefiz mz, Config lp, Team t)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -67,7 +65,7 @@ public class WinnerScreen implements Screen{
         head.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         head.setWidth(18*g.getUnitSize());
         head.setHeight(4*g.getUnitSize()*g.getRatio());
-        head.setFontScale(5);
+        head.setFontScale(4*lp.getScreenScaleFactor());
         head.setAlignment(Align.center);
 
 
@@ -77,7 +75,7 @@ public class WinnerScreen implements Screen{
         backToMenu.setWidth(18*g.getUnitSize());
         backToMenu.setHeight(2*g.getUnitSize()*g.getRatio());
         backToMenu.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
-        backToMenu.getLabel().setFontScale(3.0f);
+        backToMenu.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         backToMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

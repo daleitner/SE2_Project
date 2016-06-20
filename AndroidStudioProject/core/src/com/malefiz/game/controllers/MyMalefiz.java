@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import interfaces.ActionResolver;
-import models.Avatar;
-import models.LanguagePack;
+import models.Config;
 import models.Mode;
 import models.Player;
 import models.Team;
@@ -38,7 +37,7 @@ public class MyMalefiz extends Game {
 	public MalefizServer server;
 	private MalefizClient gameclient;
 
-	private LanguagePack lp = new LanguagePack("ger");
+	private Config lp = new Config("ger");
 
 	public MyMalefiz(ActionResolver actionResolver)
 	{
@@ -71,7 +70,7 @@ public class MyMalefiz extends Game {
 
 	public void setNumberOfPlayersSelectionScreen() {
 		this.numberOfPlayersSelectionController = new NumberOfPlayersSelectionController(this, lp);
-		setScreen(new NumberOfPlayersSelectionScreen(this.numberOfPlayersSelectionController));
+		setScreen(new NumberOfPlayersSelectionScreen(this.numberOfPlayersSelectionController, lp));
 	}
 
 	public void setLocalCharacterSelectionScreen(int numberOfCharacters) {
@@ -81,7 +80,7 @@ public class MyMalefiz extends Game {
 			players.put(i, player);
 		}
 		this.characterSelectionController = new CharacterSelectionController(this, lp, players);
-		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
+		setScreen(new CharacterSelectionScreen(this.characterSelectionController, lp));
 	}
 
 	public void setRemoteCharacterSelectionScreen(ArrayList<String> nickNames, MalefizClient client) {
@@ -92,7 +91,7 @@ public class MyMalefiz extends Game {
 		}
 		this.gameclient = client;
 		this.characterSelectionController = new CharacterSelectionController(this, lp, players, client);
-		setScreen(new CharacterSelectionScreen(this.characterSelectionController));
+		setScreen(new CharacterSelectionScreen(this.characterSelectionController, lp));
 	}
 
 	public void setRuleScreen()
@@ -128,7 +127,7 @@ public class MyMalefiz extends Game {
 		setScreen(new ConnectionClientScreen(this.connectionClientController, lp));
 	}
 
-	public void setLanguagePack(LanguagePack lang)
+	public void setLanguagePack(Config lang)
 	{
 		this.lp = lang;
 	}

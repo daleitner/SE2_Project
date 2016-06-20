@@ -1,20 +1,19 @@
 package controllers;
 
-import models.LanguagePack;
-import models.Mode;
+import models.Config;
 
 public class NumberOfPlayersSelectionController {
     private MyMalefiz mainClass;
-    private LanguagePack lp;
+    private Config lp;
     private int minPlayer = 2;
     private int maxPlayer = 4;
     private int selectedNumberOfPlayers = 4;
-    public NumberOfPlayersSelectionController(MyMalefiz mainClass, LanguagePack lp) {
+    public NumberOfPlayersSelectionController(MyMalefiz mainClass, Config lp) {
         this.mainClass = mainClass;
         this.lp = lp;
     }
 
-    public LanguagePack getLanguagePack() {
+    public Config getLanguagePack() {
         return lp;
     }
 

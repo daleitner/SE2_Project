@@ -1,27 +1,20 @@
 package screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import controllers.MyMalefiz;
-import models.Color;
 import models.Grid;
-import models.LanguagePack;
-import models.Mode;
-import models.Team;
+import models.Config;
 
 public class MenuScreen implements Screen {
     SpriteBatch batch;
@@ -31,12 +24,12 @@ public class MenuScreen implements Screen {
     int screenWidth;
     Stage stage;
     private MyMalefiz mymalefiz;
-    private LanguagePack lp;
+    private Config lp;
     Skin skin;
 
     Grid g = new Grid();
 
-    public MenuScreen(MyMalefiz mz, LanguagePack lp)
+    public MenuScreen(MyMalefiz mz, Config lp)
     {
         mymalefiz = mz;
         this.lp = lp;
@@ -59,7 +52,7 @@ public class MenuScreen implements Screen {
         startBtn.setWidth(18*g.getUnitSize());
         startBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         startBtn.setPosition(g.getUnitSize(), 8*g.getUnitSize()*g.getRatio());
-        startBtn.getLabel().setFontScale(2.0f);
+        startBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         startBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -72,7 +65,7 @@ public class MenuScreen implements Screen {
         connectBtn.setWidth(18*g.getUnitSize());
         connectBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         connectBtn.setPosition(g.getUnitSize(), 11*g.getUnitSize()*g.getRatio()/2);
-        connectBtn.getLabel().setFontScale(2.0f);
+        connectBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         connectBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -85,7 +78,7 @@ public class MenuScreen implements Screen {
         ruleBtn.setWidth(18*g.getUnitSize());
         ruleBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         ruleBtn.setPosition(g.getUnitSize(), 3*g.getUnitSize()*g.getRatio());
-        ruleBtn.getLabel().setFontScale(2.0f);
+        ruleBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         ruleBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -98,7 +91,7 @@ public class MenuScreen implements Screen {
         exitBtn.setWidth(18*g.getUnitSize());
         exitBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         exitBtn.setPosition(g.getUnitSize(), g.getUnitSize()*g.getRatio()/2);
-        exitBtn.getLabel().setFontScale(2.0f);
+        exitBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

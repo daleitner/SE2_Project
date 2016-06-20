@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import org.w3c.dom.Text;
 
 import controllers.NumberOfPlayersSelectionController;
+import models.Config;
 import models.Grid;
 
 public class NumberOfPlayersSelectionScreen implements Screen {
@@ -38,8 +39,11 @@ public class NumberOfPlayersSelectionScreen implements Screen {
     private TextButton increaseNumberOfPlayersBtn;
     private TextButton decreaseNumberOfPlayersBtn;
 
-    public NumberOfPlayersSelectionScreen(NumberOfPlayersSelectionController controller) {
+    private Config lp;
+
+    public NumberOfPlayersSelectionScreen(NumberOfPlayersSelectionController controller, Config lp) {
         this.controller = controller;
+        this.lp = lp;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class NumberOfPlayersSelectionScreen implements Screen {
         head.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         head.setWidth(18*g.getUnitSize());
         head.setHeight(4*g.getUnitSize()*g.getRatio());
-        head.setFontScale(5);
+        head.setFontScale(2.5f*lp.getScreenScaleFactor());
         head.setAlignment(Align.center);
         stage.addActor(head);
 
@@ -68,7 +72,7 @@ public class NumberOfPlayersSelectionScreen implements Screen {
         numberOfPlayers.setPosition(g.getUnitSize(), 10*g.getUnitSize()*g.getRatio());
         numberOfPlayers.setWidth(18*g.getUnitSize());
         numberOfPlayers.setHeight(4*g.getUnitSize()*g.getRatio());
-        numberOfPlayers.setFontScale(5);
+        numberOfPlayers.setFontScale(3*lp.getScreenScaleFactor());
         numberOfPlayers.setAlignment(Align.center);
         stage.addActor(numberOfPlayers);
 
@@ -77,7 +81,7 @@ public class NumberOfPlayersSelectionScreen implements Screen {
         increaseNumberOfPlayersBtn.setWidth((4*g.getUnitSize()));
         increaseNumberOfPlayersBtn.setHeight(2* g.getUnitSize()*g.getRatio());
         increaseNumberOfPlayersBtn.setPosition(12 * g.getUnitSize(), 11 * g.getUnitSize()*g.getRatio());
-        increaseNumberOfPlayersBtn.getLabel().setFontScale(3.0f);
+        increaseNumberOfPlayersBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         increaseNumberOfPlayersBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -91,7 +95,7 @@ public class NumberOfPlayersSelectionScreen implements Screen {
         decreaseNumberOfPlayersBtn.setWidth((4*g.getUnitSize()));
         decreaseNumberOfPlayersBtn.setHeight(2* g.getUnitSize()*g.getRatio());
         decreaseNumberOfPlayersBtn.setPosition(4 * g.getUnitSize(), 11 * g.getUnitSize()*g.getRatio());
-        decreaseNumberOfPlayersBtn.getLabel().setFontScale(3.0f);
+        decreaseNumberOfPlayersBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         decreaseNumberOfPlayersBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -105,7 +109,7 @@ public class NumberOfPlayersSelectionScreen implements Screen {
         backBtn.setWidth((int)(8.5f*g.getUnitSize()));
         backBtn.setHeight(2* g.getUnitSize()*g.getRatio());
         backBtn.setPosition(g.getUnitSize(), g.getUnitSize());
-        backBtn.getLabel().setFontScale(3.0f);
+        backBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         backBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -119,7 +123,7 @@ public class NumberOfPlayersSelectionScreen implements Screen {
         selectedBtn.setWidth((int)(8.5*g.getUnitSize()));
         selectedBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         selectedBtn.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
-        selectedBtn.getLabel().setFontScale(3.0f);
+        selectedBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         selectedBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Avatar;
-import models.LanguagePack;
+import models.Config;
 import models.Mode;
 import models.Player;
 import models.Team;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CharacterSelectionController {
     private MyMalefiz mainClass;
-    private LanguagePack lp;
+    private Config lp;
     private int selectedIndex = -1;
     private List<Avatar> characters;
     private HashMap<Integer, Player> selectedPlayers;
@@ -24,7 +24,7 @@ public class CharacterSelectionController {
     private int actualPlayer;
     private MalefizClient client;
 
-    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, HashMap<Integer, Player> players) {
+    public CharacterSelectionController(MyMalefiz mainClass, Config lp, HashMap<Integer, Player> players) {
         this.mainClass = mainClass;
         this.lp = lp;
         this.mode = Mode.LOCAL;
@@ -40,7 +40,7 @@ public class CharacterSelectionController {
         this.characters.add(new Avatar("avatar_blue", "avatar_blau.png", "avatar_blau_disabled.png", 11, 5, 3));
     }
 
-    public CharacterSelectionController(MyMalefiz mainClass, LanguagePack lp, HashMap<Integer, Player> players, MalefizClient client) {
+    public CharacterSelectionController(MyMalefiz mainClass, Config lp, HashMap<Integer, Player> players, MalefizClient client) {
         this(mainClass, lp, players);
         this.mode = Mode.NETWORK;
         this.client = client;
@@ -114,7 +114,7 @@ public class CharacterSelectionController {
     }
 
     public String getHeaderText() {
-        return this.selectedPlayers.get(this.actualPlayer-1).getNickName() + " " + lp.getText("choosecharacter");
+        return this.selectedPlayers.get(this.actualPlayer-1).getNickName() + lp.getText("choosecharacter");
     }
 
     public String getNextButtonText() {
@@ -138,7 +138,7 @@ public class CharacterSelectionController {
         return mode == Mode.LOCAL;
     }
 
-    public LanguagePack getLanguagePack() {
+    public Config getLanguagePack() {
         return this.lp;
     }
 

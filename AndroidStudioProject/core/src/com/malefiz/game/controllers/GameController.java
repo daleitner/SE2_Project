@@ -52,6 +52,13 @@ public class GameController {
         {
             System.out.println("DiceRolled: " + diceRolled + " unitMoved: " + unitMoved + " PlayerAbleToMove: " + playerAbleToMove + " diceTries: " + diceTries + " Dicevalue: " + gameScreen.getRolledDiceValue());
             gameScreen.deleteDiceDisplay();
+            if(mode == Mode.LOCAL)
+            {
+                try{
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException ex){}
+            }
 
             getNextPlayer();
             if(this.mode == Mode.NETWORK) {

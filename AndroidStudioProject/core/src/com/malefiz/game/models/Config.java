@@ -1,12 +1,14 @@
 package models;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class LanguagePack {
+public class Config {
     HashMap<String, String> languagePack = new HashMap<String, String>();
 
-    public LanguagePack(String lang)
+    public Config(String lang)
     {
         if(lang.equals("ger"))
         {
@@ -14,7 +16,7 @@ public class LanguagePack {
             languagePack.put("joingame", "Spiel beitreten");
             languagePack.put("rules","Spielregeln");
             languagePack.put("leavegame","Spiel verlassen");
-            languagePack.put("choosecharacter","Waehle deinen\r\nCharakter!");
+            languagePack.put("choosecharacter",",\r\nwähle deinen\r\nCharakter!");
             languagePack.put("cancel","Abbrechen");
             languagePack.put("play","Spielen");
             languagePack.put("tomenu","Zum Hauptmenü");
@@ -27,8 +29,8 @@ public class LanguagePack {
             languagePack.put("mpnetw", "Multiplayer (Netzwerk)");
             languagePack.put("hostgame", "Spiel erstellen");
             languagePack.put("join", "Beitreten");
-            languagePack.put("ip", "IP-Adresse des Hosts");
-            languagePack.put("nick", "Dein Name");
+            languagePack.put("ip", "IP-Adresse des Hosts:");
+            languagePack.put("nick", "Dein Name:");
             languagePack.put("conplayers", "Verbundene Spieler");
             languagePack.put("p1", "Spieler 1");
             languagePack.put("p2", "Spieler 2");
@@ -40,7 +42,7 @@ public class LanguagePack {
             languagePack.put("joingame", "Join Game");
             languagePack.put("rules","Rules");
             languagePack.put("leavegame","Leave Game");
-            languagePack.put("choosecharacter","Choose your\r\ncharacter!");
+            languagePack.put("choosecharacter",",\r\nchoose your\r\ncharacter!");
             languagePack.put("cancel","Cancel");
             languagePack.put("play","Play");
             languagePack.put("tomenu","Back to menu");
@@ -53,8 +55,8 @@ public class LanguagePack {
             languagePack.put("mpnetw", "Multiplayer (network)");
             languagePack.put("hostgame", "Host Game");
             languagePack.put("join", "Join");
-            languagePack.put("ip", "IP-adress of the host");
-            languagePack.put("nick", "Your name");
+            languagePack.put("ip", "IP-adress of the host:");
+            languagePack.put("nick", "Your name:");
             languagePack.put("conplayers", "Connected players");
             languagePack.put("p1", "Player 1");
             languagePack.put("p2", "Player 2");
@@ -67,5 +69,9 @@ public class LanguagePack {
         return languagePack.get(text);
     }
 
+    public float getScreenScaleFactor()
+    {
+        return Gdx.graphics.getWidth()/720f;
+    }
 
 }

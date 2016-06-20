@@ -4,29 +4,27 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import models.LanguagePack;
-import models.Mode;
+import models.Config;
 import network.MalefizClient;
-import network.MalefizClientSocket;
 import network.MalefizServer;
 import network.MessageObject;
 import network.MessageTypeEnum;
 
 public class ConnectionController  {
     private MyMalefiz mainClass;
-    private LanguagePack lp;
+    private Config lp;
     private MalefizServer server;
     private MalefizClient client;
     private String playersString;
 
-    public ConnectionController(MyMalefiz mainClass, MalefizServer server, LanguagePack lp) {
+    public ConnectionController(MyMalefiz mainClass, MalefizServer server, Config lp) {
         this.mainClass = mainClass;
         this.lp = lp;
         this.server = server;
         this.playersString = "Players:";
     }
 
-    public LanguagePack getLanguagePack() {
+    public Config getLanguagePack() {
         return lp;
     }
 

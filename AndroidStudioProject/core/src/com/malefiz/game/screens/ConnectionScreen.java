@@ -1,53 +1,24 @@
 package screens;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
-import com.badlogic.gdx.net.Socket;
-import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.widget.VisTextField;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
 
 import controllers.ConnectionController;
-import controllers.MyMalefiz;
 import models.Grid;
-import models.LanguagePack;
-import network.MalefizServer;
+import models.Config;
 
 public class ConnectionScreen implements Screen {
     SpriteBatch batch;
@@ -58,7 +29,7 @@ public class ConnectionScreen implements Screen {
     private ConnectionController controller;
     Skin skin;
     Grid g = new Grid();
-    private LanguagePack lp;
+    private Config lp;
 
     private Label labelIPAddresses;
     private Label labelJoinedPlayers;
@@ -68,7 +39,7 @@ public class ConnectionScreen implements Screen {
     private TextButton playButton;
     private TextButton cancelButton;
 
-    public ConnectionScreen(ConnectionController controller, LanguagePack lp)
+    public ConnectionScreen(ConnectionController controller, Config lp)
     {
         this.controller = controller;
         this.lp = lp;
@@ -99,7 +70,7 @@ public class ConnectionScreen implements Screen {
         labelName.setHeight(g.getUnitSize());
         labelName.setWidth(g.getUnitSize()*18);
         labelName.setPosition(g.getUnitSize(), g.getUnitSize()*15*g.getRatio());
-        labelName.setFontScale(2f);
+        labelName.setFontScale(2f*lp.getScreenScaleFactor());
         stage.addActor(labelName);
 
         this.textName = new TextField(lp.getText("p1"), skin);
@@ -126,14 +97,14 @@ public class ConnectionScreen implements Screen {
         labelPlayers.setHeight(g.getUnitSize());
         labelPlayers.setWidth(g.getUnitSize()*18);
         labelPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*11*g.getRatio());
-        labelPlayers.setFontScale(2f);
+        labelPlayers.setFontScale(2f*lp.getScreenScaleFactor());
         stage.addActor(labelPlayers);
 
         this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
         labelJoinedPlayers.setHeight(g.getUnitSize()*4*g.getRatio());
         labelJoinedPlayers.setWidth(g.getUnitSize()*18);
         labelJoinedPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*6*g.getRatio());
-        labelJoinedPlayers.setFontScale(2f);
+        labelJoinedPlayers.setFontScale(2f*lp.getScreenScaleFactor());
         stage.addActor(this.labelJoinedPlayers);
 
 
@@ -142,7 +113,7 @@ public class ConnectionScreen implements Screen {
         this.cancelButton.setWidth((int)(8.5f*g.getUnitSize()));
         this.cancelButton.setHeight(2* g.getUnitSize()*g.getRatio());
         this.cancelButton.setPosition(g.getUnitSize(), g.getUnitSize());
-        this.cancelButton.getLabel().setFontScale(2.0f);
+        this.cancelButton.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         this.cancelButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -156,7 +127,7 @@ public class ConnectionScreen implements Screen {
         this.playButton.setWidth((int)(8.5*g.getUnitSize()));
         this.playButton.setHeight(2*g.getUnitSize()*g.getRatio());
         this.playButton.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
-        this.playButton.getLabel().setFontScale(2.0f);
+        this.playButton.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         this.playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

@@ -19,11 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import controllers.CharacterSelectionController;
-import controllers.MyMalefiz;
 import models.Avatar;
+import models.Config;
 import models.Grid;
-import models.LanguagePack;
-import models.Mode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,11 +46,14 @@ public class CharacterSelectionScreen implements Screen {
     private TextButton nextBtn;
     private TextButton backBtn;
 
+    private Config lp;
+
     Grid g = new Grid();
 
-    public CharacterSelectionScreen(CharacterSelectionController controller) {
+    public CharacterSelectionScreen(CharacterSelectionController controller, Config lp) {
         this.images = new ArrayList<Image>();
         this.controller = controller;
+        this.lp = lp;
     }
     @Override
     public void show() {
@@ -72,7 +73,7 @@ public class CharacterSelectionScreen implements Screen {
         head.setPosition(g.getUnitSize(), 15*g.getUnitSize()*g.getRatio());
         head.setWidth(18*g.getUnitSize());
         head.setHeight(4*g.getUnitSize()*g.getRatio());
-        head.setFontScale(5);
+        head.setFontScale(2.5f*lp.getScreenScaleFactor());
         head.setAlignment(Align.center);
 
 
@@ -127,7 +128,7 @@ public class CharacterSelectionScreen implements Screen {
         backBtn.setWidth((int)(8.5f*g.getUnitSize()));
         backBtn.setHeight(2* g.getUnitSize()*g.getRatio());
         backBtn.setPosition(g.getUnitSize(), g.getUnitSize());
-        backBtn.getLabel().setFontScale(3.0f);
+        backBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         backBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -141,7 +142,7 @@ public class CharacterSelectionScreen implements Screen {
         nextBtn.setWidth((int)(8.5*g.getUnitSize()));
         nextBtn.setHeight(2*g.getUnitSize()*g.getRatio());
         nextBtn.setPosition((int)(10.5*g.getUnitSize()), g.getUnitSize());
-        nextBtn.getLabel().setFontScale(3.0f);
+        nextBtn.getLabel().setFontScale(2.0f*lp.getScreenScaleFactor());
         nextBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
