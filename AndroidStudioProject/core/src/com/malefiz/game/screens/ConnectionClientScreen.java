@@ -14,8 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 import controllers.ConnectionClientController;
+import interfaces.ActionResolver;
 import models.Grid;
 import models.Config;
 
@@ -29,6 +31,7 @@ public class ConnectionClientScreen implements Screen {
     Skin skin;
     Grid g = new Grid();
     private Config lp;
+    private ActionResolver ar;
 
     private Label labelJoinedPlayers;
     private TextField textIPAddress;
@@ -36,10 +39,11 @@ public class ConnectionClientScreen implements Screen {
     private TextButton playButton;
     private TextButton cancelButton;
 
-    public ConnectionClientScreen(ConnectionClientController controller, Config lp)
+    public ConnectionClientScreen(ConnectionClientController controller, Config lp, ActionResolver ar)
     {
         this.controller = controller;
         this.lp = lp;
+        this.ar = ar;
     }
 
     @Override
@@ -89,10 +93,11 @@ public class ConnectionClientScreen implements Screen {
         stage.addActor(labelPlayers);
 
         this.labelJoinedPlayers = new Label(this.controller.getPlayersString(), skin);
-        labelJoinedPlayers.setHeight(g.getUnitSize());
+        labelJoinedPlayers.setHeight(g.getUnitSize()*6*g.getRatio());
         labelJoinedPlayers.setWidth(g.getUnitSize()*18);
-        labelJoinedPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*10*g.getRatio());
+        labelJoinedPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*4*g.getRatio());
         labelJoinedPlayers.setFontScale(1.5f*lp.getScreenScaleFactor());
+        labelJoinedPlayers.setAlignment(Align.topLeft);
         stage.addActor(labelJoinedPlayers);
 
         this.cancelButton =  new TextButton(this.controller.getLanguagePack().getText("cancel"), skin, "default");

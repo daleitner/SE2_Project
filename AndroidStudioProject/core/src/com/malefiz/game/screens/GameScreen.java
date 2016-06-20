@@ -184,7 +184,7 @@ public class GameScreen implements Screen {
         this.selectedAvatar = selectedPlayers.get(0).getAvatar();
         this.mainClass = mainClass;
         this.lp = lp;
-        this.gc = new GameController(this, selectedPlayers, mode);
+        this.gc = new GameController(this, selectedPlayers, mode, lp);
         this.gc.setMalefizClient(mainClass.getMalefizClient());
         this.mode = mode;
         this.actionResolver = actionResolver;
@@ -741,27 +741,26 @@ public class GameScreen implements Screen {
             animationActive = true;
             gc.isPlayerAbleToMove();
         }*/
-        if(randomDiceDisplay.isVisible())
-        {
-            if(!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
-                elapsedTime = 0;
-                drawDice();
-                gc.setDiceRolled();
-                rolledDiceValue = normalDice.getValue();
-                gc.isPlayerAbleToMove();
-                removeRandomDiceDisplay();
-                animationActive = true;
-            }
-        }
-        else
-        {
-            if(!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
-                elapsedTime = 0;
-                drawDice();
-                gc.setDiceRolled();
-                rolledDiceValue = normalDice.getValue();
-                gc.isPlayerAbleToMove();
-                animationActive = true;
+        if(gc.roundActive()) {
+            if (randomDiceDisplay.isVisible()) {
+                if (!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                    elapsedTime = 0;
+                    drawDice();
+                    gc.setDiceRolled();
+                    rolledDiceValue = normalDice.getValue();
+                    gc.isPlayerAbleToMove();
+                    removeRandomDiceDisplay();
+                    animationActive = true;
+                }
+            } else {
+                if (!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                    elapsedTime = 0;
+                    drawDice();
+                    gc.setDiceRolled();
+                    rolledDiceValue = normalDice.getValue();
+                    gc.isPlayerAbleToMove();
+                    animationActive = true;
+                }
             }
         }
     }

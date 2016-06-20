@@ -34,6 +34,8 @@ public class Config {
             languagePack.put("conplayers", "Verbundene Spieler");
             languagePack.put("p1", "Spieler 1");
             languagePack.put("p2", "Spieler 2");
+            languagePack.put("rolldice", "Bitte würfeln!");
+            languagePack.put("turn", ", du bist dran!");
 
         }
         else if(lang.equals("eng"))
@@ -60,6 +62,8 @@ public class Config {
             languagePack.put("conplayers", "Connected players");
             languagePack.put("p1", "Player 1");
             languagePack.put("p2", "Player 2");
+            languagePack.put("rolldice", "Please roll the dice!");
+            languagePack.put("turn", ", it's your turn!");
 
         }
     }

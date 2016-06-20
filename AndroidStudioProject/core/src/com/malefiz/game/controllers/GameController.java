@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.concurrent.Exchanger;
 
 import models.Avatar;
+import models.Config;
 import models.Field;
 import models.Mode;
 import models.Player;
@@ -30,17 +31,18 @@ public class GameController {
     private boolean rockTaken;
     private MalefizClient client;
     private Mode mode;
+    private Config lp;
 
     private HandleMessageController handleMessageController = null;
 
-
-    public GameController(GameScreen gameScreen, HashMap<Integer, Player> _players, Mode mode){
+    public GameController(GameScreen gameScreen, HashMap<Integer, Player> _players, Mode mode, Config lp){
         this.handleMessageController = new HandleMessageController(this, gameScreen);
         this.gameScreen = gameScreen;
         this.players = _players;
         this.actualPlayer = this.players.get(0);
         this.mode = mode;
         reset();
+        this.lp = lp;
     }
 
     /**
@@ -121,8 +123,8 @@ public class GameController {
                 }
             }
         }
-        gameScreen.getActionResolver().showToast("Spieler " + actualPlayer.getTeam() + " ist am Zug!");
-        gameScreen.getActionResolver().showToast("Bitte würfeln!");
+        gameScreen.getActionResolver().showToast(actualPlayer.getNickName() + lp.getText("turn"));
+        gameScreen.getActionResolver().showToast(lp.getText("rolldice"));
     }
 
     /**

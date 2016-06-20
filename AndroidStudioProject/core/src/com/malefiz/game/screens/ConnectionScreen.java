@@ -15,8 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 import controllers.ConnectionController;
+import interfaces.ActionResolver;
 import models.Grid;
 import models.Config;
 
@@ -30,6 +32,7 @@ public class ConnectionScreen implements Screen {
     Skin skin;
     Grid g = new Grid();
     private Config lp;
+    private ActionResolver ar;
 
     private Label labelIPAddresses;
     private Label labelJoinedPlayers;
@@ -39,10 +42,11 @@ public class ConnectionScreen implements Screen {
     private TextButton playButton;
     private TextButton cancelButton;
 
-    public ConnectionScreen(ConnectionController controller, Config lp)
+    public ConnectionScreen(ConnectionController controller, Config lp, ActionResolver ar)
     {
         this.controller = controller;
         this.lp = lp;
+        this.ar = ar;
     }
 
     @Override
@@ -58,11 +62,11 @@ public class ConnectionScreen implements Screen {
         // Set the bounds of the group to the entire virtual display
         vg.setBounds(0, screenHeight/2, screenWidth, screenHeight/2);
         String ipAddress = this.controller.getIpAddresses();
-        this.labelIPAddresses = new Label(lp.getText("ip")+": "+ipAddress,skin);
+        this.labelIPAddresses = new Label(lp.getText("ip")+" "+ipAddress,skin);
         labelIPAddresses.setHeight(g.getUnitSize());
         labelIPAddresses.setWidth(g.getUnitSize()*18);
         labelIPAddresses.setPosition(g.getUnitSize(), g.getUnitSize()*18*g.getRatio());
-        labelIPAddresses.setFontScale(1.5f);
+        labelIPAddresses.setFontScale(1.5f*lp.getScreenScaleFactor());
         stage.addActor(this.labelIPAddresses);
 
 
@@ -101,10 +105,11 @@ public class ConnectionScreen implements Screen {
         stage.addActor(labelPlayers);
 
         this.labelJoinedPlayers = new Label(this.controller.getPlayersString(),skin);
-        labelJoinedPlayers.setHeight(g.getUnitSize()*4*g.getRatio());
+        labelJoinedPlayers.setHeight(g.getUnitSize()*6*g.getRatio());
         labelJoinedPlayers.setWidth(g.getUnitSize()*18);
-        labelJoinedPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*6*g.getRatio());
-        labelJoinedPlayers.setFontScale(2f*lp.getScreenScaleFactor());
+        labelJoinedPlayers.setPosition(g.getUnitSize(), g.getUnitSize()*4*g.getRatio());
+        labelJoinedPlayers.setFontScale(1.5f*lp.getScreenScaleFactor());
+        labelJoinedPlayers.setAlignment(Align.topLeft);
         stage.addActor(this.labelJoinedPlayers);
 
 
