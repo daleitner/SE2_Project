@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Logger;
 
 
 public class MalefizServer implements IDistribute{
@@ -53,6 +54,7 @@ public class MalefizServer implements IDistribute{
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
+                        buffer.close();
                         if(ret != null && !ret.isEmpty()) {
                             System.out.println("received first message:" + ret);
                             MessageObject obj = MessageObject.MessageToMessageObject(ret);
@@ -68,9 +70,9 @@ public class MalefizServer implements IDistribute{
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
                     } catch(GdxRuntimeException ex) {
-                        ex.printStackTrace();
+                        System.out.println(ex.getMessage() + "\n" + ex.getStackTrace());
                     }
                 }
             }
@@ -98,7 +100,7 @@ public class MalefizServer implements IDistribute{
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
         }
         return addresses.get(0);
         /*// Print the contents of our array to a string.  Yeah, should have used StringBuilder
@@ -153,6 +155,7 @@ public class MalefizServer implements IDistribute{
         }
         this.communicationThread.interrupt();
         this.serverSocket.dispose();
+
 
 
     }

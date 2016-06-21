@@ -94,6 +94,7 @@ public class HandleMessageController {
         if(gameScreen == null)
         {
             System.out.println("Gamescreen = null");
+            return null;
         }
         ArrayList<Unit> units = gameScreen.getUnits();
         for (Unit u : units){

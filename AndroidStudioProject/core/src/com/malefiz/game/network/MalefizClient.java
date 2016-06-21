@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 
 
 public class MalefizClient {
+    private BufferedReader buffer;
     private String nickName;
     private String ipAddress;
     private Socket socket;
@@ -28,10 +29,9 @@ public class MalefizClient {
 
             @Override
             public void run() {
+                buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 // Loop forever
                 while(!Thread.currentThread().isInterrupted()){
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
                     try {
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
@@ -40,7 +40,7 @@ public class MalefizClient {
                             receivedMessage = ret;
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
                     }
                 }
             }
@@ -60,10 +60,10 @@ public class MalefizClient {
             this.socket.getOutputStream().write(msg.getBytes());
             System.out.println("Sent to server:\n" + msg);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
         } catch (InterruptedException ex)
         {
-
+            System.out.println(ex.getMessage() + "\n" + ex.getStackTrace());
         }
     }
 
@@ -80,5 +80,12 @@ public class MalefizClient {
     public void disconnect() {
         this.receivingThread.interrupt();
         this.socket.dispose();
+        if(this.buffer != null) {
+            try {
+                this.buffer.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+            }
+        }
     }
 }
