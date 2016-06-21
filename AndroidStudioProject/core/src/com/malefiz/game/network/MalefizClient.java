@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
+import com.badlogic.gdx.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class MalefizClient {
     private Socket socket;
     private Thread receivingThread;
     private String receivedMessage = "";
+    private Logger log;
     public MalefizClient(String nickName, String ipAddress) {
         this.nickName = nickName;
         this.ipAddress = ipAddress;
@@ -40,7 +42,7 @@ public class MalefizClient {
                             receivedMessage = ret;
                         }
                     } catch (IOException e) {
-                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+                        log.error(e.getMessage());
                     }
                 }
             }
@@ -63,7 +65,7 @@ public class MalefizClient {
             System.out.println(e.getMessage() + "\n" + e.getStackTrace());
         } catch (InterruptedException ex)
         {
-            System.out.println(ex.getMessage() + "\n" + ex.getStackTrace());
+            log.error(ex.getMessage());
         }
     }
 
@@ -84,7 +86,7 @@ public class MalefizClient {
             try {
                 this.buffer.close();
             } catch (IOException e) {
-                System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+                log.error(e.getMessage());
             }
         }
     }

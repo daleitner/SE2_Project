@@ -1,6 +1,7 @@
 package network;
 
 import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class MalefizClientSocket {
     private Thread receivingThread;
     private String nickName;
     private IDistribute messageDistributor;
+    private Logger log;
     public MalefizClientSocket(String _nickName, Socket _socket, final IDistribute messageDistributor) {
         this.socket = _socket;
         this.nickName = _nickName;
@@ -34,7 +36,7 @@ public class MalefizClientSocket {
                                 messageDistributor.distributeMessage(ret);
                         }
                     } catch (IOException e) {
-                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+                        log.error(e.getMessage());
                     }
                 }
             }
@@ -48,7 +50,7 @@ public class MalefizClientSocket {
             this.socket.getOutputStream().write(message.getBytes());
             System.out.println("Sent:" + message);
         } catch (IOException e) {
-            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+            log.error(e.getMessage());
         }
     }
 
@@ -64,7 +66,7 @@ public class MalefizClientSocket {
             try {
                 this.buffer.close();
             } catch (IOException e) {
-                System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+                log.error(e.getMessage());
             }
         }
     }

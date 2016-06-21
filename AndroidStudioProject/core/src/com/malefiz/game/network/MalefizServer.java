@@ -29,6 +29,7 @@ public class MalefizServer implements IDistribute{
     private String ipAddress = "";
     private ServerSocket serverSocket;
     private ArrayList<MalefizClientSocket> clientSockets;
+    private com.badlogic.gdx.utils.Logger log;
     public MalefizServer() {
         this.ipAddress = setIpAddress();
         this.clientSockets = new ArrayList<MalefizClientSocket>();
@@ -70,9 +71,9 @@ public class MalefizServer implements IDistribute{
                             }
                         }
                     } catch (IOException e) {
-                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+                        log.error(e.getMessage());
                     } catch(GdxRuntimeException ex) {
-                        System.out.println(ex.getMessage() + "\n" + ex.getStackTrace());
+                        log.error(ex.getMessage());
                     }
                 }
             }
@@ -100,7 +101,7 @@ public class MalefizServer implements IDistribute{
                 }
             }
         } catch (SocketException e) {
-            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
+            log.error(e.getMessage());
         }
         return addresses.get(0);
         /*// Print the contents of our array to a string.  Yeah, should have used StringBuilder
