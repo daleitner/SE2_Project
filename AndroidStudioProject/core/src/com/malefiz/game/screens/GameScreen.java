@@ -1,7 +1,11 @@
 package screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -95,7 +99,7 @@ public class GameScreen implements Screen {
     TextureRegion tex1 = new TextureRegion(new Texture(Gdx.files.internal("dice_one.png")));
     TextureRegion tex2 = new TextureRegion(new Texture(Gdx.files.internal("dice_two.png")));
     Animation revolver = new Animation(0.2f, tex1, tex2, tex1, tex2, tex1, tex2);
-
+    Sound diceSound = Gdx.audio.newSound(Gdx.files.internal("dice-sound.mp3"));
 
     /* unit movement */
     boolean isUnitSelected = false;
@@ -188,8 +192,8 @@ public class GameScreen implements Screen {
         this.gc.setMalefizClient(mainClass.getMalefizClient());
         this.mode = mode;
         this.actionResolver = actionResolver;
-
         show();
+
     }
 
     @Override
@@ -197,6 +201,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         stage = new Stage();
         sr = new ShapeRenderer();
+
 
 
         Gdx.input.setInputProcessor(stage);
@@ -238,6 +243,7 @@ public class GameScreen implements Screen {
         startTime = 0;
 
         actionResolver.shiftGameScreen(this);
+
     }
 
     @Override
@@ -263,6 +269,7 @@ public class GameScreen implements Screen {
             animationActive = false;
         }
         gc.receiveMessage();
+
     }
 
     @Override
@@ -291,6 +298,7 @@ public class GameScreen implements Screen {
     }
 
     public void drawUnits() {
+
 
         this.units = b.getUnits();
         System.out.println("Units drawn");
@@ -523,6 +531,7 @@ public class GameScreen implements Screen {
         normalDiceDisplay.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 if(!gc.getPlayerAbleToMove() && elapsedTime > 1) {
+                    diceSound.play();
                     elapsedTime = 0;
                     drawDice();
                     gc.setDiceRolled();
@@ -574,7 +583,7 @@ public class GameScreen implements Screen {
                                     {
                                         diceDisplay.remove();
                                     }
-
+                                    diceSound.play();
                                     gc.setDiceRolled();
                                     rolledDiceValue = (int) ((temp.getY() - 50) / (4 * unitSize));
                                     setDiceDisplay(rolledDiceValue);
@@ -614,6 +623,7 @@ public class GameScreen implements Screen {
             diceDisplay.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y){
                     if(!gc.getPlayerAbleToMove() && elapsedTime > 1 && gc.roundActive()) {
+                        diceSound.play();
                         elapsedTime = 0;
                         drawDice();
                         gc.setDiceRolled();
@@ -641,6 +651,7 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y)
             {
                 if(!gc.getPlayerAbleToMove() && elapsedTime >= 1 && gc.roundActive()) {
+                    diceSound.play();
                     elapsedTime = 0;
                     drawDice();
                     gc.setDiceRolled();
@@ -744,6 +755,7 @@ public class GameScreen implements Screen {
         if(gc.roundActive()) {
             if (randomDiceDisplay.isVisible()) {
                 if (!gc.getPlayerAbleToMove() && elapsedTime >= 1) {
+                    diceSound.play();
                     elapsedTime = 0;
                     drawDice();
                     gc.setDiceRolled();

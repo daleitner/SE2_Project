@@ -1,5 +1,7 @@
 package controllers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -32,6 +34,7 @@ public class GameController {
     private MalefizClient client;
     private Mode mode;
     private Config lp;
+    private Sound kick = Gdx.audio.newSound(Gdx.files.internal("kick.mp3"));
 
     private HandleMessageController handleMessageController = null;
 
@@ -207,6 +210,7 @@ public class GameController {
             {
                 u.setPosition(u.getStartPosition());
                 setUnitImagePosition(u);
+                kick.play();
                 if(this.mode == Mode.NETWORK) {
                     // send unit position "setUnitPosition;unitId;fieldId"
                     info = new ArrayList<String>();
