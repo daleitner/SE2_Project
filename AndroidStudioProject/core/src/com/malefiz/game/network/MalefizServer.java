@@ -29,7 +29,6 @@ public class MalefizServer implements IDistribute{
     private String ipAddress = "";
     private ServerSocket serverSocket;
     private ArrayList<MalefizClientSocket> clientSockets;
-    private com.badlogic.gdx.utils.Logger log;
     public MalefizServer() {
         this.ipAddress = setIpAddress();
         this.clientSockets = new ArrayList<MalefizClientSocket>();
@@ -55,7 +54,6 @@ public class MalefizServer implements IDistribute{
                         BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
-                        buffer.close();
                         if(ret != null && !ret.isEmpty()) {
                             System.out.println("received first message:" + ret);
                             MessageObject obj = MessageObject.MessageToMessageObject(ret);
@@ -71,9 +69,9 @@ public class MalefizServer implements IDistribute{
                             }
                         }
                     } catch (IOException e) {
-                        log.error(e.getMessage());
+                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
                     } catch(GdxRuntimeException ex) {
-                        log.error(ex.getMessage());
+                        System.out.println(ex.getMessage() + "\n" + ex.getStackTrace());
                     }
                 }
             }
@@ -101,7 +99,7 @@ public class MalefizServer implements IDistribute{
                 }
             }
         } catch (SocketException e) {
-            log.error(e.getMessage());
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
         }
         return addresses.get(0);
         /*// Print the contents of our array to a string.  Yeah, should have used StringBuilder

@@ -10,12 +10,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MalefizClientSocket {
-    private BufferedReader buffer;
     private Socket socket;
     private Thread receivingThread;
     private String nickName;
     private IDistribute messageDistributor;
-    private Logger log;
     public MalefizClientSocket(String _nickName, Socket _socket, final IDistribute messageDistributor) {
         this.socket = _socket;
         this.nickName = _nickName;
@@ -24,9 +22,10 @@ public class MalefizClientSocket {
 
             @Override
             public void run() {
-                buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
                 // Loop forever
                 while(!Thread.currentThread().isInterrupted()){
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     try {
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
@@ -36,7 +35,7 @@ public class MalefizClientSocket {
                                 messageDistributor.distributeMessage(ret);
                         }
                     } catch (IOException e) {
-                        log.error(e.getMessage());
+                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
                     }
                 }
             }
@@ -50,7 +49,7 @@ public class MalefizClientSocket {
             this.socket.getOutputStream().write(message.getBytes());
             System.out.println("Sent:" + message);
         } catch (IOException e) {
-            log.error(e.getMessage());
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace());
         }
     }
 
@@ -62,12 +61,5 @@ public class MalefizClientSocket {
     public void disconnect(){
         this.receivingThread.interrupt();
         this.socket.dispose();
-        if(this.buffer != null) {
-            try {
-                this.buffer.close();
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
-        }
     }
 }

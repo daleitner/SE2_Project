@@ -9,16 +9,15 @@ import com.badlogic.gdx.utils.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.Buffer;
 
 
 public class MalefizClient {
-    private BufferedReader buffer;
     private String nickName;
     private String ipAddress;
     private Socket socket;
     private Thread receivingThread;
     private String receivedMessage = "";
-    private Logger log;
     public MalefizClient(String nickName, String ipAddress) {
         this.nickName = nickName;
         this.ipAddress = ipAddress;
@@ -31,9 +30,10 @@ public class MalefizClient {
 
             @Override
             public void run() {
-                buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
                 // Loop forever
                 while(!Thread.currentThread().isInterrupted()){
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     try {
                         // Read to the next newline (\n) and display that text on labelMessage
                         String ret = buffer.readLine();
@@ -42,7 +42,7 @@ public class MalefizClient {
                             receivedMessage = ret;
                         }
                     } catch (IOException e) {
-                        log.error(e.getMessage());
+                        System.out.println(e.getMessage() + "\n" + e.getStackTrace());
                     }
                 }
             }
@@ -65,7 +65,7 @@ public class MalefizClient {
             System.out.println(e.getMessage() + "\n" + e.getStackTrace());
         } catch (InterruptedException ex)
         {
-            log.error(ex.getMessage());
+            System.out.println(ex.getMessage() + "\n" + ex.getStackTrace());
         }
     }
 
@@ -82,12 +82,5 @@ public class MalefizClient {
     public void disconnect() {
         this.receivingThread.interrupt();
         this.socket.dispose();
-        if(this.buffer != null) {
-            try {
-                this.buffer.close();
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
-        }
     }
 }

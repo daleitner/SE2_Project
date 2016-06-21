@@ -88,7 +88,7 @@ public class LanguageScreen implements Screen{
         ruleBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                mymalefiz.setLanguagePack(new Config("ger"));
+                mymalefiz.setLanguagePack(new Config("ital"));
                 mymalefiz.setMenuScreen();
             }
         });

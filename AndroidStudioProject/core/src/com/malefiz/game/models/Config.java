@@ -69,34 +69,34 @@ public class Config {
             languagePack.put("newname", "You should enter your name!");
             languagePack.put("emptyname", "The name field must not be empty!");
         }
-        else
+        else if(lang.equals("ital"))
         {
-            languagePack.put("startgame", "Inizia il gioco");
-            languagePack.put("joingame", "Partecipa gioco");
+            languagePack.put("startgame", "Avviare il gioco");
+            languagePack.put("joingame", "Partecipare al gioco");
             languagePack.put("rules","Regole");
             languagePack.put("leavegame","Lasciare il gioco");
-            languagePack.put("choosecharacter",",\r\nchoose your\r\ncharacter!");
-            languagePack.put("cancel","Annulla");
+            languagePack.put("choosecharacter",",\r\nscegli il\r\ncarattere!");
+            languagePack.put("cancel","Annullare");
             languagePack.put("play","Giocare");
-            languagePack.put("tomenu","Tornare al menu");
+            languagePack.put("tomenu","Menu principale");
             languagePack.put("winner","Vincitore!");
-            languagePack.put("choosenumberofplayers", "Numero di giocatori?");
-            languagePack.put("next", "Oltre");
-            languagePack.put("back", "Ritorno");
-            languagePack.put("player", "Player");
-            languagePack.put("mplocal", "Multiplayer (local)");
+            languagePack.put("choosenumberofplayers", "Quanti giocatori?");
+            languagePack.put("next", "Continuare");
+            languagePack.put("back", "Dietro");
+            languagePack.put("player", "Giocatore");
+            languagePack.put("mplocal", "Multiplayer (locale)");
             languagePack.put("mpnetw", "Multiplayer (network)");
-            languagePack.put("hostgame", "Host Game");
-            languagePack.put("join", "Join");
-            languagePack.put("ip", "IP-address of the host:");
-            languagePack.put("nick", "Your name:");
-            languagePack.put("conplayers", "Connected players");
-            languagePack.put("p1", "Player 1");
-            languagePack.put("p2", "Player 2");
-            languagePack.put("rolldice", "Please roll the dice!");
-            languagePack.put("turn", ", it's your turn!");
-            languagePack.put("newname", "You should enter your name!");
-            languagePack.put("emptyname", "The name field must not be empty!");
+            languagePack.put("hostgame", "Creare un gioco");
+            languagePack.put("join", "Aderire");
+            languagePack.put("ip", "Indirizzo IP:");
+            languagePack.put("nick", "Tuo nome:");
+            languagePack.put("conplayers", "Giocatori collegati");
+            languagePack.put("p1", "Giocatore 1");
+            languagePack.put("p2", "Giocatore 2");
+            languagePack.put("rolldice", "Tira i dadi!");
+            languagePack.put("turn", ", tocca a te!");
+            languagePack.put("newname", "Digita il nome!");
+            languagePack.put("emptyname", "Il campo nome non può essere vuoto!");
         }
     }
 

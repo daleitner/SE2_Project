@@ -114,7 +114,7 @@ public class ConnectionClientScreen implements Screen {
         });
         stage.addActor(this.cancelButton);
 
-        this.playButton = new TextButton("Beitreten", skin, "default");
+        this.playButton = new TextButton(lp.getText("join"), skin, "default");
 
         this.playButton.setWidth((int)(8.5*g.getUnitSize()));
         this.playButton.setHeight(2*g.getUnitSize()*g.getRatio());
