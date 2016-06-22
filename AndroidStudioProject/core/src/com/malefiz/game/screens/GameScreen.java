@@ -540,7 +540,10 @@ public class GameScreen implements Screen {
                     removeRandomDiceDisplay();
                     animationActive = true;
                     System.out.println("rolled dice value is = " + rolledDiceValue);
-
+                    if(!riggedDices.isEmpty())
+                    {
+                        removeDices();
+                    }
                 }
             }
         });
@@ -659,6 +662,10 @@ public class GameScreen implements Screen {
                     gc.isPlayerAbleToMove();
                     removeRandomDiceDisplay();
                     animationActive = true;
+                    if(!riggedDices.isEmpty())
+                    {
+                        removeDices();
+                    }
                 }
             }
         });

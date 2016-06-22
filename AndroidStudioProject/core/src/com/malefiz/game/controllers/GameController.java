@@ -137,7 +137,7 @@ public class GameController {
     public void setUnitImagePosition (Unit unit) {
 
         unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getCurrentFieldPosition().getCoordX() - (unit.getUnitImage().getImageWidth()/2));
-        //unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getUnitCoordX() - gameScreen.getFieldSize() / 2);
+        //unit.getUnitImage().setX(gameScreen.getUnitSize() * unit.getUnitCoordX() - gameScreen.getFieldSize() / 2);b
 
 
         int y;
